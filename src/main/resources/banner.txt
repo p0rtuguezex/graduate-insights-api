@@ -1,10 +1,10 @@
 
-${AnsiColor.BLUE} _________                                                        _____
-${AnsiColor.BLUE} \_   ___ \  ____   ____    ___________   ____   ______ ______   /  _  \ ______ ______
-${AnsiColor.BLUE} /    \  \/ /  _ \ /    \  / ___\_  __ \_/ __ \ /  ___//  ___/  /  /_\  \\____ \\____ \
-${AnsiColor.BLUE} \     \___(  <_> )   |  \/ /_/  >  | \/\  ___/ \___ \ \___ \  /    |    \  |_> >  |_> >
-${AnsiColor.BLUE}  \______  /\____/|___|  /\___  /|__|    \___  >____  >____  > \____|__  /   __/|   __/
-${AnsiColor.BLUE}         \/            \//_____/             \/     \/     \/          \/|__|   |__|
+${AnsiColor.BLUE}   ________                  .___            __                                 .__
+${AnsiColor.BLUE}  /  _____/___________     __| _/_ _______ _/  |_  ____           _____  ______ |__|
+${AnsiColor.BLUE} /   \  __\_  __ \__  \   / __ |  |  \__  \\   __\/ __ \   ______ \__  \ \____ \|  |
+${AnsiColor.BLUE} \    \_\  \  | \// __ \_/ /_/ |  |  // __ \|  | \  ___/  /_____/  / __ \|  |_> >  |
+${AnsiColor.BLUE}  \______  /__|  (____  /\____ |____/(____  /__|  \___  >         (____  /   __/|__|
+${AnsiColor.BLUE}         \/           \/      \/          \/          \/               \/|__|
 
 ${AnsiColor.GREEN}:: Running Java           ${AnsiColor.DEFAULT}v${java.version}
 ${AnsiColor.GREEN}:: Running Spring Boot    ${AnsiColor.DEFAULT}v${spring-boot.version}
