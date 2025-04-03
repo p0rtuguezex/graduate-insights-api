@@ -1,0 +1,58 @@
+// Configure Test tasks
+tasks.withType(Test).configureEach {
+    // Use the Junir Jupiter Platform
+    useJUnitPlatform()
+
+    exclude '**/**Test'
+
+    // show skipped and failed tests in the logs, and show the exception if a test fails.
+    testLogging {
+        exceptionFormat = 'full'
+        events = ['skipped', 'failed']
+    }
+
+    // Ensure the Jacoco Report is produced if the Test step succeeds.
+    finalizedBy "jacoco${it.name.capitalize()}Report"
+}
+
+// Configure JAcoco Coverage verification during build process. Sonarqube will also compute and check coverage for the project
+def coverageExclusions = [
+        // Exclude generated code, domain objects and configuration from coverage reports
+        '**/*Application.*',
+        'pe/com/graduate/domain/**',
+        'pe/com/graduate/infrastructure/config/**',
+        'pe/com/graduate/infrastructure/entities/**',
+        'pe/com/graduate/infrastructure/mapper/**',
+        'pe/com/graduate/infrastructure/persistence/**',
+        'pe/com/graduate/infrastructure/utils/**',
+        'pe/com/graduate/infrastructure/web/entities/**'
+]
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        html.required = true
+    }
+    afterEvaluate {
+        def jtrFiles = files(classDirectories.files.collect{
+            fileTree(dir: it, exclude: coverageExclusions)
+        })
+        classDirectories.setFrom(jtrFiles)
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.00
+            }
+        }
+    }
+    afterEvaluate {
+        def jtcvFiles = files(classDirectories.files.collect{
+            fileTree(dir: it, exclude: coverageExclusions)
+        })
+        classDirectories.setFrom(jtcvFiles)
+    }
+}

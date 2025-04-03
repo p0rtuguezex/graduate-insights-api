@@ -1,0 +1,41 @@
+server:
+  port: ${SERVER_PORT:8080}
+  #address: 192.168.1.50 # to expose my service locally
+  servlet:
+    context-path: /graduate-insights/v1/api
+spring:
+  application:
+    name: graduate-insights-api
+  datasource:
+    url: jdbc:mysql://localhost:3306/graduate_insights
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: non_null
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: admin@coneicucayali.org
+    password: ejpuofhrojsmvwbw
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 2000
+          starttls:
+            enable: true
+
+springdoc:
+  api-docs:
+    path: "/api-docs"
+  swagger-ui:
+    enabled: true
+    path: "/index.html"
+
+logging:
+  level:
+    root: INFO
+

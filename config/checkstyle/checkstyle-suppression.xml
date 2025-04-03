@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Condfiguration 1.2 //EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd"
+        >
+<suppressions>
+    <suppress id="noUsageOfGetFileContentsMethod" checks="MissingJavadocMethodCheck.java" />
+    <suppress id="noUsageOfGetFileContentsMethod" checks="MissingJavadocTypeCheck.java" />
+</suppressions>
