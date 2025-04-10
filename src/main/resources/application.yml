@@ -11,9 +11,17 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
   jackson:
     property-naming-strategy: SNAKE_CASE
     default-property-inclusion: non_null
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:tables.sql
+      data-locations: classpath:inserts.sql
 
   mail:
     host: smtp.gmail.com
