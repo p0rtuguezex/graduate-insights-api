@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.UserRepositoryPort;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
@@ -39,7 +42,7 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
 
   @Override
   public void update(UserRequest request, Long id) {
-    log.info("Update User with id " + id);
+    log.info("Update User with id :{}" , id);
     userRepository
         .findById(id)
         .map(
@@ -47,7 +50,7 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
               userMapper.updateUserEntity(request, userEntity);
               return userRepository.save(userEntity);
             })
-        .orElseThrow(() -> new NotFoundException("EL usuario con ese id no existe "));
+        .orElseThrow(() -> new NotFoundException(ConstantsUtils.USER_NOT_FOUND));
   }
 
   @Override
@@ -56,5 +59,26 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     return userRepository.findAll().stream()
         .map(userEntity -> userMapper.toDomain(userEntity))
         .toList();
+  }
+
+  @Override
+  public void delete(Long id) {
+    log.info("Delete User with id : {} ",id);
+      var user= userRepository.findById(id)
+              .orElseThrow(() -> new NotFoundException(ConstantsUtils.USER_NOT_FOUND));
+      userRepository.delete(user);
+
+  }
+
+  @Override
+  public Page<User> getPagination(String search, Pageable pageable) {
+    log.info(" get list of Participants");
+    // lista sin ningun tipo de filtro
+    Page<UserEntity> userEntities=userRepository.findAll(pageable);
+    return  new PageImpl<>(
+           userEntities.getContent().stream().map(userEntity -> userMapper.toDomain(userEntity)).toList(),
+            userEntities.getPageable(),
+            userEntities.getTotalElements());
+
   }
 }

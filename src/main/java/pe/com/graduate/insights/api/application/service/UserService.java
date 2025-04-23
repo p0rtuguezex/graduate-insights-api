@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pe.com.graduate.insights.api.application.ports.input.UserUseCase;
 import pe.com.graduate.insights.api.application.ports.output.UserRepositoryPort;
@@ -35,5 +37,16 @@ public class UserService implements UserUseCase {
   @Override
   public void update(UserRequest request, Long id) {
     userRepositoryPort.update(request, id);
+  }
+
+  @Override
+  public void delete(Long id) {
+    userRepositoryPort.delete(id);
+
+  }
+
+  @Override
+  public Page<User> getPagination(String search, Pageable pageable) {
+    return userRepositoryPort.getPagination(search,pageable);
   }
 }
