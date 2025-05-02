@@ -1,7 +1,6 @@
-package pe.com.graduate.insights.api.infrastructure.adapter.impl;
+package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -9,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.GraduateRepositoryPort;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
-import pe.com.graduate.insights.api.domain.models.response.Graduate;
+import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
 
 @Slf4j
 @Component
@@ -20,18 +19,18 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
   public void save(GraduateRequest request) {}
 
   @Override
-  public List<Graduate> getList(Object... params) {
+  public List<GraduateResponse> getList(Object... params) {
     return List.of();
   }
 
   @Override
-  public Page<Graduate> getPagination(String search, Pageable pageable) {
+  public Page<GraduateResponse> getPagination(String search, Pageable pageable) {
     return null;
   }
 
   @Override
-  public Optional<Graduate> getDomain(Long id) {
-    return Optional.empty();
+  public GraduateResponse getDomain(Long id) {
+    return null;
   }
 
   @Override

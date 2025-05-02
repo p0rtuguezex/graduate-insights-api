@@ -1,19 +1,16 @@
-package pe.com.graduate.insights.api.infrastructure.adapter.impl;
+package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.UserRepositoryPort;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
-import pe.com.graduate.insights.api.domain.models.response.User;
+import pe.com.graduate.insights.api.domain.models.response.UserResponse;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
-import pe.com.graduate.insights.api.infrastructure.adapter.entities.UserEntity;
-import pe.com.graduate.insights.api.infrastructure.adapter.repository.UserRepository;
-import pe.com.graduate.insights.api.infrastructure.mapper.UserMapper;
+import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
+import pe.com.graduate.insights.api.infrastructure.repository.jpa.UserRepository;
+import pe.com.graduate.insights.api.infrastructure.repository.mapper.UserMapper;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserRepositoryAdapter implements UserRepositoryPort {
@@ -28,11 +25,10 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
   }
 
   @Override
-  public Optional<User> getDomain(Long id) {
-    log.info("Get speaker with id: {}", id);
+  public UserResponse getDomain(Long id) {
     return userRepository
         .findById(id)
-        .map(entity -> Optional.of(userMapper.toDomain(entity)))
+        .map(userMapper::toDomain)
         .orElseThrow(() -> new NotFoundException(ConstantsUtils.USER_NOT_FOUND));
   }
 }

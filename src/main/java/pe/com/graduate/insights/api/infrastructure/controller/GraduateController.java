@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.domain.models.response.Graduate;
+import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
 
 @Slf4j
 @RestController
@@ -13,7 +13,7 @@ import pe.com.graduate.insights.api.domain.models.response.Graduate;
 public class GraduateController {
 
   @GetMapping("list-all")
-  public List<Graduate> getListSpeakerAll() {
+  public List<GraduateResponse> getListSpeakerAll() {
     return null;
   }
 }

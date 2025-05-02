@@ -20,7 +20,7 @@ def coverageExclusions = [
         // Exclude generated code, domain objects and configuration from coverage reports
         '**/*Application.*',
         'pe/com/graduate/domain/**',
-        'pe/com/graduate/infrastructure/config/**',
+        'pe/com/graduate/infrastructure/advice/**',
         'pe/com/graduate/infrastructure/entities/**',
         'pe/com/graduate/infrastructure/mapper/**',
         'pe/com/graduate/infrastructure/persistence/**',

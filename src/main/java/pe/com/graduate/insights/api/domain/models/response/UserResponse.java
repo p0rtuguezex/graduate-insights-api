@@ -3,10 +3,12 @@ package pe.com.graduate.insights.api.domain.models.response;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Builder
 @Getter
-public class User {
+@ToString
+public class UserResponse {
 
   private Long id;
   private String nombres;

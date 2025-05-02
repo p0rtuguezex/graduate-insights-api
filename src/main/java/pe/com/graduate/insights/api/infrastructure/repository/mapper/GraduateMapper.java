@@ -1,4 +1,4 @@
-package pe.com.graduate.insights.api.infrastructure.mapper;
+package pe.com.graduate.insights.api.infrastructure.repository.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

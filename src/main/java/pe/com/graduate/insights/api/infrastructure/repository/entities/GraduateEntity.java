@@ -1,4 +1,4 @@
-package pe.com.graduate.insights.api.infrastructure.adapter.entities;
+package pe.com.graduate.insights.api.infrastructure.repository.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "graduate")
-public class GraduateEntity {
+public class GraduateEntity extends Auditable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

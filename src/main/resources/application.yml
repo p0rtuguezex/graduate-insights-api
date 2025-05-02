@@ -1,6 +1,5 @@
 server:
-  port: ${SERVER_PORT:8080}
-  #address: 192.168.1.50 # to expose my service locally
+  port: 8080
   servlet:
     context-path: /graduate-insights/v1/api
 spring:
@@ -14,6 +13,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+    show-sql: true
   jackson:
     property-naming-strategy: SNAKE_CASE
     default-property-inclusion: non_null

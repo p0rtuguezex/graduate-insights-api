@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pe.com.graduate.insights.api.application.ports.generic.GenericCreate;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
-import pe.com.graduate.insights.api.infrastructure.adapter.repository.GraduateRepository;
+import pe.com.graduate.insights.api.infrastructure.repository.jpa.GraduateRepository;
 
 @Slf4j
 @Service
