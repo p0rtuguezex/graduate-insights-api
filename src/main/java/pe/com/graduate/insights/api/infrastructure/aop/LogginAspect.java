@@ -50,9 +50,34 @@ public class LogginAspect {
         ex);
   }
 
+  //  private String objectToString(Object object, String otherwise) {
+  //    return Objects.isNull(object)
+  //        ? otherwise
+  //        : new ReflectionToStringBuilder(object, RecursiveToStringStyle.JSON_STYLE).toString();
+  //  }
+
+  // metodo que evita la reflexion de list -- modificado del anterior
   private String objectToString(Object object, String otherwise) {
-    return Objects.isNull(object)
-        ? otherwise
-        : new ReflectionToStringBuilder(object, RecursiveToStringStyle.JSON_STYLE).toString();
+    if (Objects.isNull(object)) {
+      return otherwise;
+    }
+
+    // Evita reflexión en tipos del JDK que pueden lanzar errores
+    if (object instanceof Iterable
+        || object instanceof Number
+        || object instanceof String
+        || object.getClass().isArray()) {
+      return object.toString();
+    }
+
+    try {
+      return new ReflectionToStringBuilder(object, RecursiveToStringStyle.JSON_STYLE).toString();
+    } catch (Exception e) {
+      log.warn(
+          "Reflection failed on object of type {}: {}",
+          object.getClass().getName(),
+          e.getMessage());
+      return object.toString(); // fallback
+    }
   }
 }

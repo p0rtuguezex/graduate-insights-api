@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Builder
 @Getter
@@ -27,10 +28,8 @@ public class UserRequest implements Serializable {
   @NotBlank(message = "El apellido no puede estar en blanco")
   private String apellidos;
 
-  @NotBlank(message = "La fecha de nacimiento no puede estar vacía")
-  @Pattern(
-      regexp = "^\\d{4}-\\d{2}-\\d{2}$",
-      message = "La fecha de nacimiento debe tener el formato yyyy-MM-dd")
+  @NotNull(message = "La fecha no puede ser nula")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate fechaNacimiento;
 
   @NotBlank(message = "El género no puede estar en blanco")
