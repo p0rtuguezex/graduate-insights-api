@@ -1,7 +1,6 @@
 package pe.com.graduate.insights.api.application.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pe.com.graduate.insights.api.application.ports.generic.GenericCreate;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
