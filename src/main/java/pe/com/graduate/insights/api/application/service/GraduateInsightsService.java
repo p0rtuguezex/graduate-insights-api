@@ -7,7 +7,6 @@ import pe.com.graduate.insights.api.application.ports.generic.GenericCreate;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.GraduateRepository;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GraduateInsightsService implements GenericCreate<GraduateRequest> {

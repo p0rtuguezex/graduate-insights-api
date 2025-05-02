@@ -1,7 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +14,6 @@ import pe.com.graduate.insights.api.domain.models.response.ApiResponse;
 import pe.com.graduate.insights.api.domain.models.response.UserResponse;
 import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 
-@Slf4j
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor

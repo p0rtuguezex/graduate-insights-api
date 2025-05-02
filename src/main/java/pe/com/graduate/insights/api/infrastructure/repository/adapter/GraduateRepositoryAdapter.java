@@ -2,7 +2,6 @@ package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -10,7 +9,6 @@ import pe.com.graduate.insights.api.application.ports.output.GraduateRepositoryP
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
 import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
