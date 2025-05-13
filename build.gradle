@@ -45,8 +45,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail:3.3.0'
 
     //mysql
-//    runtimeOnly 'com.mysql:mysql-connector-j'
     implementation 'com.mysql:mysql-connector-j:8.3.0'
+
     //mapstruct
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'

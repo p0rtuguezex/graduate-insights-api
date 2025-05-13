@@ -1,3 +1,4 @@
+
 apply plugin: 'checkstyle'
 apply plugin: 'pmd'
 
@@ -6,19 +7,21 @@ checkstyle {
     configFile = file("${rootDir}/config/checkstyle/google_checks.xml")
 }
 
-task checkstyle {
-    dependsOn project.tasks.findAll { task -> task.name.matches('checkstyle\\w+')}
+tasks.register('checkstyle') {
+    dependsOn project.tasks.findAll { task -> task.name.matches('checkstyle\\w+') }
 }
 
-task pmd {
-    dependsOn project.tasks.findAll { task -> task.name.matches('pmd\\w+')}
+tasks.register('pmd') {
+    dependsOn project.tasks.findAll { task -> task.name.matches('pmd\\w+') }
 }
+
+
 
 pmd {
     toolVersion = '6.13.0'
     ignoreFailures = false
     pmdTest.enabled = false
-    ruleSetFiles = files('config/pmd/ruleset.xml')
+    ruleSetFiles = files("${rootDir}/config/pmd/ruleset.xml")
     ruleSets = []
 }
 
@@ -41,7 +44,7 @@ spotbugsTest {
     reports {
         html {
             required = true
-            outputLocation = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+            outputLocation = file("$buildDir/reports/spotbugs/test/spotbugs.html")
             stylesheet = 'fancy-hist.xsl'
 
         }
@@ -59,14 +62,14 @@ spotless {
     }
 }
 
-tasks.withType(Checkstyle) {
+tasks.withType(Checkstyle).configureEach {
     reports {
         html.required = true
         xml.required = false
     }
 }
 
-tasks.withType(Pmd) {
+tasks.withType(Pmd).configureEach {
     reports {
         html.required = true
         xml.required = false
