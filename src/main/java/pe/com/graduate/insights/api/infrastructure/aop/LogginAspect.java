@@ -1,9 +1,11 @@
 package pe.com.graduate.insights.api.infrastructure.aop;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.builder.RecursiveToStringStyle;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -30,13 +32,13 @@ public class LogginAspect {
   @Before("repositoryAdapterLayer()")
   public void logBefore(JoinPoint joinPoint) {
     String args = objectToString(joinPoint.getArgs(), "NOT ARGS");
-    log.info("Executing: {}, with args: {}", joinPoint.getSignature(), args);
+    log.debug("Executing: {}, with args: {}", joinPoint.getSignature(), args);
   }
 
   @AfterReturning(pointcut = "repositoryAdapterLayer()", returning = "result")
   public void logAfter(JoinPoint joinPoint, Object result) {
     result = objectToString(result, "NOT RETURN VALUE");
-    log.info("Executed: {} | Result: {}", joinPoint.getSignature(), result);
+    log.debug("Executed: {} | Result: {}", joinPoint.getSignature(), result);
   }
 
   @AfterThrowing(pointcut = "controllerServiceRepositoryLayer()", throwing = "ex")
@@ -51,8 +53,17 @@ public class LogginAspect {
   }
 
   private String objectToString(Object object, String otherwise) {
-    return Objects.isNull(object)
-        ? otherwise
-        : new ReflectionToStringBuilder(object, RecursiveToStringStyle.JSON_STYLE).toString();
+    if (Objects.isNull(object)) {
+      return otherwise;
+    }
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      objectMapper.registerModule(new JavaTimeModule());
+      objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+      return objectMapper.writeValueAsString(object);
+    } catch (JsonProcessingException e) {
+      log.warn("Error converting object to string: {}", e.getMessage());
+      return otherwise;
+    }
   }
 }

@@ -24,6 +24,7 @@ public class UserEntity extends Auditable {
   private LocalDate fechaNacimiento;
   private String genero;
   private String correo;
+  private String estado;
   private String dni;
   private String celular;
   private String contrasena;

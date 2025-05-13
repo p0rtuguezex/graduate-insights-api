@@ -17,7 +17,7 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
   public void save(GraduateRequest request) {}
 
   @Override
-  public List<GraduateResponse> getList(Object... params) {
+  public List<GraduateResponse> getList() {
     return List.of();
   }
 

@@ -6,6 +6,7 @@ CREATE TABLE users (
     fecha_nacimiento DATE,
     genero VARCHAR(20),
     correo VARCHAR(100),
+    estado CHAR(1),
     dni VARCHAR(20),
     celular VARCHAR(20),
     contrasena VARCHAR(100),

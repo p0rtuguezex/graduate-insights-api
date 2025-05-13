@@ -46,4 +46,5 @@ springdoc:
 logging:
   level:
     root: INFO
+    pe.com.graduate.insights.api: DEBUG
 
