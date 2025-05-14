@@ -5,7 +5,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +19,6 @@ import pe.com.graduate.insights.api.application.ports.input.UserUseCase;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.ApiResponse;
 import pe.com.graduate.insights.api.domain.models.response.UserResponse;
-import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 
 @RestController
@@ -42,30 +40,30 @@ public class UserController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Void> updateUser(
+  public ResponseEntity<ApiResponse<Void>> updateUser(
       @Valid @RequestBody UserRequest userRequest, @PathVariable Long id) {
     userUseCase.update(userRequest, id);
-    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    return ResponseUtils.successResponse();
   }
 
   @GetMapping("/list")
-  public ResponseEntity<List<UserResponse>> userList() {
-    return ResponseEntity.ok(userUseCase.getList());
+  public ResponseEntity<ApiResponse<List<UserResponse>>> userList() {
+    return ResponseUtils.successResponse(userUseCase.getList());
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+  public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
     userUseCase.delete(id);
-    return ResponseEntity.ok(ConstantsUtils.DELETE_OK);
+    return ResponseUtils.deleteSuccessResponse();
   }
 
   @GetMapping("/list-pageble")
-  public ResponseEntity<List<UserResponse>> userListPageable(
+  public ResponseEntity<ApiResponse<List<UserResponse>>> userListPageable(
       @RequestParam(value = "search", defaultValue = "") String search,
       @RequestParam(value = "page", defaultValue = "1") String page,
       @RequestParam(value = "size", defaultValue = "10") String size) {
     Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size));
     var userPage = userUseCase.getPagination(search, pageable);
-    return ResponseEntity.ok(userPage.getContent());
+    return ResponseUtils.successResponse(userPage.getContent());
   }
 }

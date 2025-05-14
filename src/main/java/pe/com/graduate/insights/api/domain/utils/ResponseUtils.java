@@ -6,8 +6,20 @@ import pe.com.graduate.insights.api.domain.models.response.ApiResponse;
 
 public class ResponseUtils {
 
+  public static <T> ResponseEntity<ApiResponse<T>> createResponse(T data, HttpStatus httpStatus) {
+    return new ResponseEntity<>(new ApiResponse<>(data), httpStatus);
+  }
+
+  public static <T> ResponseEntity<ApiResponse<T>> deleteSuccessResponse() {
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
   public static <T> ResponseEntity<ApiResponse<T>> createSucessResponse() {
     return new ResponseEntity<>(HttpStatus.CREATED);
+  }
+
+  public static <T> ResponseEntity<ApiResponse<T>> successResponse() {
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   public static <T> ResponseEntity<ApiResponse<T>> successResponse(T data) {
