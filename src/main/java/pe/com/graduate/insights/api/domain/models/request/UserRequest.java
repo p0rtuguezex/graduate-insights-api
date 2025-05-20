@@ -8,11 +8,16 @@ import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 @Getter
 @ToString
 public class UserRequest implements Serializable {
@@ -27,10 +32,8 @@ public class UserRequest implements Serializable {
   @NotBlank(message = "El apellido no puede estar en blanco")
   private String apellidos;
 
-  @NotBlank(message = "La fecha de nacimiento no puede estar vacía")
-  @Pattern(
-      regexp = "^\\d{4}-\\d{2}-\\d{2}$",
-      message = "La fecha de nacimiento debe tener el formato yyyy-MM-dd")
+  // @NotBlank(message = "La fecha de nacimiento no puede estar vacía")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate fechaNacimiento;
 
   @NotBlank(message = "El género no puede estar en blanco")

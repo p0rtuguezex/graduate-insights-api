@@ -9,7 +9,6 @@ import lombok.ToString;
 @Getter
 @ToString
 public class UserResponse {
-
   private Long id;
   private String nombres;
   private String apellidos;
