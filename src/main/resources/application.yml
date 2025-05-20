@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/graduate_insights
     username: root
-    password: root
+    password: abcd
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -22,6 +22,7 @@ spring:
       mode: always
       schema-locations: classpath:tables.sql
       data-locations: classpath:inserts.sql
+
 
   mail:
     host: smtp.gmail.com

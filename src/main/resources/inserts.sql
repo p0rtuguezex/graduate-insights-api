@@ -1,4 +1,4 @@
-DELETE FROM users;
+
 INSERT INTO users (nombres, apellidos, fecha_nacimiento, genero, correo, estado, dni, celular, contrasena, created_date, modified_date)
 VALUES
     ('Juan', 'Pérez', '1990-05-10', 'M', 'juan.perez@example.com', '1', '12345678', '987654321', 'pass123', NOW(), NOW()),
@@ -31,3 +31,23 @@ VALUES
     ('Paula', 'Vega', '1995-10-10', 'F', 'paula.vega@example.com', '1', '47847847', '955677889', 'vegapass', NOW(), NOW()),
     ('Julio', 'Delgado', '1990-02-02', 'M', 'julio.delgado@example.com', '1', '38938938', '966788990', 'delgado123', NOW(), NOW()),
     ('Rocío', 'Castañeda', '1991-09-09', 'F', 'rocio.castaneda@example.com', '1', '29029029', '977899001', 'rocio456', NOW(), NOW());
+
+
+INSERT INTO graduates
+ (fecha_inicio, fecha_fin, cv, created_date, modified_date, user_id)
+VALUES
+('2018-03-01', '2022-12-15', 'cv_juan_perez.pdf', NOW(), NOW(), 1),
+('2019-08-20', '2023-07-10', 'cv_ana_ramirez.docx', NOW(), NOW(), 2),
+('2017-01-10', '2021-06-30', 'cv_carlos_torres.pdf', NOW(), NOW(), 3),
+('2020-02-05', '2024-11-18', 'cv_luisa_fernandez.pdf', NOW(), NOW(), 4),
+('2016-09-25', '2020-05-22', 'cv_pedro_gomez.docx', NOW(), NOW(), 5),
+('2018-04-14', '2022-03-10', 'cv_maria_salas.pdf', NOW(), NOW(), 6),
+('2019-06-11', '2023-02-28', 'cv_sofia_vega.docx', NOW(), NOW(), 7),
+('2015-11-01', '2019-09-15', 'cv_andres_lopez.pdf', NOW(), NOW(), 8),
+('2021-01-20', '2025-01-19', 'cv_laura_martinez.pdf', NOW(), NOW(), 9),
+('2017-05-30', '2021-12-01', 'cv_miguel_herrera.pdf', NOW(), NOW(), 10),
+('2016-10-05', '2020-08-17', 'cv_elena_castro.docx', NOW(), NOW(), 11),
+('2020-03-12', '2024-06-29', 'cv_diego_rojas.pdf', NOW(), NOW(), 12),
+('2018-07-22', '2022-05-05', 'cv_camila_nunez.docx', NOW(), NOW(), 13),
+('2019-12-01', '2023-10-20', 'cv_fernando_silva.pdf', NOW(), NOW(), 14),
+('2017-09-10', '2021-07-30', 'cv_valeria_reyes.docx', NOW(), NOW(), 15);

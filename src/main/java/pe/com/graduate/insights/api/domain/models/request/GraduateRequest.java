@@ -1,33 +1,33 @@
 package pe.com.graduate.insights.api.domain.models.request;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
-import lombok.Builder;
+import java.time.LocalDate;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
-@Builder
+@SuperBuilder
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class GraduateRequest implements Serializable {
+public class GraduateRequest extends UserRequest implements Serializable {
 
   @Serial private static final long serialVersionUID = 1L;
 
-  @NotNull(message = "name cannot be null")
-  @NotBlank(message = "name cannot be blank")
-  private String name;
+  @NotNull(message = "La fecha de inicio no puede ser nula")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDate fechaInicio;
 
-  private String urlSocialNetwork;
+  @NotNull(message = "La fecha fin no puede ser nula")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDate fechaFin;
 
-  private String urlImage;
-
-  @NotNull(message = "description cannot be null")
-  @NotBlank(message = "description cannot be blank")
-  private String description;
-
-  @NotNull(message = "nationality cannot be null")
-  @NotBlank(message = "nationality cannot be blank")
-  private String nationality;
+  @NotNull(message = "el cv no puede estar vacio")
+  private String cv;
 }

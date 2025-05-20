@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.domain.models.response;
 
+import java.util.Date;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,11 +9,9 @@ import lombok.ToString;
 @Getter
 @ToString
 public class GraduateResponse {
-
-  private String id;
-  private String name;
-  private String urlSocialNetwork;
-  private String description;
-  private String nationality;
-  private String urlImage;
+  private Long id;
+  private Long userId;
+  private Date fechaInicio;
+  private String fechaFin;
+  private String cv;
 }
