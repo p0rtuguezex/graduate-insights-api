@@ -54,14 +54,20 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
 
   @Override
   public List<GraduateResponse> getList() {
-    return graduateRepository.findAll().stream().map(graduateMapper::toDomain).toList();
+    return graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).stream()
+        .map(graduateMapper::toDomain)
+        .toList();
   }
 
   @Override
   public Page<GraduateResponse> getPagination(String search, Pageable pageable) {
     boolean hasSearch = !StringUtils.isEmpty(search);
 
-    Page<GraduateEntity> graduatesEntities = graduateRepository.findAll(pageable);
+    Page<GraduateEntity> graduatesEntities =
+        hasSearch
+            ? graduateRepository.findAllByUserEstadoSearch(
+                search, ConstantsUtils.STATUS_ACTIVE, pageable)
+            : graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE, pageable);
     List<GraduateResponse> graduateResponseList =
         graduatesEntities.getContent().stream().map(graduateMapper::toDomain).toList();
     return new PageImpl<>(graduateResponseList, pageable, graduatesEntities.getTotalElements());
