@@ -70,7 +70,7 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
   @Override
   public GraduateResponse getDomain(Long id) {
     return graduateRepository
-        .findById(id)
+        .findByIdAndUserEstado(id, ConstantsUtils.STATUS_ACTIVE)
         .map(graduateMapper::toDomain)
         .orElseThrow(
             () -> new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND, id)));
@@ -79,7 +79,7 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
   @Override
   public void update(GraduateRequest request, Long id) {
     graduateRepository
-        .findById(id)
+        .findByIdAndUserEstado(id, ConstantsUtils.STATUS_ACTIVE)
         .map(
             graduateEntity -> {
               graduateMapper.updateGraduateEntity(request, graduateEntity);
@@ -92,11 +92,11 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
   @Override
   public void delete(Long id) {
     graduateRepository
-        .findById(id)
+        .findByIdAndUserEstado(id, ConstantsUtils.STATUS_ACTIVE)
         .ifPresentOrElse(
-            graduateRepository::delete,
+            graduate -> graduateRepository.deactivateUserByGraduateId(id),
             () -> {
-              throw new NotFoundException(String.format(ConstantsUtils.USER_NOT_FOUND, id));
+              throw new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND, id));
             });
   }
 }

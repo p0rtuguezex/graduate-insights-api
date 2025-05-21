@@ -18,6 +18,16 @@ public interface GraduateMapper {
   GraduateMapper INSTANCE = Mappers.getMapper(GraduateMapper.class);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "id", target = "graduateId")
+  @Mapping(source = "user.id", target = "userId")
+  @Mapping(source = "user.nombres", target = "nombres")
+  @Mapping(source = "user.apellidos", target = "apellidos")
+  @Mapping(source = "user.fechaNacimiento", target = "fechaNacimiento")
+  @Mapping(source = "user.genero", target = "genero")
+  @Mapping(source = "user.correo", target = "correo")
+  @Mapping(source = "user.estado", target = "estado")
+  @Mapping(source = "user.dni", target = "dni")
+  @Mapping(source = "user.celular", target = "celular")
   GraduateResponse toDomain(GraduateEntity graduateEntity);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -33,7 +43,14 @@ public interface GraduateMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "modifiedDate", ignore = true)
-  @Mapping(target = "user", ignore = true)
+  @Mapping(target = "user.nombres", source = "nombres")
+  @Mapping(target = "user.apellidos", source = "apellidos")
+  @Mapping(target = "user.fechaNacimiento", source = "fechaNacimiento")
+  @Mapping(target = "user.genero", source = "genero")
+  @Mapping(target = "user.correo", source = "correo")
+  @Mapping(target = "user.dni", source = "dni")
+  @Mapping(target = "user.celular", source = "celular")
+  @Mapping(target = "user.contrasena", source = "contrasena")
   void updateGraduateEntity(
       GraduateRequest graduateRequest, @MappingTarget GraduateEntity graduateEntity);
 }

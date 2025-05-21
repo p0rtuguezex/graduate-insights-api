@@ -1,15 +1,15 @@
 package pe.com.graduate.insights.api.domain.models.response;
 
 import java.time.LocalDate;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @Getter
 @ToString
 public class UserResponse {
-  private Long id;
+  private Long userId;
   private String nombres;
   private String apellidos;
   private LocalDate fechaNacimiento;
