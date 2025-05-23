@@ -6,19 +6,19 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
-import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
+import pe.com.graduate.insights.api.domain.models.request.EmployerRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
-import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
-import pe.com.graduate.insights.api.infrastructure.repository.entities.GraduateEntity;
+import pe.com.graduate.insights.api.domain.models.response.EmployerResponse;
+import pe.com.graduate.insights.api.infrastructure.repository.entities.EmployerEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
 
 @Mapper(componentModel = "spring")
-public interface GraduateMapper {
+public interface EmployerMapper {
 
-  GraduateMapper INSTANCE = Mappers.getMapper(GraduateMapper.class);
+  EmployerMapper INSTANCE = Mappers.getMapper(EmployerMapper.class);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-  @Mapping(source = "id", target = "graduateId")
+  @Mapping(source = "id", target = "employerId")
   @Mapping(source = "user.id", target = "userId")
   @Mapping(source = "user.nombres", target = "nombres")
   @Mapping(source = "user.apellidos", target = "apellidos")
@@ -28,14 +28,14 @@ public interface GraduateMapper {
   @Mapping(source = "user.estado", target = "estado")
   @Mapping(source = "user.dni", target = "dni")
   @Mapping(source = "user.celular", target = "celular")
-  GraduateResponse toDomain(GraduateEntity graduateEntity);
+  EmployerResponse toDomain(EmployerEntity employerEntity);
+
+  UserRequest toEmployerRequest(EmployerRequest employerRequest);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(target = "user", source = "userEntity")
   @Mapping(target = "id", ignore = true)
-  GraduateEntity toEntity(GraduateRequest graduateRequest, UserEntity userEntity);
-
-  UserRequest toGraduateRequest(GraduateRequest graduateRequest);
+  EmployerEntity toEntity(EmployerRequest employerRequest, UserEntity userEntity);
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
@@ -48,6 +48,6 @@ public interface GraduateMapper {
   @Mapping(target = "user.dni", source = "dni")
   @Mapping(target = "user.celular", source = "celular")
   @Mapping(target = "user.contrasena", source = "contrasena")
-  void updateGraduateEntity(
-      GraduateRequest graduateRequest, @MappingTarget GraduateEntity graduateEntity);
+  void updateEmployerEntity(
+      EmployerRequest employerRequest, @MappingTarget EmployerEntity employerEntity);
 }

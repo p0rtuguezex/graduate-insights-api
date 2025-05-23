@@ -51,3 +51,10 @@ VALUES
 ('2018-07-22', '2022-05-05', 'cv_camila_nunez.docx', NOW(), NOW(), 13),
 ('2019-12-01', '2023-10-20', 'cv_fernando_silva.pdf', NOW(), NOW(), 14),
 ('2017-09-10', '2021-07-30', 'cv_valeria_reyes.docx', NOW(), NOW(), 15);
+
+INSERT INTO employer
+(ruc, razon_social, created_date, modified_date, user_id)
+VALUES
+('20733722962', 'portuguez E.I.R.L', NOW(), NOW(), 16),
+('20163487962', 'Casita S.A.C.', NOW(), NOW(), 17),
+('20498722962', 'Petro S.A.C.', NOW(), NOW(), 18);

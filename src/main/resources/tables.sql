@@ -1,6 +1,5 @@
-
 DROP TABLE IF EXISTS graduates;
-
+DROP TABLE IF EXISTS employer;
 DROP TABLE IF EXISTS users;
 
   CREATE TABLE users(
@@ -18,9 +17,6 @@ DROP TABLE IF EXISTS users;
         modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
 
-
-
-
    CREATE TABLE graduates(
      id BIGINT AUTO_INCREMENT PRIMARY KEY,
      user_id BIGINT UNIQUE,
@@ -30,6 +26,16 @@ DROP TABLE IF EXISTS users;
      created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      FOREIGN KEY(user_id) REFERENCES users(id)
+    );
+
+    CREATE TABLE employer(
+       id BIGINT AUTO_INCREMENT PRIMARY KEY,
+       user_id BIGINT UNIQUE,
+       ruc VARCHAR(12),
+       razon_social VARCHAR(150),
+       created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       FOREIGN KEY(user_id) REFERENCES users(id)
     );
 
 
