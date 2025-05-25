@@ -1,4 +1,3 @@
-
 INSERT INTO users (nombres, apellidos, fecha_nacimiento, genero, correo, estado, dni, celular, contrasena, created_date, modified_date)
 VALUES
     ('Juan', 'Pérez', '1990-05-10', 'M', 'juan.perez@example.com', '1', '12345678', '987654321', 'pass123', NOW(), NOW()),
@@ -52,9 +51,15 @@ VALUES
 ('2019-12-01', '2023-10-20', 'cv_fernando_silva.pdf', NOW(), NOW(), 14),
 ('2017-09-10', '2021-07-30', 'cv_valeria_reyes.docx', NOW(), NOW(), 15);
 
-INSERT INTO employer
+INSERT INTO employers
 (ruc, razon_social, created_date, modified_date, user_id)
 VALUES
 ('20733722962', 'portuguez E.I.R.L', NOW(), NOW(), 16),
 ('20163487962', 'Casita S.A.C.', NOW(), NOW(), 17),
 ('20498722962', 'Petro S.A.C.', NOW(), NOW(), 18);
+
+INSERT INTO jobs (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduate_id)
+VALUES
+    ('Empresa ABC S.A.', 'Analista de Datos', 'Remoto','1', '2020-01-10', '2021-06-30', 1),
+    ('Tech Solutions', 'Desarrollador Backend', 'Presencial','1', '2021-07-01', '2023-02-28', 1),
+    ('Consulting Group', 'Ingeniero de Software', 'Híbrido','1', '2023-03-01', NULL, 1);

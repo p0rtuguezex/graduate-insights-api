@@ -1,6 +1,10 @@
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS jobs;
 DROP TABLE IF EXISTS graduates;
-DROP TABLE IF EXISTS employer;
+DROP TABLE IF EXISTS employers;
 DROP TABLE IF EXISTS users;
+SET FOREIGN_KEY_CHECKS = 1;
+
 
   CREATE TABLE users(
         id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -26,9 +30,11 @@ DROP TABLE IF EXISTS users;
      created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      FOREIGN KEY(user_id) REFERENCES users(id)
+         ON DELETE CASCADE
+         ON UPDATE CASCADE
     );
 
-    CREATE TABLE employer(
+   CREATE TABLE employers(
        id BIGINT AUTO_INCREMENT PRIMARY KEY,
        user_id BIGINT UNIQUE,
        ruc VARCHAR(12),
@@ -36,11 +42,22 @@ DROP TABLE IF EXISTS users;
        created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
        modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
        FOREIGN KEY(user_id) REFERENCES users(id)
+           ON DELETE CASCADE
+           ON UPDATE CASCADE
+   );
+
+    CREATE TABLE jobs (
+      id BIGINT AUTO_INCREMENT PRIMARY KEY,
+      compania VARCHAR(255),
+      cargo VARCHAR(255),
+      modalidad VARCHAR(100),
+      estado CHAR(1),
+      fecha_inicio DATE,
+      fecha_fin DATE,
+      graduate_id BIGINT,
+      created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (graduate_id) REFERENCES graduates(id)
+          ON DELETE CASCADE
+          ON UPDATE CASCADE
     );
-
-
-
-
-
-
-

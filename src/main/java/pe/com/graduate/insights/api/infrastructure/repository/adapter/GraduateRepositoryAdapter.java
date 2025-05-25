@@ -35,7 +35,6 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
 
   @Override
   public void save(GraduateRequest graduateRequest) {
-
     userRepository
         .findByCorreoAndEstado(graduateRequest.getCorreo(), ConstantsUtils.STATUS_ACTIVE)
         .ifPresentOrElse(

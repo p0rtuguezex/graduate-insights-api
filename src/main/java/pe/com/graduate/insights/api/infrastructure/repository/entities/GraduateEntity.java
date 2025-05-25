@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.repository.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +33,7 @@ public class GraduateEntity extends Auditable {
   @Column(name = "cv")
   private String cv;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
   private UserEntity user;
 }
