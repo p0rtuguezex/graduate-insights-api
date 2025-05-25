@@ -1,7 +1,11 @@
 
 DROP TABLE IF EXISTS graduates;
+DROP TABLE IF EXISTS directores;
 
 DROP TABLE IF EXISTS users;
+
+
+
 
   CREATE TABLE users(
         id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -31,6 +35,15 @@ DROP TABLE IF EXISTS users;
      modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      FOREIGN KEY(user_id) REFERENCES users(id)
     );
+
+      CREATE TABLE directores(
+         id BIGINT AUTO_INCREMENT PRIMARY KEY,
+         user_id BIGINT UNIQUE,
+         escuela VARCHAR(100),
+         created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+         modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+         FOREIGN KEY(user_id) REFERENCES users(id)
+        );
 
 
 

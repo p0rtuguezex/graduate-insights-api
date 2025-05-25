@@ -51,3 +51,25 @@ VALUES
 ('2018-07-22', '2022-05-05', 'cv_camila_nunez.docx', NOW(), NOW(), 13),
 ('2019-12-01', '2023-10-20', 'cv_fernando_silva.pdf', NOW(), NOW(), 14),
 ('2017-09-10', '2021-07-30', 'cv_valeria_reyes.docx', NOW(), NOW(), 15);
+
+INSERT INTO directores (
+    escuela, created_date, modified_date, user_id
+)
+VALUES
+('Escuela de Ingeniería', NOW(), NOW(), 16),
+('Escuela de Medicina', NOW(), NOW(), 17),
+('Escuela de Derecho', NOW(), NOW(), 18),
+('Escuela de Administración', NOW(), NOW(), 19),
+('Escuela de Arquitectura', NOW(), NOW(), 20),
+('Escuela de Psicología', NOW(), NOW(), 21),
+('Escuela de Educación', NOW(), NOW(), 22),
+('Escuela de Contabilidad', NOW(), NOW(), 23),
+('Escuela de Economía', NOW(), NOW(), 24),
+('Escuela de Comunicación', NOW(), NOW(), 25),
+('Escuela de Marketing', NOW(), NOW(), 26),
+('Escuela de Turismo', NOW(), NOW(), 27),
+('Escuela de Filosofía', NOW(), NOW(), 28),
+('Escuela de Biología', NOW(), NOW(), 29),
+('Escuela de Matemáticas', NOW(), NOW(), 30);
+
+
