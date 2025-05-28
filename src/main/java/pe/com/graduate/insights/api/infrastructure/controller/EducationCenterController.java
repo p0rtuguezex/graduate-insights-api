@@ -16,60 +16,62 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.application.ports.input.EmployerUseCase;
-import pe.com.graduate.insights.api.domain.models.request.EmployerRequest;
+import pe.com.graduate.insights.api.application.ports.input.EducationCenterUseCase;
+import pe.com.graduate.insights.api.domain.models.request.EducationCenterRequest;
 import pe.com.graduate.insights.api.domain.models.response.ApiResponse;
-import pe.com.graduate.insights.api.domain.models.response.EmployerResponse;
+import pe.com.graduate.insights.api.domain.models.response.EducationCenterResponse;
 import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMapper;
 
 @RestController
-@RequestMapping("/employer")
+@RequestMapping("/education_center")
 @RequiredArgsConstructor
-public class EmployerController {
+public class EducationCenterController {
 
-  private final EmployerUseCase employerUseCase;
+  private final EducationCenterUseCase educationCenterUseCase;
 
   private final PaginateMapper paginateMapper;
 
   @GetMapping("/{id}")
-  public ResponseEntity<ApiResponse<EmployerResponse>> getGraduate(@PathVariable Long id) {
-    return ResponseUtils.successResponse(employerUseCase.getDomain(id));
+  public ResponseEntity<ApiResponse<EducationCenterResponse>> getEducationCenter(
+      @PathVariable Long id) {
+    return ResponseUtils.successResponse(educationCenterUseCase.getDomain(id));
   }
 
   @PostMapping
-  public ResponseEntity<ApiResponse<Void>> saveGraduate(
-      @Valid @RequestBody EmployerRequest employerRequest) {
-    employerUseCase.save(employerRequest);
+  public ResponseEntity<ApiResponse<Void>> saveEducationCenter(
+      @Valid @RequestBody EducationCenterRequest educationCenterRequest) {
+    educationCenterUseCase.save(educationCenterRequest);
     return ResponseUtils.sucessCreateResponse();
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ApiResponse<Void>> updateGraduate(
-      @RequestBody EmployerRequest employerRequest, @PathVariable Long id) {
-    employerUseCase.update(employerRequest, id);
+  public ResponseEntity<ApiResponse<Void>> updateEducationCenter(
+      @RequestBody EducationCenterRequest educationCenterRequest, @PathVariable Long id) {
+    educationCenterUseCase.update(educationCenterRequest, id);
     return ResponseUtils.successUpdateResponse();
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<ApiResponse<Void>> deleteGraduate(@PathVariable Long id) {
-    employerUseCase.delete(id);
+  public ResponseEntity<ApiResponse<Void>> deleteEducationCenter(@PathVariable Long id) {
+    educationCenterUseCase.delete(id);
     return ResponseUtils.successDeleteResponse();
   }
 
   @GetMapping
-  ResponseEntity<ApiResponse<List<EmployerResponse>>> getListGraduatesPaginate(
+  ResponseEntity<ApiResponse<List<EducationCenterResponse>>> getListEducationCenterPaginate(
       @RequestParam(value = "search", defaultValue = "") String search,
       @RequestParam(value = "page", defaultValue = "1") String page,
       @RequestParam(value = "size", defaultValue = "10") String size) {
     Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size));
-    Page<EmployerResponse> employerPage = employerUseCase.getPagination(search, pageable);
+    Page<EducationCenterResponse> educationCenterPage =
+        educationCenterUseCase.getPagination(search, pageable);
     return ResponseUtils.successResponsePaginate(
-        employerPage.getContent(), paginateMapper.toDomain(employerPage));
+        educationCenterPage.getContent(), paginateMapper.toDomain(educationCenterPage));
   }
 
   @GetMapping("/list")
-  public ResponseEntity<ApiResponse<List<EmployerResponse>>> getListGraduateAll() {
-    return ResponseUtils.successResponse(employerUseCase.getList());
+  public ResponseEntity<ApiResponse<List<EducationCenterResponse>>> getListEducationCenterAll() {
+    return ResponseUtils.successResponse(educationCenterUseCase.getList());
   }
 }

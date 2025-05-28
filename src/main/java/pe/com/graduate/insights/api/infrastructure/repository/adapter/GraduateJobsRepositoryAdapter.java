@@ -75,12 +75,6 @@ public class GraduateJobsRepositoryAdapter implements GraduateJobsRepositoryPort
 
   @Override
   public void update(GraduateJobRequest graduateJobRequest, Long graduateId, Long jobId) {
-    //    Optional<GraduateEntity> graduateEntity =
-    //        graduateRepository.findByIdAndUserEstado(graduateId, ConstantsUtils.STATUS_ACTIVE);
-    //    if (graduateEntity.isEmpty()) {
-    //      throw new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND,
-    // graduateId));
-    //    }
     if (!graduateRepository.existsByIdAndUserEstado(graduateId, ConstantsUtils.STATUS_ACTIVE)) {
       throw new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND, graduateId));
     }
@@ -98,12 +92,6 @@ public class GraduateJobsRepositoryAdapter implements GraduateJobsRepositoryPort
 
   @Override
   public void delete(Long graduateId, Long jobId) {
-    //    Optional<GraduateEntity> graduateEntity =
-    //        graduateRepository.findByIdAndUserEstado(graduateId, ConstantsUtils.STATUS_ACTIVE);
-    //    if (graduateEntity.isEmpty()) {
-    //      throw new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND,
-    // graduateId));
-    //    }
     if (!graduateRepository.existsByIdAndUserEstado(graduateId, ConstantsUtils.STATUS_ACTIVE)) {
       throw new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND, graduateId));
     }

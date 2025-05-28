@@ -16,11 +16,11 @@ public class ResponseUtils {
   }
 
   public static <T> ResponseEntity<ApiResponse<T>> successUpdateResponse() {
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   public static <T> ResponseEntity<ApiResponse<T>> successDeleteResponse() {
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   public static <T> ResponseEntity<ApiResponse<T>> errorResponse(HttpStatus httpStatus, T errors) {

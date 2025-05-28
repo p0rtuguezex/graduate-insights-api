@@ -74,9 +74,9 @@ public class GraduateJobsController {
       @RequestParam(value = "page", defaultValue = "1") String page,
       @RequestParam(value = "size", defaultValue = "10") String size) {
     Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size));
-    Page<GraduateJobResponse> graduatePage =
+    Page<GraduateJobResponse> graduateJobPage =
         graduateJobsUseCase.getPagination(search, pageable, graduateId);
     return ResponseUtils.successResponsePaginate(
-        graduatePage.getContent(), paginateMapper.toDomain(graduatePage));
+        graduateJobPage.getContent(), paginateMapper.toDomain(graduateJobPage));
   }
 }

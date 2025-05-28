@@ -63,3 +63,9 @@ VALUES
     ('Empresa ABC S.A.', 'Analista de Datos', 'Remoto','1', '2020-01-10', '2021-06-30', 1),
     ('Tech Solutions', 'Desarrollador Backend', 'Presencial','1', '2021-07-01', '2023-02-28', 1),
     ('Consulting Group', 'Ingeniero de Software', 'Híbrido','1', '2023-03-01', NULL, 1);
+
+INSERT INTO education_centers (estado, nombre, direccion, created_date, modified_date)
+VALUES
+    ('1', 'Universidad Nacional de Ucayali', 'Pucallpa', NOW(), NOW()),
+    ('1', 'UTP', 'Lima', NOW(), NOW()),
+    ('1', 'UNI', 'Lima', NOW(), NOW());
