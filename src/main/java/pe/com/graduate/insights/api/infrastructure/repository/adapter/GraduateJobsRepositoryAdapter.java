@@ -112,9 +112,10 @@ public class GraduateJobsRepositoryAdapter implements GraduateJobsRepositoryPort
 
     Page<JobEntity> jobEntities =
         hasSearch
-            ? graduateJobRepository.findAllByEstadoSearch(
-                search, ConstantsUtils.STATUS_ACTIVE, pageable)
-            : graduateJobRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE, pageable);
+            ? graduateJobRepository.findAllByEstadoSearchAndGraduateId(
+                search, ConstantsUtils.STATUS_ACTIVE, pageable, graduateId)
+            : graduateJobRepository.findAllByEstadoAndGraduateId(
+                ConstantsUtils.STATUS_ACTIVE, pageable, graduateId);
     List<GraduateJobResponse> graduateResponseList =
         jobEntities.getContent().stream().map(graduateJobMapper::toJobResponse).toList();
     return new PageImpl<>(graduateResponseList, pageable, jobEntities.getTotalElements());

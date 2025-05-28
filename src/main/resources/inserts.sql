@@ -69,3 +69,21 @@ VALUES
     ('1', 'Universidad Nacional de Ucayali', 'Pucallpa', NOW(), NOW()),
     ('1', 'UTP', 'Lima', NOW(), NOW()),
     ('1', 'UNI', 'Lima', NOW(), NOW());
+
+INSERT INTO jobs_offers (titulo, link, descripcion, estado, created_date, modified_date, employer_id)
+VALUES
+    ('Analista de Datos', 'https://abc.com/jobs/1', 'Análisis y visualización de datos en entorno remoto.', '1', NOW(), NOW(), 1),
+    ('Desarrollador Backend', 'https://techsolutions.com/jobs/2', 'Responsable del desarrollo de servicios y APIs REST.', '1', NOW(), NOW(), 1),
+    ('Ingeniero de Software', 'https://consultinggroup.com/jobs/3', 'Desarrollo de software a medida para clientes internacionales.', '1', NOW(), NOW(), 1),
+    ('Tester QA', 'https://qualityjobs.com/jobs/4', 'Pruebas automatizadas de calidad de software.', '1', NOW(), NOW(), 1),
+    ('Líder Técnico', 'https://leadtech.com/jobs/5', 'Coordinación técnica de equipos de desarrollo.', '1', NOW(), NOW(), 1),
+    ('Administrador de Base de Datos', 'https://dbadmin.com/jobs/6', 'Mantenimiento y optimización de bases de datos.', '1', NOW(), NOW(), 1),
+    ('Especialista DevOps', 'https://devopsworld.com/jobs/7', 'Automatización de infraestructura y CI/CD.', '1', NOW(), NOW(), 1),
+    ('Diseñador UI/UX', 'https://designhub.com/jobs/8', 'Diseño de interfaces amigables y centradas en el usuario.', '1', NOW(), NOW(), 1),
+    ('Project Manager', 'https://pmjobs.com/jobs/9', 'Gestión de proyectos bajo metodología ágil.', '1', NOW(), NOW(), 1),
+    ('Soporte Técnico', 'https://supportline.com/jobs/10', 'Atención al cliente y resolución de incidencias.', '1', NOW(), NOW(), 1),
+    ('Data Scientist', 'https://datasciencecorp.com/jobs/11', 'Modelado estadístico y machine learning.', '1', NOW(), NOW(), 1),
+    ('Scrum Master', 'https://agileteam.com/jobs/12', 'Facilitación de procesos ágiles y gestión de equipos.', '1', NOW(), NOW(), 1),
+    ('Arquitecto de Software', 'https://architectureit.com/jobs/13', 'Diseño de arquitecturas escalables y robustas.', '1', NOW(), NOW(), 1),
+    ('Ingeniero de Seguridad', 'https://secureit.com/jobs/14', 'Análisis de vulnerabilidades y ciberseguridad.', '1', NOW(), NOW(), 1),
+    ('Administrador de Redes', 'https://networks.com/jobs/15', 'Gestión de redes LAN/WAN y seguridad perimetral.', '1', NOW(), NOW(), 1);

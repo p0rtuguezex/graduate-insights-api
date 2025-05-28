@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS jobs;
 DROP TABLE IF EXISTS graduates;
 DROP TABLE IF EXISTS employers;
 DROP TABLE IF EXISTS education_centers;
+DROP TABLE IF EXISTS jobs_offers;
 DROP TABLE IF EXISTS users;
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -70,4 +71,16 @@ CREATE TABLE education_centers(
     direccion VARCHAR(100),
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE jobs_offers (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  titulo VARCHAR(255),
+  link VARCHAR(255),
+  descripcion TEXT,
+  estado VARCHAR(50),
+  employer_id BIGINT,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (employer_id) REFERENCES employers(id)
 );
