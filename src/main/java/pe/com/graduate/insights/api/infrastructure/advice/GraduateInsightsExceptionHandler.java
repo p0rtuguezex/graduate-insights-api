@@ -12,6 +12,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import pe.com.graduate.insights.api.domain.exception.EducationCenterException;
+import pe.com.graduate.insights.api.domain.exception.EventTypesException;
 import pe.com.graduate.insights.api.domain.exception.GraduateException;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.response.ApiResponse;
@@ -46,8 +48,12 @@ public class GraduateInsightsExceptionHandler {
     return ResponseUtils.errorResponse(status, mapErrors);
   }
 
-  @ExceptionHandler(GraduateException.class)
-  public ResponseEntity<ApiResponse<List<String>>> graduateException(GraduateException ex) {
+  @ExceptionHandler({
+    GraduateException.class,
+    EventTypesException.class,
+    EducationCenterException.class
+  })
+  public ResponseEntity<ApiResponse<List<String>>> handleDomainExceptions(RuntimeException ex) {
     HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
     List<String> errors = List.of(ex.getMessage());
     return ResponseUtils.errorResponse(status, errors);

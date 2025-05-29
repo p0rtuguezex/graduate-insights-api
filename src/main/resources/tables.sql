@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS graduates;
 DROP TABLE IF EXISTS employers;
 DROP TABLE IF EXISTS education_centers;
 DROP TABLE IF EXISTS jobs_offers;
+DROP TABLE IF EXISTS event_types;
 DROP TABLE IF EXISTS users;
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -66,9 +67,17 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE education_centers(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    estado VARCHAR(100),
+    estado CHAR(1),
     nombre VARCHAR(100),
     direccion VARCHAR(100),
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE event_types(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    estado CHAR(1),
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -78,7 +87,7 @@ CREATE TABLE jobs_offers (
   titulo VARCHAR(255),
   link VARCHAR(255),
   descripcion TEXT,
-  estado VARCHAR(50),
+  estado CHAR(1),
   employer_id BIGINT,
   created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

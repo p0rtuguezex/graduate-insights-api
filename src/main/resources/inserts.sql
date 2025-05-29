@@ -70,6 +70,12 @@ VALUES
     ('1', 'UTP', 'Lima', NOW(), NOW()),
     ('1', 'UNI', 'Lima', NOW(), NOW());
 
+INSERT INTO event_types (nombre, estado, created_date, modified_date)
+VALUES
+    ('Ponencia', '1', NOW(), NOW()),
+    ('Taller', '1', NOW(), NOW()),
+    ('Capacitación', '1', NOW(), NOW());
+
 INSERT INTO jobs_offers (titulo, link, descripcion, estado, created_date, modified_date, employer_id)
 VALUES
     ('Analista de Datos', 'https://abc.com/jobs/1', 'Análisis y visualización de datos en entorno remoto.', '1', NOW(), NOW(), 1),
