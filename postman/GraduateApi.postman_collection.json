@@ -1,0 +1,5628 @@
+{
+	"info": {
+		"_postman_id": "f95c3a41-bc77-4a14-9b13-b1f3a3567dbb",
+		"name": "GraduateApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9002058",
+		"_collection_link": "https://martian-shadow-979879.postman.co/workspace/public~1664ee57-db93-4234-b21b-c1f1b1f656a1/collection/9002058-f95c3a41-bc77-4a14-9b13-b1f3a3567dbb?action=share&source=collection_link&creator=9002058"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "createUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"portuguez\",\n  \"fecha_nacimiento\": \"2025-05-09\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguez@gmail.com\",\n  \"dni\": \"73372296\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/user",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "createUserSuccess",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"portuguez\",\n  \"fecha_nacimiento\": \"2025-05-09\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguez@gmail.com\",\n  \"dni\": \"73372296\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"123456789\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/user",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"user"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 May 2025 00:07:13 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "getUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/user/3",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"user",
+								"3"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "responseWithoutNull",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/user/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"user",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 02 May 2025 02:00:38 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"nombres\": \"Juan\",\n        \"apellidos\": \"Pérez\",\n        \"fecha_nacimiento\": \"1990-05-10\",\n        \"genero\": \"M\",\n        \"correo\": \"juan.perez@example.com\",\n        \"dni\": \"12345678\",\n        \"celular\": \"987654321\",\n        \"contrasena\": \"pass123\"\n    },\n    \"code\": 200,\n    \"message\": \"message\"\n}"
+						},
+						{
+							"name": "getUserSuccess",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/user/4",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"user",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 May 2025 23:15:17 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 4,\n        \"nombres\": \"Enrrique\",\n        \"apellidos\": \"portuguez\",\n        \"fecha_nacimiento\": \"2025-05-09\",\n        \"genero\": \"M\",\n        \"correo\": \"portuguez@gmail.com\",\n        \"estado\": \"1\",\n        \"dni\": \"73372296\",\n        \"celular\": \"921423211\",\n        \"contrasena\": \"123456789\"\n    }\n}"
+						},
+						{
+							"name": "userNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/user/4",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"user",
+										"4"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 May 2025 00:05:18 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Usuario no encontrado con id: 4\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"portuguez Durand\",\n  \"fecha_nacimiento\": \"2025-05-10\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguez@gmail.com\",\n  \"dni\": \"73372296\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/user/4",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"user",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "userNotFound",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"portuguez Durand\",\n  \"fecha_nacimiento\": \"2025-05-10\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguez@gmail.com\",\n  \"dni\": \"73372296\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"123456789\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/user/4",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"user",
+										"4"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 May 2025 00:05:21 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Usuario no encontrado con id: 4\"\n    ]\n}"
+						},
+						{
+							"name": "updateUserSuccess",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"portuguez Durand\",\n  \"fecha_nacimiento\": \"2025-05-10\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguez@gmail.com\",\n  \"dni\": \"73372296\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"123456789\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/user/4",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"user",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 May 2025 00:07:42 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "deleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/user/4",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"user",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "deleteSuccess",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/user/4",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"user",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 May 2025 00:05:09 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "deleteUserSuccess",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/user/4",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"user",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 May 2025 00:07:58 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "getUserPaginate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/user?page=1&size=10",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "search",
+									"value": "juan",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getUserPaginate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/user?page=1&size=10",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"user"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 May 2025 00:41:13 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"nombres\": \"Juan\",\n            \"apellidos\": \"Pérez\",\n            \"fecha_nacimiento\": \"1990-05-10\",\n            \"genero\": \"M\",\n            \"correo\": \"juan.perez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"12345678\",\n            \"celular\": \"987654321\",\n            \"contrasena\": \"pass123\"\n        },\n        {\n            \"id\": 2,\n            \"nombres\": \"Lucía\",\n            \"apellidos\": \"Gómez\",\n            \"fecha_nacimiento\": \"1995-08-22\",\n            \"genero\": \"F\",\n            \"correo\": \"lucia.gomez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"87654321\",\n            \"celular\": \"912345678\",\n            \"contrasena\": \"secure456\"\n        },\n        {\n            \"id\": 3,\n            \"nombres\": \"Carlos\",\n            \"apellidos\": \"Ramírez\",\n            \"fecha_nacimiento\": \"1988-11-15\",\n            \"genero\": \"M\",\n            \"correo\": \"carlos.ramirez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"11223344\",\n            \"celular\": \"998877665\",\n            \"contrasena\": \"abc123\"\n        },\n        {\n            \"id\": 4,\n            \"nombres\": \"María\",\n            \"apellidos\": \"Fernández\",\n            \"fecha_nacimiento\": \"1992-03-12\",\n            \"genero\": \"F\",\n            \"correo\": \"maria.fernandez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"44556677\",\n            \"celular\": \"911223344\",\n            \"contrasena\": \"qwerty1\"\n        },\n        {\n            \"id\": 5,\n            \"nombres\": \"José\",\n            \"apellidos\": \"López\",\n            \"fecha_nacimiento\": \"1987-07-30\",\n            \"genero\": \"M\",\n            \"correo\": \"jose.lopez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"22334455\",\n            \"celular\": \"922334455\",\n            \"contrasena\": \"password1\"\n        },\n        {\n            \"id\": 6,\n            \"nombres\": \"Ana\",\n            \"apellidos\": \"Torres\",\n            \"fecha_nacimiento\": \"1993-01-20\",\n            \"genero\": \"F\",\n            \"correo\": \"ana.torres@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"55667788\",\n            \"celular\": \"933445566\",\n            \"contrasena\": \"mysecurepass\"\n        },\n        {\n            \"id\": 7,\n            \"nombres\": \"Luis\",\n            \"apellidos\": \"Martínez\",\n            \"fecha_nacimiento\": \"1991-06-25\",\n            \"genero\": \"M\",\n            \"correo\": \"luis.martinez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"66778899\",\n            \"celular\": \"944556677\",\n            \"contrasena\": \"1234abcd\"\n        },\n        {\n            \"id\": 8,\n            \"nombres\": \"Carmen\",\n            \"apellidos\": \"Díaz\",\n            \"fecha_nacimiento\": \"1994-09-10\",\n            \"genero\": \"F\",\n            \"correo\": \"carmen.diaz@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"77889900\",\n            \"celular\": \"955667788\",\n            \"contrasena\": \"superpass\"\n        },\n        {\n            \"id\": 9,\n            \"nombres\": \"Jorge\",\n            \"apellidos\": \"Vargas\",\n            \"fecha_nacimiento\": \"1989-12-05\",\n            \"genero\": \"M\",\n            \"correo\": \"jorge.vargas@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"88990011\",\n            \"celular\": \"966778899\",\n            \"contrasena\": \"admin2020\"\n        },\n        {\n            \"id\": 10,\n            \"nombres\": \"Elena\",\n            \"apellidos\": \"Castro\",\n            \"fecha_nacimiento\": \"1996-04-18\",\n            \"genero\": \"F\",\n            \"correo\": \"elena.castro@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"99001122\",\n            \"celular\": \"977889900\",\n            \"contrasena\": \"contraseña\"\n        }\n    ],\n    \"paginate\": {\n        \"totalElements\": 30,\n        \"totalPages\": 3,\n        \"currentPage\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "getUserList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/user/list",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"user",
+								"list"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getUserList",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/user/list",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"user",
+										"list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 May 2025 01:28:06 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"nombres\": \"Juan\",\n            \"apellidos\": \"Pérez\",\n            \"fecha_nacimiento\": \"1990-05-10\",\n            \"genero\": \"M\",\n            \"correo\": \"juan.perez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"12345678\",\n            \"celular\": \"987654321\",\n            \"contrasena\": \"pass123\"\n        },\n        {\n            \"id\": 2,\n            \"nombres\": \"Lucía\",\n            \"apellidos\": \"Gómez\",\n            \"fecha_nacimiento\": \"1995-08-22\",\n            \"genero\": \"F\",\n            \"correo\": \"lucia.gomez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"87654321\",\n            \"celular\": \"912345678\",\n            \"contrasena\": \"secure456\"\n        },\n        {\n            \"id\": 3,\n            \"nombres\": \"Carlos\",\n            \"apellidos\": \"Ramírez\",\n            \"fecha_nacimiento\": \"1988-11-15\",\n            \"genero\": \"M\",\n            \"correo\": \"carlos.ramirez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"11223344\",\n            \"celular\": \"998877665\",\n            \"contrasena\": \"abc123\"\n        },\n        {\n            \"id\": 5,\n            \"nombres\": \"José\",\n            \"apellidos\": \"López\",\n            \"fecha_nacimiento\": \"1987-07-30\",\n            \"genero\": \"M\",\n            \"correo\": \"jose.lopez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"22334455\",\n            \"celular\": \"922334455\",\n            \"contrasena\": \"password1\"\n        },\n        {\n            \"id\": 6,\n            \"nombres\": \"Ana\",\n            \"apellidos\": \"Torres\",\n            \"fecha_nacimiento\": \"1993-01-20\",\n            \"genero\": \"F\",\n            \"correo\": \"ana.torres@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"55667788\",\n            \"celular\": \"933445566\",\n            \"contrasena\": \"mysecurepass\"\n        },\n        {\n            \"id\": 7,\n            \"nombres\": \"Luis\",\n            \"apellidos\": \"Martínez\",\n            \"fecha_nacimiento\": \"1991-06-25\",\n            \"genero\": \"M\",\n            \"correo\": \"luis.martinez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"66778899\",\n            \"celular\": \"944556677\",\n            \"contrasena\": \"1234abcd\"\n        },\n        {\n            \"id\": 8,\n            \"nombres\": \"Carmen\",\n            \"apellidos\": \"Díaz\",\n            \"fecha_nacimiento\": \"1994-09-10\",\n            \"genero\": \"F\",\n            \"correo\": \"carmen.diaz@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"77889900\",\n            \"celular\": \"955667788\",\n            \"contrasena\": \"superpass\"\n        },\n        {\n            \"id\": 9,\n            \"nombres\": \"Jorge\",\n            \"apellidos\": \"Vargas\",\n            \"fecha_nacimiento\": \"1989-12-05\",\n            \"genero\": \"M\",\n            \"correo\": \"jorge.vargas@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"88990011\",\n            \"celular\": \"966778899\",\n            \"contrasena\": \"admin2020\"\n        },\n        {\n            \"id\": 10,\n            \"nombres\": \"Elena\",\n            \"apellidos\": \"Castro\",\n            \"fecha_nacimiento\": \"1996-04-18\",\n            \"genero\": \"F\",\n            \"correo\": \"elena.castro@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"99001122\",\n            \"celular\": \"977889900\",\n            \"contrasena\": \"contraseña\"\n        },\n        {\n            \"id\": 11,\n            \"nombres\": \"Miguel\",\n            \"apellidos\": \"Ruiz\",\n            \"fecha_nacimiento\": \"1990-10-01\",\n            \"genero\": \"M\",\n            \"correo\": \"miguel.ruiz@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"10293847\",\n            \"celular\": \"988900112\",\n            \"contrasena\": \"clave123\"\n        },\n        {\n            \"id\": 12,\n            \"nombres\": \"Sofía\",\n            \"apellidos\": \"Mendoza\",\n            \"fecha_nacimiento\": \"1992-02-14\",\n            \"genero\": \"F\",\n            \"correo\": \"sofia.mendoza@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"11235813\",\n            \"celular\": \"999011223\",\n            \"contrasena\": \"pass987\"\n        },\n        {\n            \"id\": 13,\n            \"nombres\": \"Andrés\",\n            \"apellidos\": \"Silva\",\n            \"fecha_nacimiento\": \"1985-11-20\",\n            \"genero\": \"M\",\n            \"correo\": \"andres.silva@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"12312312\",\n            \"celular\": \"900122334\",\n            \"contrasena\": \"testpass\"\n        },\n        {\n            \"id\": 14,\n            \"nombres\": \"Laura\",\n            \"apellidos\": \"Rojas\",\n            \"fecha_nacimiento\": \"1993-03-08\",\n            \"genero\": \"F\",\n            \"correo\": \"laura.rojas@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"23423423\",\n            \"celular\": \"911233445\",\n            \"contrasena\": \"mypass789\"\n        },\n        {\n            \"id\": 15,\n            \"nombres\": \"Ricardo\",\n            \"apellidos\": \"Herrera\",\n            \"fecha_nacimiento\": \"1997-07-07\",\n            \"genero\": \"M\",\n            \"correo\": \"ricardo.herrera@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"34534534\",\n            \"celular\": \"922344556\",\n            \"contrasena\": \"rrhh2022\"\n        },\n        {\n            \"id\": 16,\n            \"nombres\": \"Patricia\",\n            \"apellidos\": \"Morales\",\n            \"fecha_nacimiento\": \"1986-05-25\",\n            \"genero\": \"F\",\n            \"correo\": \"patricia.morales@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"45645645\",\n            \"celular\": \"933455667\",\n            \"contrasena\": \"login123\"\n        },\n        {\n            \"id\": 17,\n            \"nombres\": \"Fernando\",\n            \"apellidos\": \"Cruz\",\n            \"fecha_nacimiento\": \"1991-12-12\",\n            \"genero\": \"M\",\n            \"correo\": \"fernando.cruz@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"56756756\",\n            \"celular\": \"944566778\",\n            \"contrasena\": \"cruzpass\"\n        },\n        {\n            \"id\": 18,\n            \"nombres\": \"Isabel\",\n            \"apellidos\": \"Salas\",\n            \"fecha_nacimiento\": \"1995-01-01\",\n            \"genero\": \"F\",\n            \"correo\": \"isabel.salas@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"67867867\",\n            \"celular\": \"955677889\",\n            \"contrasena\": \"isapass\"\n        },\n        {\n            \"id\": 19,\n            \"nombres\": \"Diego\",\n            \"apellidos\": \"Ortega\",\n            \"fecha_nacimiento\": \"1990-06-15\",\n            \"genero\": \"M\",\n            \"correo\": \"diego.ortega@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"78978978\",\n            \"celular\": \"966788990\",\n            \"contrasena\": \"diego123\"\n        },\n        {\n            \"id\": 20,\n            \"nombres\": \"Valeria\",\n            \"apellidos\": \"Reyes\",\n            \"fecha_nacimiento\": \"1988-09-22\",\n            \"genero\": \"F\",\n            \"correo\": \"valeria.reyes@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"89089089\",\n            \"celular\": \"977899001\",\n            \"contrasena\": \"reyesclave\"\n        },\n        {\n            \"id\": 21,\n            \"nombres\": \"Manuel\",\n            \"apellidos\": \"Aguilar\",\n            \"fecha_nacimiento\": \"1992-08-30\",\n            \"genero\": \"M\",\n            \"correo\": \"manuel.aguilar@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"90190190\",\n            \"celular\": \"988900112\",\n            \"contrasena\": \"aguipass\"\n        },\n        {\n            \"id\": 22,\n            \"nombres\": \"Camila\",\n            \"apellidos\": \"Campos\",\n            \"fecha_nacimiento\": \"1996-03-03\",\n            \"genero\": \"F\",\n            \"correo\": \"camila.campos@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"81281281\",\n            \"celular\": \"999011223\",\n            \"contrasena\": \"camp123\"\n        },\n        {\n            \"id\": 23,\n            \"nombres\": \"Sebastián\",\n            \"apellidos\": \"Paredes\",\n            \"fecha_nacimiento\": \"1987-12-28\",\n            \"genero\": \"M\",\n            \"correo\": \"sebastian.paredes@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"92392392\",\n            \"celular\": \"900122334\",\n            \"contrasena\": \"par123\"\n        },\n        {\n            \"id\": 24,\n            \"nombres\": \"Daniela\",\n            \"apellidos\": \"Guerra\",\n            \"fecha_nacimiento\": \"1993-07-19\",\n            \"genero\": \"F\",\n            \"correo\": \"daniela.guerra@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"83483483\",\n            \"celular\": \"911233445\",\n            \"contrasena\": \"guerra2023\"\n        },\n        {\n            \"id\": 25,\n            \"nombres\": \"Francisco\",\n            \"apellidos\": \"Navarro\",\n            \"fecha_nacimiento\": \"1989-01-11\",\n            \"genero\": \"M\",\n            \"correo\": \"francisco.navarro@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"74574574\",\n            \"celular\": \"922344556\",\n            \"contrasena\": \"navarrokey\"\n        },\n        {\n            \"id\": 26,\n            \"nombres\": \"Gabriela\",\n            \"apellidos\": \"Peña\",\n            \"fecha_nacimiento\": \"1994-11-09\",\n            \"genero\": \"F\",\n            \"correo\": \"gabriela.pena@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"65665665\",\n            \"celular\": \"933455667\",\n            \"contrasena\": \"gabypass\"\n        },\n        {\n            \"id\": 27,\n            \"nombres\": \"Álvaro\",\n            \"apellidos\": \"Mora\",\n            \"fecha_nacimiento\": \"1986-04-17\",\n            \"genero\": \"M\",\n            \"correo\": \"alvaro.mora@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"56756756\",\n            \"celular\": \"944566778\",\n            \"contrasena\": \"moraclave\"\n        },\n        {\n            \"id\": 28,\n            \"nombres\": \"Paula\",\n            \"apellidos\": \"Vega\",\n            \"fecha_nacimiento\": \"1995-10-10\",\n            \"genero\": \"F\",\n            \"correo\": \"paula.vega@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"47847847\",\n            \"celular\": \"955677889\",\n            \"contrasena\": \"vegapass\"\n        },\n        {\n            \"id\": 29,\n            \"nombres\": \"Julio\",\n            \"apellidos\": \"Delgado\",\n            \"fecha_nacimiento\": \"1990-02-02\",\n            \"genero\": \"M\",\n            \"correo\": \"julio.delgado@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"38938938\",\n            \"celular\": \"966788990\",\n            \"contrasena\": \"delgado123\"\n        },\n        {\n            \"id\": 30,\n            \"nombres\": \"Rocío\",\n            \"apellidos\": \"Castañeda\",\n            \"fecha_nacimiento\": \"1991-09-09\",\n            \"genero\": \"F\",\n            \"correo\": \"rocio.castaneda@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"29029029\",\n            \"celular\": \"977899001\",\n            \"contrasena\": \"rocio456\"\n        },\n        {\n            \"id\": 31,\n            \"nombres\": \"Enrrique\",\n            \"apellidos\": \"portuguez\",\n            \"fecha_nacimiento\": \"2025-05-09\",\n            \"genero\": \"M\",\n            \"correo\": \"portuguez@gmail.com\",\n            \"estado\": \"1\",\n            \"dni\": \"73372296\",\n            \"celular\": \"921423211\",\n            \"contrasena\": \"123456789\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "graduate",
+			"item": [
+				{
+					"name": "getGraduate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getGraduate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 13:09:29 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"user_id\": 1,\n        \"nombres\": \"Juan\",\n        \"apellidos\": \"Pérez\",\n        \"fecha_nacimiento\": \"1990-05-10\",\n        \"genero\": \"M\",\n        \"correo\": \"juan.perez@example.com\",\n        \"estado\": \"1\",\n        \"dni\": \"12345678\",\n        \"celular\": \"987654321\",\n        \"contrasena\": \"pass123\",\n        \"graduate_id\": 1,\n        \"fecha_inicio\": \"2018-03-01T00:00:00.000+00:00\",\n        \"fecha_fin\": \"2022-12-15\",\n        \"cv\": \"cv_juan_perez.pdf\"\n    }\n}"
+						},
+						{
+							"name": "graduateNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 13:25:36 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Graduado no encontrado con id :1 \"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "createGraduate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fecha_inicio\": \"2025-05-21\",\n  \"fecha_fin\": \"2025-05-21\",\n  \"cv\": \"cv_enrrique.pdf\",\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"Portuguez\",\n  \"fecha_nacimiento\": \"2025-05-21\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguezei@gmail.com\",\n  \"dni\": \"73375586\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "createGraduate",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fecha_inicio\": \"2025-05-21\",\n  \"fecha_fin\": \"2025-05-21\",\n  \"cv\": \"cv_enrrique.pdf\",\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"Portuguez\",\n  \"fecha_nacimiento\": \"2025-05-21\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguezei@gmail.com\",\n  \"dni\": \"73375586\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 13:12:44 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "deleteGraduate",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "deleteGraduateOk",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 13:25:28 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "deleteGraduateNotFound",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 13:26:16 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Graduado no encontrado con id :1 \"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "updateGraduate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fecha_inicio\": \"2025-05-21\",\n  \"fecha_fin\": \"2025-05-21\",\n  \"cv\": \"cv_enrrique.pdf\",\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"Portuguez\",\n  \"fecha_nacimiento\": \"2025-05-21\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguezeixxx@gmail.com\",\n  \"dni\": \"73375586\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "updateGraduate",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fecha_inicio\": \"2025-05-21\",\n  \"fecha_fin\": \"2025-05-21\",\n  \"cv\": \"cv_enrrique.pdf\",\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"Portuguez\",\n  \"fecha_nacimiento\": \"2025-05-21\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguezeixxx@gmail.com\",\n  \"dni\": \"73375586\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 14:27:25 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "updateNotFound",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fecha_inicio\": \"2025-05-21\",\n  \"fecha_fin\": \"2025-05-21\",\n  \"cv\": \"cv_enrrique.pdf\",\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"Portuguez\",\n  \"fecha_nacimiento\": \"2025-05-21\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguezeixxx@gmail.com\",\n  \"dni\": \"73375586\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/100",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"100"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 14:28:31 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Graduado no encontrado con id :100 \"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getGraduatePaginate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate?page=1&size=10",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "search",
+									"value": "922344556",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getGraduatePaginate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate?page=1&size=10",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "search",
+											"value": "922344556",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 15:28:54 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"user_id\": 1,\n            \"nombres\": \"Juan\",\n            \"apellidos\": \"Pérez\",\n            \"fecha_nacimiento\": \"1990-05-10\",\n            \"genero\": \"M\",\n            \"correo\": \"juan.perez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"12345678\",\n            \"celular\": \"987654321\",\n            \"graduate_id\": 1,\n            \"fecha_inicio\": \"2018-03-01\",\n            \"fecha_fin\": \"2022-12-15\",\n            \"cv\": \"cv_juan_perez.pdf\"\n        },\n        {\n            \"user_id\": 2,\n            \"nombres\": \"Lucía\",\n            \"apellidos\": \"Gómez\",\n            \"fecha_nacimiento\": \"1995-08-22\",\n            \"genero\": \"F\",\n            \"correo\": \"lucia.gomez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"87654321\",\n            \"celular\": \"912345678\",\n            \"graduate_id\": 2,\n            \"fecha_inicio\": \"2019-08-20\",\n            \"fecha_fin\": \"2023-07-10\",\n            \"cv\": \"cv_ana_ramirez.docx\"\n        },\n        {\n            \"user_id\": 3,\n            \"nombres\": \"Carlos\",\n            \"apellidos\": \"Ramírez\",\n            \"fecha_nacimiento\": \"1988-11-15\",\n            \"genero\": \"M\",\n            \"correo\": \"carlos.ramirez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"11223344\",\n            \"celular\": \"998877665\",\n            \"graduate_id\": 3,\n            \"fecha_inicio\": \"2017-01-10\",\n            \"fecha_fin\": \"2021-06-30\",\n            \"cv\": \"cv_carlos_torres.pdf\"\n        },\n        {\n            \"user_id\": 4,\n            \"nombres\": \"María\",\n            \"apellidos\": \"Fernández\",\n            \"fecha_nacimiento\": \"1992-03-12\",\n            \"genero\": \"F\",\n            \"correo\": \"maria.fernandez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"44556677\",\n            \"celular\": \"911223344\",\n            \"graduate_id\": 4,\n            \"fecha_inicio\": \"2020-02-05\",\n            \"fecha_fin\": \"2024-11-18\",\n            \"cv\": \"cv_luisa_fernandez.pdf\"\n        },\n        {\n            \"user_id\": 5,\n            \"nombres\": \"José\",\n            \"apellidos\": \"López\",\n            \"fecha_nacimiento\": \"1987-07-30\",\n            \"genero\": \"M\",\n            \"correo\": \"jose.lopez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"22334455\",\n            \"celular\": \"922334455\",\n            \"graduate_id\": 5,\n            \"fecha_inicio\": \"2016-09-25\",\n            \"fecha_fin\": \"2020-05-22\",\n            \"cv\": \"cv_pedro_gomez.docx\"\n        },\n        {\n            \"user_id\": 6,\n            \"nombres\": \"Ana\",\n            \"apellidos\": \"Torres\",\n            \"fecha_nacimiento\": \"1993-01-20\",\n            \"genero\": \"F\",\n            \"correo\": \"ana.torres@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"55667788\",\n            \"celular\": \"933445566\",\n            \"graduate_id\": 6,\n            \"fecha_inicio\": \"2018-04-14\",\n            \"fecha_fin\": \"2022-03-10\",\n            \"cv\": \"cv_maria_salas.pdf\"\n        },\n        {\n            \"user_id\": 7,\n            \"nombres\": \"Luis\",\n            \"apellidos\": \"Martínez\",\n            \"fecha_nacimiento\": \"1991-06-25\",\n            \"genero\": \"M\",\n            \"correo\": \"luis.martinez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"66778899\",\n            \"celular\": \"944556677\",\n            \"graduate_id\": 7,\n            \"fecha_inicio\": \"2019-06-11\",\n            \"fecha_fin\": \"2023-02-28\",\n            \"cv\": \"cv_sofia_vega.docx\"\n        },\n        {\n            \"user_id\": 8,\n            \"nombres\": \"Carmen\",\n            \"apellidos\": \"Díaz\",\n            \"fecha_nacimiento\": \"1994-09-10\",\n            \"genero\": \"F\",\n            \"correo\": \"carmen.diaz@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"77889900\",\n            \"celular\": \"955667788\",\n            \"graduate_id\": 8,\n            \"fecha_inicio\": \"2015-11-01\",\n            \"fecha_fin\": \"2019-09-15\",\n            \"cv\": \"cv_andres_lopez.pdf\"\n        },\n        {\n            \"user_id\": 9,\n            \"nombres\": \"Jorge\",\n            \"apellidos\": \"Vargas\",\n            \"fecha_nacimiento\": \"1989-12-05\",\n            \"genero\": \"M\",\n            \"correo\": \"jorge.vargas@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"88990011\",\n            \"celular\": \"966778899\",\n            \"graduate_id\": 9,\n            \"fecha_inicio\": \"2021-01-20\",\n            \"fecha_fin\": \"2025-01-19\",\n            \"cv\": \"cv_laura_martinez.pdf\"\n        },\n        {\n            \"user_id\": 10,\n            \"nombres\": \"Elena\",\n            \"apellidos\": \"Castro\",\n            \"fecha_nacimiento\": \"1996-04-18\",\n            \"genero\": \"F\",\n            \"correo\": \"elena.castro@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"99001122\",\n            \"celular\": \"977889900\",\n            \"graduate_id\": 10,\n            \"fecha_inicio\": \"2017-05-30\",\n            \"fecha_fin\": \"2021-12-01\",\n            \"cv\": \"cv_miguel_herrera.pdf\"\n        }\n    ],\n    \"paginate\": {\n        \"totalElements\": 15,\n        \"totalPages\": 2,\n        \"currentPage\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "getGraduateList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/list",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate",
+								"list"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getGraduateList",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/list",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 15:28:04 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"user_id\": 1,\n            \"nombres\": \"Juan\",\n            \"apellidos\": \"Pérez\",\n            \"fecha_nacimiento\": \"1990-05-10\",\n            \"genero\": \"M\",\n            \"correo\": \"juan.perez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"12345678\",\n            \"celular\": \"987654321\",\n            \"graduate_id\": 1,\n            \"fecha_inicio\": \"2018-03-01\",\n            \"fecha_fin\": \"2022-12-15\",\n            \"cv\": \"cv_juan_perez.pdf\"\n        },\n        {\n            \"user_id\": 2,\n            \"nombres\": \"Lucía\",\n            \"apellidos\": \"Gómez\",\n            \"fecha_nacimiento\": \"1995-08-22\",\n            \"genero\": \"F\",\n            \"correo\": \"lucia.gomez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"87654321\",\n            \"celular\": \"912345678\",\n            \"graduate_id\": 2,\n            \"fecha_inicio\": \"2019-08-20\",\n            \"fecha_fin\": \"2023-07-10\",\n            \"cv\": \"cv_ana_ramirez.docx\"\n        },\n        {\n            \"user_id\": 3,\n            \"nombres\": \"Carlos\",\n            \"apellidos\": \"Ramírez\",\n            \"fecha_nacimiento\": \"1988-11-15\",\n            \"genero\": \"M\",\n            \"correo\": \"carlos.ramirez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"11223344\",\n            \"celular\": \"998877665\",\n            \"graduate_id\": 3,\n            \"fecha_inicio\": \"2017-01-10\",\n            \"fecha_fin\": \"2021-06-30\",\n            \"cv\": \"cv_carlos_torres.pdf\"\n        },\n        {\n            \"user_id\": 4,\n            \"nombres\": \"María\",\n            \"apellidos\": \"Fernández\",\n            \"fecha_nacimiento\": \"1992-03-12\",\n            \"genero\": \"F\",\n            \"correo\": \"maria.fernandez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"44556677\",\n            \"celular\": \"911223344\",\n            \"graduate_id\": 4,\n            \"fecha_inicio\": \"2020-02-05\",\n            \"fecha_fin\": \"2024-11-18\",\n            \"cv\": \"cv_luisa_fernandez.pdf\"\n        },\n        {\n            \"user_id\": 5,\n            \"nombres\": \"José\",\n            \"apellidos\": \"López\",\n            \"fecha_nacimiento\": \"1987-07-30\",\n            \"genero\": \"M\",\n            \"correo\": \"jose.lopez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"22334455\",\n            \"celular\": \"922334455\",\n            \"graduate_id\": 5,\n            \"fecha_inicio\": \"2016-09-25\",\n            \"fecha_fin\": \"2020-05-22\",\n            \"cv\": \"cv_pedro_gomez.docx\"\n        },\n        {\n            \"user_id\": 6,\n            \"nombres\": \"Ana\",\n            \"apellidos\": \"Torres\",\n            \"fecha_nacimiento\": \"1993-01-20\",\n            \"genero\": \"F\",\n            \"correo\": \"ana.torres@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"55667788\",\n            \"celular\": \"933445566\",\n            \"graduate_id\": 6,\n            \"fecha_inicio\": \"2018-04-14\",\n            \"fecha_fin\": \"2022-03-10\",\n            \"cv\": \"cv_maria_salas.pdf\"\n        },\n        {\n            \"user_id\": 7,\n            \"nombres\": \"Luis\",\n            \"apellidos\": \"Martínez\",\n            \"fecha_nacimiento\": \"1991-06-25\",\n            \"genero\": \"M\",\n            \"correo\": \"luis.martinez@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"66778899\",\n            \"celular\": \"944556677\",\n            \"graduate_id\": 7,\n            \"fecha_inicio\": \"2019-06-11\",\n            \"fecha_fin\": \"2023-02-28\",\n            \"cv\": \"cv_sofia_vega.docx\"\n        },\n        {\n            \"user_id\": 8,\n            \"nombres\": \"Carmen\",\n            \"apellidos\": \"Díaz\",\n            \"fecha_nacimiento\": \"1994-09-10\",\n            \"genero\": \"F\",\n            \"correo\": \"carmen.diaz@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"77889900\",\n            \"celular\": \"955667788\",\n            \"graduate_id\": 8,\n            \"fecha_inicio\": \"2015-11-01\",\n            \"fecha_fin\": \"2019-09-15\",\n            \"cv\": \"cv_andres_lopez.pdf\"\n        },\n        {\n            \"user_id\": 9,\n            \"nombres\": \"Jorge\",\n            \"apellidos\": \"Vargas\",\n            \"fecha_nacimiento\": \"1989-12-05\",\n            \"genero\": \"M\",\n            \"correo\": \"jorge.vargas@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"88990011\",\n            \"celular\": \"966778899\",\n            \"graduate_id\": 9,\n            \"fecha_inicio\": \"2021-01-20\",\n            \"fecha_fin\": \"2025-01-19\",\n            \"cv\": \"cv_laura_martinez.pdf\"\n        },\n        {\n            \"user_id\": 10,\n            \"nombres\": \"Elena\",\n            \"apellidos\": \"Castro\",\n            \"fecha_nacimiento\": \"1996-04-18\",\n            \"genero\": \"F\",\n            \"correo\": \"elena.castro@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"99001122\",\n            \"celular\": \"977889900\",\n            \"graduate_id\": 10,\n            \"fecha_inicio\": \"2017-05-30\",\n            \"fecha_fin\": \"2021-12-01\",\n            \"cv\": \"cv_miguel_herrera.pdf\"\n        },\n        {\n            \"user_id\": 11,\n            \"nombres\": \"Miguel\",\n            \"apellidos\": \"Ruiz\",\n            \"fecha_nacimiento\": \"1990-10-01\",\n            \"genero\": \"M\",\n            \"correo\": \"miguel.ruiz@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"10293847\",\n            \"celular\": \"988900112\",\n            \"graduate_id\": 11,\n            \"fecha_inicio\": \"2016-10-05\",\n            \"fecha_fin\": \"2020-08-17\",\n            \"cv\": \"cv_elena_castro.docx\"\n        },\n        {\n            \"user_id\": 12,\n            \"nombres\": \"Sofía\",\n            \"apellidos\": \"Mendoza\",\n            \"fecha_nacimiento\": \"1992-02-14\",\n            \"genero\": \"F\",\n            \"correo\": \"sofia.mendoza@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"11235813\",\n            \"celular\": \"999011223\",\n            \"graduate_id\": 12,\n            \"fecha_inicio\": \"2020-03-12\",\n            \"fecha_fin\": \"2024-06-29\",\n            \"cv\": \"cv_diego_rojas.pdf\"\n        },\n        {\n            \"user_id\": 13,\n            \"nombres\": \"Andrés\",\n            \"apellidos\": \"Silva\",\n            \"fecha_nacimiento\": \"1985-11-20\",\n            \"genero\": \"M\",\n            \"correo\": \"andres.silva@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"12312312\",\n            \"celular\": \"900122334\",\n            \"graduate_id\": 13,\n            \"fecha_inicio\": \"2018-07-22\",\n            \"fecha_fin\": \"2022-05-05\",\n            \"cv\": \"cv_camila_nunez.docx\"\n        },\n        {\n            \"user_id\": 14,\n            \"nombres\": \"Laura\",\n            \"apellidos\": \"Rojas\",\n            \"fecha_nacimiento\": \"1993-03-08\",\n            \"genero\": \"F\",\n            \"correo\": \"laura.rojas@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"23423423\",\n            \"celular\": \"911233445\",\n            \"graduate_id\": 14,\n            \"fecha_inicio\": \"2019-12-01\",\n            \"fecha_fin\": \"2023-10-20\",\n            \"cv\": \"cv_fernando_silva.pdf\"\n        },\n        {\n            \"user_id\": 15,\n            \"nombres\": \"Ricardo\",\n            \"apellidos\": \"Herrera\",\n            \"fecha_nacimiento\": \"1997-07-07\",\n            \"genero\": \"M\",\n            \"correo\": \"ricardo.herrera@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"34534534\",\n            \"celular\": \"922344556\",\n            \"graduate_id\": 15,\n            \"fecha_inicio\": \"2017-09-10\",\n            \"fecha_fin\": \"2021-07-30\",\n            \"cv\": \"cv_valeria_reyes.docx\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "employer",
+			"item": [
+				{
+					"name": "getEmployer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/4",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getEmployer",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 01:26:42 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"user_id\": 16,\n        \"nombres\": \"Patricia\",\n        \"apellidos\": \"Morales\",\n        \"fecha_nacimiento\": \"1986-05-25\",\n        \"genero\": \"F\",\n        \"correo\": \"patricia.morales@example.com\",\n        \"estado\": \"1\",\n        \"dni\": \"45645645\",\n        \"celular\": \"933455667\",\n        \"employer_id\": 1,\n        \"ruc\": \"20733722962\",\n        \"razon_social\": \"portuguez E.I.R.L\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "getEmployerList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/list",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer",
+								"list"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getEmployerList",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/list",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										"list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 01:29:14 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"user_id\": 16,\n            \"nombres\": \"Patricia\",\n            \"apellidos\": \"Morales\",\n            \"fecha_nacimiento\": \"1986-05-25\",\n            \"genero\": \"F\",\n            \"correo\": \"patricia.morales@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"45645645\",\n            \"celular\": \"933455667\",\n            \"employer_id\": 1,\n            \"ruc\": \"20733722962\",\n            \"razon_social\": \"portuguez E.I.R.L\"\n        },\n        {\n            \"user_id\": 17,\n            \"nombres\": \"Fernando\",\n            \"apellidos\": \"Cruz\",\n            \"fecha_nacimiento\": \"1991-12-12\",\n            \"genero\": \"M\",\n            \"correo\": \"fernando.cruz@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"56756756\",\n            \"celular\": \"944566778\",\n            \"employer_id\": 2,\n            \"ruc\": \"20163487962\",\n            \"razon_social\": \"Casita S.A.C.\"\n        },\n        {\n            \"user_id\": 18,\n            \"nombres\": \"Isabel\",\n            \"apellidos\": \"Salas\",\n            \"fecha_nacimiento\": \"1995-01-01\",\n            \"genero\": \"F\",\n            \"correo\": \"isabel.salas@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"67867867\",\n            \"celular\": \"955677889\",\n            \"employer_id\": 3,\n            \"ruc\": \"20498722962\",\n            \"razon_social\": \"Petro S.A.C.\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getEmployerPaginate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer?page=1&size=10",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getEmployerPaginate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer?page=1&size=10",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 01:30:13 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"user_id\": 16,\n            \"nombres\": \"Patricia\",\n            \"apellidos\": \"Morales\",\n            \"fecha_nacimiento\": \"1986-05-25\",\n            \"genero\": \"F\",\n            \"correo\": \"patricia.morales@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"45645645\",\n            \"celular\": \"933455667\",\n            \"employer_id\": 1,\n            \"ruc\": \"20733722962\",\n            \"razon_social\": \"portuguez E.I.R.L\"\n        },\n        {\n            \"user_id\": 17,\n            \"nombres\": \"Fernando\",\n            \"apellidos\": \"Cruz\",\n            \"fecha_nacimiento\": \"1991-12-12\",\n            \"genero\": \"M\",\n            \"correo\": \"fernando.cruz@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"56756756\",\n            \"celular\": \"944566778\",\n            \"employer_id\": 2,\n            \"ruc\": \"20163487962\",\n            \"razon_social\": \"Casita S.A.C.\"\n        },\n        {\n            \"user_id\": 18,\n            \"nombres\": \"Isabel\",\n            \"apellidos\": \"Salas\",\n            \"fecha_nacimiento\": \"1995-01-01\",\n            \"genero\": \"F\",\n            \"correo\": \"isabel.salas@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"67867867\",\n            \"celular\": \"955677889\",\n            \"employer_id\": 3,\n            \"ruc\": \"20498722962\",\n            \"razon_social\": \"Petro S.A.C.\"\n        }\n    ],\n    \"paginate\": {\n        \"totalElements\": 3,\n        \"totalPages\": 1,\n        \"currentPage\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "createEmployer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ruc\": \"20731522962\",\n  \"razon_social\": \"Sauni S.A.C\",  \n  \"nombres\": \"Jhon\",\n  \"apellidos\": \"Sauñi\",\n  \"fecha_nacimiento\": \"1996-02-15\",\n  \"genero\": \"M\",\n  \"correo\": \"sauni@gmail.com\",\n  \"dni\": \"79854715\",\n  \"celular\": \"921495188\",\n  \"contrasena\": \"password12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "createEmployer",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"ruc\": \"20731522962\",\n  \"razon_social\": \"Sauni S.A.C\",  \n  \"nombres\": \"Jhon\",\n  \"apellidos\": \"Sauñi\",\n  \"fecha_nacimiento\": \"1996-02-15\",\n  \"genero\": \"M\",\n  \"correo\": \"sauni@gmail.com\",\n  \"dni\": \"79854715\",\n  \"celular\": \"921495188\",\n  \"contrasena\": \"password12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 01:33:46 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "updateEmployer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ruc\": \"20731522962\",\n  \"razon_social\": \"Sauni xxx S.A.C\",  \n  \"nombres\": \"Jhon\",\n  \"apellidos\": \"Sauñi Vasquez\",\n  \"fecha_nacimiento\": \"1996-02-15\",\n  \"genero\": \"M\",\n  \"correo\": \"sauni@gmail.com\",\n  \"dni\": \"79854715\",\n  \"celular\": \"921495188\",\n  \"contrasena\": \"password12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/4",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "updateEmployerSuccess",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"ruc\": \"20731522962\",\n  \"razon_social\": \"Sauni xxx S.A.C\",  \n  \"nombres\": \"Jhon\",\n  \"apellidos\": \"Sauñi Vasquez\",\n  \"fecha_nacimiento\": \"1996-02-15\",\n  \"genero\": \"M\",\n  \"correo\": \"sauni@gmail.com\",\n  \"dni\": \"79854715\",\n  \"celular\": \"921495188\",\n  \"contrasena\": \"password12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/4",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 01:36:35 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "deleteEmployer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/4",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "deleteEmployer",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/4",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 01:37:56 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "jobs",
+			"item": [
+				{
+					"name": "getJobByGraduate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs/1",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate",
+								"1",
+								"jobs",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "jobNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs/100",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1",
+										"jobs",
+										"100"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 20:42:52 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Trabajo no encontrado con id :100\"\n    ]\n}"
+						},
+						{
+							"name": "graduateNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/100/jobs/100",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"100",
+										"jobs",
+										"100"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 20:43:18 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Graduado no encontrado con id :100\"\n    ]\n}"
+						},
+						{
+							"name": "getGraduateJob",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1",
+										"jobs",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 20:43:41 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"job_id\": 1,\n        \"compañia\": \"Empresa ABC S.A.\",\n        \"cargo\": \"Analista de Datos\",\n        \"modalidad\": \"Remoto\",\n        \"fecha_inicio\": \"2020-01-10\",\n        \"fecha_fin\": \"2021-06-30\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "createJobByGraduate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"compañia\": \"Canvia\",\n  \"cargo\": \"Analista de sistemas\",\n  \"modalidad\": \"remoto\",\n  \"fecha_inicio\": \"2020-05-23\",\n  \"fecha_fin\": \"2025-05-23\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate",
+								"1",
+								"jobs"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "createJobSuccess",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"compañia\": \"Canvia\",\n  \"cargo\": \"analista de sistemas\",\n  \"modalidad\": \"remoto\",\n  \"fecha_inicio\": \"2020-05-23\",\n  \"fecha_fin\": \"2025-05-23\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1",
+										"jobs"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 21:01:57 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "getJobListByGraduate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate",
+								"1",
+								"jobs"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "graduateNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1",
+										"jobs"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 21:42:25 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Graduado no encontrado con id :100\"\n    ]\n}"
+						},
+						{
+							"name": "getJobListByGraduate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1",
+										"jobs"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 21:42:46 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"job_id\": 1,\n            \"compañia\": \"Empresa ABC S.A.\",\n            \"cargo\": \"Analista de Datos\",\n            \"modalidad\": \"Remoto\",\n            \"fecha_inicio\": \"2020-01-10\",\n            \"fecha_fin\": \"2021-06-30\"\n        },\n        {\n            \"job_id\": 2,\n            \"compañia\": \"Tech Solutions\",\n            \"cargo\": \"Desarrollador Backend\",\n            \"modalidad\": \"Presencial\",\n            \"fecha_inicio\": \"2021-07-01\",\n            \"fecha_fin\": \"2023-02-28\"\n        },\n        {\n            \"job_id\": 3,\n            \"compañia\": \"Consulting Group\",\n            \"cargo\": \"Ingeniero de Software\",\n            \"modalidad\": \"Híbrido\",\n            \"fecha_inicio\": \"2023-03-01\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "JobsNotFoundForGraduate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/2/jobs",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"2",
+										"jobs"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 23 May 2025 21:44:28 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"EL graduado con id: 2, no tiene empleos registrados.\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "deleteJobByGraduate",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs/1",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate",
+								"1",
+								"jobs",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "deleteJobByGraduate",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1",
+										"jobs",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 25 May 2025 01:19:49 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "jobNotFound",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1",
+										"jobs",
+										"1"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 25 May 2025 01:20:43 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Trabajo no encontrado con id :1\"\n    ]\n}"
+						},
+						{
+							"name": "graduateNotFound",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/100/jobs/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"100",
+										"jobs",
+										"1"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 25 May 2025 01:21:00 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Graduado no encontrado con id :100\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getJobListPaginate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs/pagination?page=1&size=10",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate",
+								"1",
+								"jobs",
+								"pagination"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getJobListPaginate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs/pagination?page=1&size=10",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1",
+										"jobs",
+										"pagination"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 25 May 2025 01:22:23 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"job_id\": 2,\n            \"compañia\": \"Tech Solutions\",\n            \"estado\": \"1\",\n            \"cargo\": \"Desarrollador Backend\",\n            \"modalidad\": \"Presencial\",\n            \"fecha_inicio\": \"2021-07-01\",\n            \"fecha_fin\": \"2023-02-28\"\n        },\n        {\n            \"job_id\": 3,\n            \"compañia\": \"Consulting Group\",\n            \"estado\": \"1\",\n            \"cargo\": \"Ingeniero de Software\",\n            \"modalidad\": \"Híbrido\",\n            \"fecha_inicio\": \"2023-03-01\"\n        },\n        {\n            \"job_id\": 4,\n            \"compañia\": \"Canvia\",\n            \"estado\": \"1\",\n            \"cargo\": \"Analista de sistemas\",\n            \"modalidad\": \"remoto\",\n            \"fecha_inicio\": \"2020-05-23\",\n            \"fecha_fin\": \"2025-05-23\"\n        }\n    ],\n    \"paginate\": {\n        \"totalElements\": 3,\n        \"totalPages\": 1,\n        \"currentPage\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "updateJob",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"compañia\": \"Canvia xxx\",\n  \"cargo\": \"Analista de sistemas xxx\",\n  \"modalidad\": \"remoto xxx\",\n  \"fecha_inicio\": \"2020-05-20\",\n  \"fecha_fin\": \"2025-05-20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs/1",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"graduate",
+								"1",
+								"jobs",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "jobNotFound",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"compañia\": \"Canvia\",\n  \"cargo\": \"Analista de sistemas\",\n  \"modalidad\": \"remoto\",\n  \"fecha_inicio\": \"2020-05-23\",\n  \"fecha_fin\": \"2025-05-23\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1",
+										"jobs",
+										"1"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 25 May 2025 01:23:47 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Trabajo no encontrado con id :1\"\n    ]\n}"
+						},
+						{
+							"name": "graduateNotFound",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"compañia\": \"Canvia\",\n  \"cargo\": \"Analista de sistemas\",\n  \"modalidad\": \"remoto\",\n  \"fecha_inicio\": \"2020-05-23\",\n  \"fecha_fin\": \"2025-05-23\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/100/jobs/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"100",
+										"jobs",
+										"1"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 25 May 2025 01:24:06 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Graduado no encontrado con id :100\"\n    ]\n}"
+						},
+						{
+							"name": "updateJob",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"compañia\": \"Canvia xxx\",\n  \"cargo\": \"Analista de sistemas xxx\",\n  \"modalidad\": \"remoto xxx\",\n  \"fecha_inicio\": \"2020-05-20\",\n  \"fecha_fin\": \"2025-05-20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/graduate/1/jobs/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"graduate",
+										"1",
+										"jobs",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 25 May 2025 01:25:06 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "educationCenter",
+			"item": [
+				{
+					"name": "getEducationCenter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center/1",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"education_center",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getEducationCenter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"education_center",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 00:52:43 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"education_center_id\": 1,\n        \"estado\": \"1\",\n        \"nombre\": \"Universidad Nacional de Ucayali\",\n        \"direccion\": \"Pucallpa\"\n    }\n}"
+						},
+						{
+							"name": "getEducationCenterNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center/5",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"education_center",
+										"5"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 00:53:48 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Centro de Educación no encontrado con id :5\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "createEducationCenter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Universidad Sideral Carrión\",\n  \"direccion\": \"Lima\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"education_center"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "createEducationCenter",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Universidad Sideral Carrión\",\n  \"direccion\": \"Lima\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"education_center"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 01:06:43 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "getEducationCenterList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center/list",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"education_center",
+								"list"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getEducationCenterList",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center/list",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"education_center",
+										"list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 00:51:54 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"education_center_id\": 1,\n            \"estado\": \"1\",\n            \"nombre\": \"Universidad Nacional de Ucayali\",\n            \"direccion\": \"Pucallpa\"\n        },\n        {\n            \"education_center_id\": 2,\n            \"estado\": \"1\",\n            \"nombre\": \"UTP\",\n            \"direccion\": \"Lima\"\n        },\n        {\n            \"education_center_id\": 3,\n            \"estado\": \"1\",\n            \"nombre\": \"UNI\",\n            \"direccion\": \"Lima\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "deleteEducationCenter",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center/4",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"education_center",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "deleteEducationCenter",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center/4",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"education_center",
+										"4"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 01:08:15 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "deleteEducationCenterNotFound",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center/40",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"education_center",
+										"40"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 01:08:38 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Centro de Educación no encontrado con id: 40\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getEducationCenterPaginate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center?page=1&size=10",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"education_center"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getEducationCenterPaginate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center?page=1&size=10",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"education_center"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 01:10:01 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"education_center_id\": 1,\n            \"estado\": \"1\",\n            \"nombre\": \"Universidad Nacional de Ucayali\",\n            \"direccion\": \"Pucallpa\"\n        },\n        {\n            \"education_center_id\": 2,\n            \"estado\": \"1\",\n            \"nombre\": \"UTP\",\n            \"direccion\": \"Lima\"\n        },\n        {\n            \"education_center_id\": 3,\n            \"estado\": \"1\",\n            \"nombre\": \"UNI\",\n            \"direccion\": \"Lima\"\n        },\n        {\n            \"education_center_id\": 4,\n            \"estado\": \"1\",\n            \"nombre\": \"Universidad Sideral Carrión\",\n            \"direccion\": \"Lima\"\n        }\n    ],\n    \"paginate\": {\n        \"totalElements\": 4,\n        \"totalPages\": 1,\n        \"currentPage\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "updateEducationCenter",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Universidad Sideral Carrión 2\",\n  \"direccion\": \"Lima 2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center/4",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"education_center",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "updateEducationCenter",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Universidad Sideral Carrión 2\",\n  \"direccion\": \"Lima 2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center/4",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"education_center",
+										"4"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 01:11:20 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "updateEducationCenterNotFound",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Universidad Sideral Carrión 2\",\n  \"direccion\": \"Lima 2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/education_center/40",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"education_center",
+										"40"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 01:12:52 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Centro de Educación no encontrado con id: 40\"\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "jobOffers",
+			"item": [
+				{
+					"name": "getJobOffersByEmployer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/:jobOfferId",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer",
+								":employerId",
+								"jobs_offers",
+								":jobOfferId"
+							],
+							"variable": [
+								{
+									"key": "employerId",
+									"value": "1"
+								},
+								{
+									"key": "jobOfferId",
+									"value": "16"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getJobOffersByEmployer",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/:jobOfferId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers",
+										":jobOfferId"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "1"
+										},
+										{
+											"key": "jobOfferId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 17:35:27 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"job_offers_id\": 1,\n        \"titulo\": \"Analista de Datos\",\n        \"link\": \"https://abc.com/jobs/1\",\n        \"descripcion\": \"Análisis y visualización de datos en entorno remoto.\",\n        \"estado\": \"1\"\n    }\n}"
+						},
+						{
+							"name": "employerNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/:jobOfferId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers",
+										":jobOfferId"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "100"
+										},
+										{
+											"key": "jobOfferId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 17:35:59 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Empleador no encontrado con id: 100\"\n    ]\n}"
+						},
+						{
+							"name": "JobOffersNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/:jobOfferId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers",
+										":jobOfferId"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "1"
+										},
+										{
+											"key": "jobOfferId",
+											"value": "100"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 17:36:22 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Oferta laboral no encontrada con id: 100\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getJobOffersListByEmployer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer",
+								":employerId",
+								"jobs_offers"
+							],
+							"variable": [
+								{
+									"key": "employerId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getJobOffersListByEmployer",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 17:38:28 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"job_offers_id\": 1,\n            \"titulo\": \"Analista de Datos\",\n            \"link\": \"https://abc.com/jobs/1\",\n            \"descripcion\": \"Análisis y visualización de datos en entorno remoto.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 2,\n            \"titulo\": \"Desarrollador Backend\",\n            \"link\": \"https://techsolutions.com/jobs/2\",\n            \"descripcion\": \"Responsable del desarrollo de servicios y APIs REST.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 3,\n            \"titulo\": \"Ingeniero de Software\",\n            \"link\": \"https://consultinggroup.com/jobs/3\",\n            \"descripcion\": \"Desarrollo de software a medida para clientes internacionales.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 4,\n            \"titulo\": \"Tester QA\",\n            \"link\": \"https://qualityjobs.com/jobs/4\",\n            \"descripcion\": \"Pruebas automatizadas de calidad de software.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 5,\n            \"titulo\": \"Líder Técnico\",\n            \"link\": \"https://leadtech.com/jobs/5\",\n            \"descripcion\": \"Coordinación técnica de equipos de desarrollo.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 6,\n            \"titulo\": \"Administrador de Base de Datos\",\n            \"link\": \"https://dbadmin.com/jobs/6\",\n            \"descripcion\": \"Mantenimiento y optimización de bases de datos.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 7,\n            \"titulo\": \"Especialista DevOps\",\n            \"link\": \"https://devopsworld.com/jobs/7\",\n            \"descripcion\": \"Automatización de infraestructura y CI/CD.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 8,\n            \"titulo\": \"Diseñador UI/UX\",\n            \"link\": \"https://designhub.com/jobs/8\",\n            \"descripcion\": \"Diseño de interfaces amigables y centradas en el usuario.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 9,\n            \"titulo\": \"Project Manager\",\n            \"link\": \"https://pmjobs.com/jobs/9\",\n            \"descripcion\": \"Gestión de proyectos bajo metodología ágil.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 10,\n            \"titulo\": \"Soporte Técnico\",\n            \"link\": \"https://supportline.com/jobs/10\",\n            \"descripcion\": \"Atención al cliente y resolución de incidencias.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 11,\n            \"titulo\": \"Data Scientist\",\n            \"link\": \"https://datasciencecorp.com/jobs/11\",\n            \"descripcion\": \"Modelado estadístico y machine learning.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 12,\n            \"titulo\": \"Scrum Master\",\n            \"link\": \"https://agileteam.com/jobs/12\",\n            \"descripcion\": \"Facilitación de procesos ágiles y gestión de equipos.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 13,\n            \"titulo\": \"Arquitecto de Software\",\n            \"link\": \"https://architectureit.com/jobs/13\",\n            \"descripcion\": \"Diseño de arquitecturas escalables y robustas.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 14,\n            \"titulo\": \"Ingeniero de Seguridad\",\n            \"link\": \"https://secureit.com/jobs/14\",\n            \"descripcion\": \"Análisis de vulnerabilidades y ciberseguridad.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 15,\n            \"titulo\": \"Administrador de Redes\",\n            \"link\": \"https://networks.com/jobs/15\",\n            \"descripcion\": \"Gestión de redes LAN/WAN y seguridad perimetral.\",\n            \"estado\": \"1\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "getJobOfferNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 17:38:55 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"EL empleador con id: 2, no tiene ofertas de empleo registrados.\"\n    ]\n}"
+						},
+						{
+							"name": "employerNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 17:40:39 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Empleador no encontrado con id: 20\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getJobOffersListPaginate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/pagination?page=1&size=10",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer",
+								":employerId",
+								"jobs_offers",
+								"pagination"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							],
+							"variable": [
+								{
+									"key": "employerId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getJobOffersListPaginate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/pagination?page=1&size=10",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers",
+										"pagination"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 17:44:12 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"job_offers_id\": 11,\n            \"titulo\": \"Data Scientist\",\n            \"link\": \"https://datasciencecorp.com/jobs/11\",\n            \"descripcion\": \"Modelado estadístico y machine learning.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 12,\n            \"titulo\": \"Scrum Master\",\n            \"link\": \"https://agileteam.com/jobs/12\",\n            \"descripcion\": \"Facilitación de procesos ágiles y gestión de equipos.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 13,\n            \"titulo\": \"Arquitecto de Software\",\n            \"link\": \"https://architectureit.com/jobs/13\",\n            \"descripcion\": \"Diseño de arquitecturas escalables y robustas.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 14,\n            \"titulo\": \"Ingeniero de Seguridad\",\n            \"link\": \"https://secureit.com/jobs/14\",\n            \"descripcion\": \"Análisis de vulnerabilidades y ciberseguridad.\",\n            \"estado\": \"1\"\n        },\n        {\n            \"job_offers_id\": 15,\n            \"titulo\": \"Administrador de Redes\",\n            \"link\": \"https://networks.com/jobs/15\",\n            \"descripcion\": \"Gestión de redes LAN/WAN y seguridad perimetral.\",\n            \"estado\": \"1\"\n        }\n    ],\n    \"paginate\": {\n        \"totalElements\": 15,\n        \"totalPages\": 2,\n        \"currentPage\": 2\n    }\n}"
+						},
+						{
+							"name": "getJobOffersListPaginateEmpty",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/pagination?page=1&size=10",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers",
+										"pagination"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 17:51:51 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [],\n    \"paginate\": {\n        \"totalElements\": 0,\n        \"totalPages\": 0,\n        \"currentPage\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "deleteJobOffersByEmployer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/:jobOfferId",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer",
+								":employerId",
+								"jobs_offers",
+								":jobOfferId"
+							],
+							"variable": [
+								{
+									"key": "employerId",
+									"value": "1"
+								},
+								{
+									"key": "jobOfferId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "deleteJobOffersByEmployer",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/:jobOfferId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers",
+										":jobOfferId"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "1"
+										},
+										{
+											"key": "jobOfferId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 17:56:39 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "createJobOffersByEmployer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"titulo\": \"Trapeador de pisos\",\n  \"link\": \"https//:www.jobs.com.pe\",\n  \"descripcion\": \"Se necesita trapeador de pisos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer",
+								":employerId",
+								"jobs_offers"
+							],
+							"variable": [
+								{
+									"key": "employerId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "createJobOffersByEmployer",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"titulo\": \"Trapeador de pisos\",\n  \"link\": \"https//:www.jobs.com.pe\",\n  \"descripcion\": \"Se necesita trapeador de pisos\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 18:00:19 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "employerNotFound",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"titulo\": \"Trapeador de pisos\",\n  \"link\": \"https//:www.jobs.com.pe\",\n  \"descripcion\": \"Se necesita trapeador de pisos\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "100"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 18:02:54 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Empleador no encontrado con id: 100\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "updateJobOffersByEmployer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"titulo\": \"Trapeador de pisos 2\",\n  \"link\": \"https//:www.jobs.com.pe2\",\n  \"descripcion\": \"Se necesita trapeador de pisos2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/:jobOfferId",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"employer",
+								":employerId",
+								"jobs_offers",
+								":jobOfferId"
+							],
+							"variable": [
+								{
+									"key": "employerId",
+									"value": "1"
+								},
+								{
+									"key": "jobOfferId",
+									"value": "16"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "updateJobOffersByEmployer",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"titulo\": \"Trapeador de pisos 2\",\n  \"link\": \"https//:www.jobs.com.pe2\",\n  \"descripcion\": \"Se necesita trapeador de pisos2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/:jobOfferId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers",
+										":jobOfferId"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "1"
+										},
+										{
+											"key": "jobOfferId",
+											"value": "16"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 18:05:59 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "employerNotFound",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"titulo\": \"Trapeador de pisos 2\",\n  \"link\": \"https//:www.jobs.com.pe2\",\n  \"descripcion\": \"Se necesita trapeador de pisos2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/:jobOfferId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers",
+										":jobOfferId"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "100"
+										},
+										{
+											"key": "jobOfferId",
+											"value": "16"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 18:07:13 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Empleador no encontrado con id: 100\"\n    ]\n}"
+						},
+						{
+							"name": "jobOffersNotFound",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"titulo\": \"Trapeador de pisos 2\",\n  \"link\": \"https//:www.jobs.com.pe2\",\n  \"descripcion\": \"Se necesita trapeador de pisos2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/employer/:employerId/jobs_offers/:jobOfferId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"employer",
+										":employerId",
+										"jobs_offers",
+										":jobOfferId"
+									],
+									"variable": [
+										{
+											"key": "employerId",
+											"value": "1"
+										},
+										{
+											"key": "jobOfferId",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 18:07:32 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Oferta laboral no encontrada con id: 20\"\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "eventTypes",
+			"item": [
+				{
+					"name": "getEventTypes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types/1",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"event_types",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getEventTypes",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"event_types",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 20:38:37 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"event_type_id\": 1,\n        \"nombre\": \"Ponencia\",\n        \"estado\": \"1\"\n    }\n}"
+						},
+						{
+							"name": "eventTypeNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types/8",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"event_types",
+										"8"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 20:40:15 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Tipo de evento no encontrado con id: 8\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getEventTypesList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types/list",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"event_types",
+								"list"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getEventTypesList",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types/list",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"event_types",
+										"list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 20:41:08 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"event_type_id\": 1,\n            \"nombre\": \"Ponencia\",\n            \"estado\": \"1\"\n        },\n        {\n            \"event_type_id\": 2,\n            \"nombre\": \"Taller\",\n            \"estado\": \"1\"\n        },\n        {\n            \"event_type_id\": 3,\n            \"nombre\": \"Capacitación\",\n            \"estado\": \"1\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "deleteEventTypes",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types/1",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"event_types",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "deleteEventTypes",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types/1",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"event_types",
+										"1"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 20:43:44 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "eventNotFound",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types/100",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"event_types",
+										"100"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 28 May 2025 20:44:09 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Tipo de evento no encontrado con id: 100\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "createEvent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Charla informativa\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"event_types"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "createEvent",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Charla informativa\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"event_types"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 14:42:26 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "eventExist",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Charla informativa\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"event_types"
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 14:48:21 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"El tipo de evento ya existe con el nombre: Charla informativa\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "updateEvent",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Charla informativa 2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types/:eventId",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"event_types",
+								":eventId"
+							],
+							"variable": [
+								{
+									"key": "eventId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "updateEvent",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Charla informativa 2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types/:eventId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"event_types",
+										":eventId"
+									],
+									"variable": [
+										{
+											"key": "eventId",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 14:50:59 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "eventeNotFound",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Charla informativa 2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types/:eventId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"event_types",
+										":eventId"
+									],
+									"variable": [
+										{
+											"key": "eventId",
+											"value": "40"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 14:51:15 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Tipo de evento no encontrado con id: 40\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getEventPaginate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types?page=1&size=10",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"event_types"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getEventPaginate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/event_types?page=1&size=10",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"event_types"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 14:52:15 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"event_type_id\": 1,\n            \"nombre\": \"Ponencia\",\n            \"estado\": \"1\"\n        },\n        {\n            \"event_type_id\": 2,\n            \"nombre\": \"Taller\",\n            \"estado\": \"1\"\n        },\n        {\n            \"event_type_id\": 3,\n            \"nombre\": \"Capacitación\",\n            \"estado\": \"1\"\n        },\n        {\n            \"event_type_id\": 4,\n            \"nombre\": \"Charla informativa 2\",\n            \"estado\": \"1\"\n        }\n    ],\n    \"paginate\": {\n        \"totalElements\": 4,\n        \"totalPages\": 1,\n        \"currentPage\": 1\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "director",
+			"item": [
+				{
+					"name": "getDirector",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/director/:directorId",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"director",
+								":directorId"
+							],
+							"variable": [
+								{
+									"key": "directorId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getDirector",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/director/:directorId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"director",
+										":directorId"
+									],
+									"variable": [
+										{
+											"key": "directorId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 17:11:36 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"user_id\": 19,\n        \"nombres\": \"Diego\",\n        \"apellidos\": \"Ortega\",\n        \"fecha_nacimiento\": \"1990-06-15\",\n        \"genero\": \"M\",\n        \"correo\": \"diego.ortega@example.com\",\n        \"estado\": \"1\",\n        \"dni\": \"78978978\",\n        \"celular\": \"966788990\",\n        \"director_id\": \"1\"\n    }\n}"
+						},
+						{
+							"name": "directorNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/director/:directorId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"director",
+										":directorId"
+									],
+									"variable": [
+										{
+											"key": "directorId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 17:12:50 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Director no encontrado con id: 2\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getDirectorList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/director/list",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"director",
+								"list"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getDirectorList",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/director/list",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"director",
+										"list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 17:14:40 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"user_id\": 19,\n            \"nombres\": \"Diego\",\n            \"apellidos\": \"Ortega\",\n            \"fecha_nacimiento\": \"1990-06-15\",\n            \"genero\": \"M\",\n            \"correo\": \"diego.ortega@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"78978978\",\n            \"celular\": \"966788990\",\n            \"director_id\": \"1\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getDirectorPaginate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/director?page=1&size=10",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"director"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getDirectorPaginate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/director?page=1&size=10",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"director"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 17:15:30 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"user_id\": 19,\n            \"nombres\": \"Diego\",\n            \"apellidos\": \"Ortega\",\n            \"fecha_nacimiento\": \"1990-06-15\",\n            \"genero\": \"M\",\n            \"correo\": \"diego.ortega@example.com\",\n            \"estado\": \"1\",\n            \"dni\": \"78978978\",\n            \"celular\": \"966788990\",\n            \"director_id\": \"1\"\n        }\n    ],\n    \"paginate\": {\n        \"totalElements\": 1,\n        \"totalPages\": 1,\n        \"currentPage\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "createDirector",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"portuguez\",\n  \"fecha_nacimiento\": \"2025-05-09\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguez@gmail.com\",\n  \"dni\": \"73372296\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/director",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"director"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "createDirector",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombres\": \"Enrrique\",\n  \"apellidos\": \"portuguez\",\n  \"fecha_nacimiento\": \"2025-05-09\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguez@gmail.com\",\n  \"dni\": \"73372296\",\n  \"celular\": \"921423211\",\n  \"contrasena\": \"123456789\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/director",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"director"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 17:18:46 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "updateDirector",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombres\": \"Enrrique2\",\n  \"apellidos\": \"portuguez2\",\n  \"fecha_nacimiento\": \"2025-05-09\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguez@gmail.com\",\n  \"dni\": \"73372292\",\n  \"celular\": \"921423212\",\n  \"contrasena\": \"123456782\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/director/:directorId",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"director",
+								":directorId"
+							],
+							"variable": [
+								{
+									"key": "directorId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "updateDirector",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombres\": \"Enrrique2\",\n  \"apellidos\": \"portuguez2\",\n  \"fecha_nacimiento\": \"2025-05-09\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguez@gmail.com\",\n  \"dni\": \"73372292\",\n  \"celular\": \"921423212\",\n  \"contrasena\": \"123456782\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/director/:directorId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"director",
+										":directorId"
+									],
+									"variable": [
+										{
+											"key": "directorId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 17:20:39 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "directorNotFound",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombres\": \"Enrrique2\",\n  \"apellidos\": \"portuguez2\",\n  \"fecha_nacimiento\": \"2025-05-09\",\n  \"genero\": \"M\",\n  \"correo\": \"portuguez@gmail.com\",\n  \"dni\": \"73372292\",\n  \"celular\": \"921423212\",\n  \"contrasena\": \"123456782\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/director/:directorId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"director",
+										":directorId"
+									],
+									"variable": [
+										{
+											"key": "directorId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 17:21:02 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Director no encontrado con id: 3\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "deleteDirector",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostLocal}}/graduate-insights/v1/api/director/:directorId",
+							"host": [
+								"{{hostLocal}}"
+							],
+							"path": [
+								"graduate-insights",
+								"v1",
+								"api",
+								"director",
+								":directorId"
+							],
+							"variable": [
+								{
+									"key": "directorId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "deleteDirector",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/director/:directorId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"director",
+										":directorId"
+									],
+									"variable": [
+										{
+											"key": "directorId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 17:22:00 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "deleteDirectorNotFound",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostLocal}}/graduate-insights/v1/api/director/:directorId",
+									"host": [
+										"{{hostLocal}}"
+									],
+									"path": [
+										"graduate-insights",
+										"v1",
+										"api",
+										"director",
+										":directorId"
+									],
+									"variable": [
+										{
+											"key": "directorId",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 17:22:26 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        \"Director no encontrado con id: 5\"\n    ]\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
