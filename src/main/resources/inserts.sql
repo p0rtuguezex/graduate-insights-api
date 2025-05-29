@@ -58,6 +58,12 @@ VALUES
 ('20163487962', 'Casita S.A.C.', NOW(), NOW(), 17),
 ('20498722962', 'Petro S.A.C.', NOW(), NOW(), 18);
 
+INSERT INTO director
+(created_date, modified_date, user_id)
+VALUES
+    (NOW(), NOW(), 19);
+
+
 INSERT INTO jobs (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduate_id)
 VALUES
     ('Empresa ABC S.A.', 'Analista de Datos', 'Remoto','1', '2020-01-10', '2021-06-30', 1),

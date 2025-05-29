@@ -32,7 +32,6 @@ public class UserRequest implements Serializable {
   @NotBlank(message = "El apellido no puede estar en blanco")
   private String apellidos;
 
-  // @NotBlank(message = "La fecha de nacimiento no puede estar vacía")
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate fechaNacimiento;
 

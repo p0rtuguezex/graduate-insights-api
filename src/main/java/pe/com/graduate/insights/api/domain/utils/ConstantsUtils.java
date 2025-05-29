@@ -4,6 +4,7 @@ public class ConstantsUtils {
 
   public static final String USER_NOT_FOUND = "Usuario no encontrado con id: %s";
   public static final String GRADUATE_NOT_FOUND = "Graduado no encontrado con id: %s";
+  public static final String DIRECTOR_NOT_FOUND = "Director no encontrado con id: %s";
   public static final String EMPLOYER_NOT_FOUND = "Empleador no encontrado con id: %s";
   public static final String EDUCATION_CENTER_NOT_FOUND_ID =
       "Centro de Educación no encontrado con id: %s";
