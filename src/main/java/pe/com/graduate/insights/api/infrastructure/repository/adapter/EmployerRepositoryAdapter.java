@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.EmployerRepositoryPort;
 import pe.com.graduate.insights.api.domain.exception.GraduateException;
@@ -29,6 +30,7 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
   private final EmployerMapper employerMapper;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   public void save(EmployerRequest request) {
@@ -42,6 +44,7 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
             () -> {
               UserRequest userRequest = employerMapper.toEmployerRequest(request);
               UserEntity userEntity = userMapper.toEntity(userRequest);
+              userEntity.setContrasena(passwordEncoder.encode(userEntity.getContrasena()));
               userEntity = userRepository.save(userEntity);
               EmployerEntity employerEntity = employerMapper.toEntity(request, userEntity);
               employerRepository.save(employerEntity);
@@ -96,6 +99,7 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
         .map(
             graduateEntity -> {
               employerMapper.updateEmployerEntity(request, graduateEntity);
+              graduateEntity.getUser().setContrasena(passwordEncoder.encode(request.getContrasena()));
               return employerRepository.save(graduateEntity);
             })
         .orElseThrow(

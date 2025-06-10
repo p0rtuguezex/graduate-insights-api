@@ -29,7 +29,8 @@ VALUES
     ('Álvaro', 'Mora', '1986-04-17', 'M', 'alvaro.mora@example.com', '1', '56756756', '944566778', 'moraclave', NOW(), NOW()),
     ('Paula', 'Vega', '1995-10-10', 'F', 'paula.vega@example.com', '1', '47847847', '955677889', 'vegapass', NOW(), NOW()),
     ('Julio', 'Delgado', '1990-02-02', 'M', 'julio.delgado@example.com', '1', '38938938', '966788990', 'delgado123', NOW(), NOW()),
-    ('Rocío', 'Castañeda', '1991-09-09', 'F', 'rocio.castaneda@example.com', '1', '29029029', '977899001', 'rocio456', NOW(), NOW());
+    ('Rocío', 'Castañeda', '1991-09-09', 'F', 'rocio.castaneda@example.com', '1', '29029029', '977899001', 'rocio456', NOW(), NOW()),
+    ('Mc Giver', 'Avila', '1991-09-09', 'F', 'xmcgiver12@gmail.com', '1', '71450633', '977899001', '$2a$10$AzS.1vRFEWlMYCZT4SCbu.QqlRGci70s.5WiyFnljZctq2vs4xfNG', NOW(), NOW());
 
 
 INSERT INTO graduates

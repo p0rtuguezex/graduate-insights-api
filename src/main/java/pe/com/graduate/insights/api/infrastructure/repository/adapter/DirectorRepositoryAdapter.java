@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.DirectorRepositoryPort;
 import pe.com.graduate.insights.api.domain.exception.DirectorException;
@@ -33,6 +34,8 @@ public class DirectorRepositoryAdapter implements DirectorRepositoryPort {
 
   private final UserMapper userMapper;
 
+  private final PasswordEncoder passwordEncoder;
+
   @Override
   public void save(DirectorRequest directorRequest) {
     userRepository
@@ -45,6 +48,7 @@ public class DirectorRepositoryAdapter implements DirectorRepositoryPort {
             () -> {
               UserRequest userRequest = directorMapper.toDirectorRequest(directorRequest);
               UserEntity userEntity = userMapper.toEntity(userRequest);
+              userEntity.setContrasena(passwordEncoder.encode(userEntity.getContrasena()));
               userEntity = userRepository.save(userEntity);
               DirectorEntity directorEntity = directorMapper.toEntity(directorRequest, userEntity);
               directorRepository.save(directorEntity);
@@ -88,6 +92,7 @@ public class DirectorRepositoryAdapter implements DirectorRepositoryPort {
         .map(
             directorEntity -> {
               directorMapper.updateDirectorEntity(request, directorEntity);
+              directorEntity.getUser().setContrasena(passwordEncoder.encode(request.getContrasena()));
               return directorRepository.save(directorEntity);
             })
         .orElseThrow(
