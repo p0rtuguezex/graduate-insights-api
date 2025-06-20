@@ -50,7 +50,8 @@ VALUES
 ('2020-03-12', '2024-06-29', 'cv_diego_rojas.pdf', NOW(), NOW(), 12),
 ('2018-07-22', '2022-05-05', 'cv_camila_nunez.docx', NOW(), NOW(), 13),
 ('2019-12-01', '2023-10-20', 'cv_fernando_silva.pdf', NOW(), NOW(), 14),
-('2017-09-10', '2021-07-30', 'cv_valeria_reyes.docx', NOW(), NOW(), 15);
+('2017-09-10', '2021-07-30', 'cv_valeria_reyes.docx', NOW(), NOW(), 15),
+('2017-09-10', '2021-07-30', 'cv_valeria_reyes.docx', NOW(), NOW(), 31);
 
 INSERT INTO employers
 (ruc, razon_social, created_date, modified_date, user_id)

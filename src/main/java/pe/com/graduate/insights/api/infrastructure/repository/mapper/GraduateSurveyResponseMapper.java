@@ -21,7 +21,7 @@ public interface GraduateSurveyResponseMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "survey.id", source = "surveyId")
-    @Mapping(target = "graduate.id", source = "graduateId")
+    @Mapping(target = "graduate", ignore = true)
     @Mapping(target = "submittedAt", expression = "java(LocalDateTime.now())")
     @Mapping(target = "completed", constant = "true")
     @Mapping(target = "createdDate", expression = "java(LocalDateTime.now())")

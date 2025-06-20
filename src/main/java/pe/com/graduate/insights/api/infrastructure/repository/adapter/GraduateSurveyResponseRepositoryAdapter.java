@@ -7,8 +7,10 @@ import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.GraduateSurveyResponseRequest;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.GraduateSurveyResponseEntity;
+import pe.com.graduate.insights.api.infrastructure.repository.entities.GraduateEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.QuestionOptionEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.GraduateSurveyResponseRepository;
+import pe.com.graduate.insights.api.infrastructure.repository.jpa.GraduateRepository;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.QuestionOptionRepository;
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.GraduateSurveyResponseMapper;
 
@@ -20,12 +22,18 @@ import java.util.stream.Collectors;
 public class GraduateSurveyResponseRepositoryAdapter implements GraduateSurveyResponseRepositoryPort {
 
     private final GraduateSurveyResponseRepository graduateSurveyResponseRepository;
+    private final GraduateRepository graduateRepository;
     private final QuestionOptionRepository questionOptionRepository;
     private final GraduateSurveyResponseMapper graduateSurveyResponseMapper;
 
     @Override
-    public void save(GraduateSurveyResponseRequest request) {
+    public void save(GraduateSurveyResponseRequest request, Long graduateId) {
         GraduateSurveyResponseEntity responseEntity = graduateSurveyResponseMapper.toEntity(request);
+        
+        // Obtener y establecer la entidad Graduate
+        GraduateEntity graduate = graduateRepository.findById(graduateId)
+                .orElseThrow(() -> new NotFoundException("Graduado no encontrado con ID: " + graduateId));
+        responseEntity.setGraduate(graduate);
         
         // Procesar las respuestas individuales
         if (request.getResponses() != null) {

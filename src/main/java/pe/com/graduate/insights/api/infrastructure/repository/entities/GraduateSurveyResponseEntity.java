@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,11 +27,6 @@ public class  GraduateSurveyResponseEntity extends Auditable {
     @ManyToOne
     @JoinColumn(name = "graduate_id")
     private GraduateEntity graduate;
-    
-    private String currentPosition;
-    private String currentCompany;
-    private BigDecimal currentSalaryRange;
-    private String location;
     
     @OneToMany(mappedBy = "graduateSurveyResponse", cascade = CascadeType.ALL)
     private List<GraduateQuestionResponseEntity> responses;

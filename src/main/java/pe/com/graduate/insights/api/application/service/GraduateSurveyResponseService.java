@@ -16,8 +16,8 @@ public class GraduateSurveyResponseService implements GraduateSurveyResponseUseC
     private final GraduateSurveyResponseRepositoryPort graduateSurveyResponseRepositoryPort;
 
     @Override
-    public void save(GraduateSurveyResponseRequest request) {
-        graduateSurveyResponseRepositoryPort.save(request);
+    public void save(GraduateSurveyResponseRequest request, Long graduateId) {
+        graduateSurveyResponseRepositoryPort.save(request, graduateId);
     }
 
     @Override

@@ -7,5 +7,7 @@ public enum QuestionType {
     TEXT,            // Respuesta de texto libre
     NUMBER,            // Respuesta de texto libre
     DATE,            // Respuesta de texto libre
+    EMAIL,            // Respuesta de texto libre
+    PHONE   ,            // Respuesta de texto libre
     YES_NO           // Pregunta de Sí/No
 } 

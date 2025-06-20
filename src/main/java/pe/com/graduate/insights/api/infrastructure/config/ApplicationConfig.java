@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pe.com.graduate.insights.api.application.service.UserRoleService;
+import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.UserRepository;
 
 @Configuration
@@ -18,11 +20,19 @@ import pe.com.graduate.insights.api.infrastructure.repository.jpa.UserRepository
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
+    private final UserRoleService userRoleService;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByCorreo(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        return username -> {
+            UserEntity user = userRepository.findByCorreo(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+            
+            // Establecer el rol del usuario
+            user.setUserRole(userRoleService.getUserRole(user.getId()));
+            
+            return user;
+        };
     }
 
     @Bean
