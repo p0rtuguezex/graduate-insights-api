@@ -53,7 +53,8 @@ public class GraduateInsightsExceptionHandler {
     GraduateException.class,
     EventTypesException.class,
     EducationCenterException.class,
-    DirectorException.class
+    DirectorException.class,
+    SurveyException.class
   })
   public ResponseEntity<ApiResponse<List<String>>> handleDomainExceptions(RuntimeException ex) {
     HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;

@@ -22,4 +22,6 @@ public class ConstantsUtils {
       "El tipo de evento ya existe con el nombre: %s";
   public static final String STATUS_ACTIVE = "1";
   public static final String STATUS_INACTIVE = "0";
+  public static final String SURVEY_NOT_FOUND = "Encuesta no encontrada con ID: %s";
+  public static final String SURVEY_CONFLICT = "Titulo de encuesta ya existe: %s";
 }
