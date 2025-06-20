@@ -16,6 +16,8 @@ import pe.com.graduate.insights.api.infrastructure.repository.entities.DirectorE
 public interface DirectorRepository extends JpaRepository<DirectorEntity, Long> {
 
   boolean existsByIdAndUserEstado(Long graduateId, String estado);
+  
+  boolean existsByUserIdAndUserEstado(Long userId, String estado);
 
   Optional<DirectorEntity> findByIdAndUserEstado(Long id, String estado);
 

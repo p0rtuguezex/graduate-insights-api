@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.application.ports.input.AuthUseCase;
+import pe.com.graduate.insights.api.application.service.UserRoleService;
 import pe.com.graduate.insights.api.domain.models.response.ApiResponseWrapper;
 import pe.com.graduate.insights.api.domain.models.response.UserDataResponse;
 
@@ -26,13 +27,15 @@ import pe.com.graduate.insights.api.domain.models.response.UserDataResponse;
         origins = "http://localhost:3000",
         allowCredentials = "true"
 )
-@PreAuthorize("hasRole('USER')")
+@PreAuthorize("hasAnyRole('DIRECTOR', 'EMPLOYER', 'GRADUATE', 'USER')")
 public class MeController {
 
     private final AuthUseCase authUseCase;
+    private final UserRoleService userRoleService;
+    
     @Operation(
             summary = "Obtener datos del usuario",
-            description = "Obtiene los datos del usuario autenticado"
+            description = "Obtiene los datos del usuario autenticado incluyendo su rol"
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -57,6 +60,7 @@ public class MeController {
                 .id(user.getId())
                 .name(user.getNombres() + " " + user.getApellidos())
                 .email(user.getCorreo())
+                .role(userRoleService.getUserRoleDisplayName(user.getId()))
                 .build();
         return ResponseEntity.ok(ApiResponseWrapper.success("Datos del usuario obtenidos exitosamente", response));
     }

@@ -18,7 +18,7 @@ VALUES
     ('Patricia', 'Morales', '1986-05-25', 'F', 'patricia.morales@example.com', '1', '45645645', '933455667', 'login123', NOW(), NOW()),
     ('Fernando', 'Cruz', '1991-12-12', 'M', 'fernando.cruz@example.com', '1', '56756756', '944566778', 'cruzpass', NOW(), NOW()),
     ('Isabel', 'Salas', '1995-01-01', 'F', 'isabel.salas@example.com', '1', '67867867', '955677889', 'isapass', NOW(), NOW()),
-    ('Diego', 'Ortega', '1990-06-15', 'M', 'diego.ortega@example.com', '1', '78978978', '966788990', 'diego123', NOW(), NOW()),
+    ('Diego', 'Ortega', '1990-06-15', 'M', 'diego.ortega@example.com', '1', '78978978', '966788990', '$2a$10$AzS.1vRFEWlMYCZT4SCbu.QqlRGci70s.5WiyFnljZctq2vs4xfNG', NOW(), NOW()),
     ('Valeria', 'Reyes', '1988-09-22', 'F', 'valeria.reyes@example.com', '1', '89089089', '977899001', 'reyesclave', NOW(), NOW()),
     ('Manuel', 'Aguilar', '1992-08-30', 'M', 'manuel.aguilar@example.com', '1', '90190190', '988900112', 'aguipass', NOW(), NOW()),
     ('Camila', 'Campos', '1996-03-03', 'F', 'camila.campos@example.com', '1', '81281281', '999011223', 'camp123', NOW(), NOW()),

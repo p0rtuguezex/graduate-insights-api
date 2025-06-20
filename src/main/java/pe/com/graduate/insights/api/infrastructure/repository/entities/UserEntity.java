@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +15,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pe.com.graduate.insights.api.domain.models.enums.UserRole;
 
 @Getter
 @Setter
@@ -34,9 +36,15 @@ public class UserEntity extends Auditable implements UserDetails{
   private String dni;
   private String celular;
   private String contrasena;
+  
+  @Transient
+  private UserRole userRole;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
+    if (userRole != null) {
+      return List.of(new SimpleGrantedAuthority(userRole.getAuthority()));
+    }
     return List.of(new SimpleGrantedAuthority("ROLE_USER"));
   }
 
