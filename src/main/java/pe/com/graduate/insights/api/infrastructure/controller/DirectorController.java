@@ -23,7 +23,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
         origins = "http://localhost:3000",
         allowCredentials = "true"
 )
-@PreAuthorize("hasRole('USER')")
+@PreAuthorize("hasRole('DIRECTOR')")
 public class DirectorController {
 
   private final DirectorUseCase directorUseCase;

@@ -27,7 +27,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RestController
 @RequestMapping("/employer/{employerId}/jobs_offers")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('USER')")
+@PreAuthorize("hasRole('DIRECTOR')")
 public class JobOffersController {
 
   private final JobOffersUseCase jobOffersUseCase;

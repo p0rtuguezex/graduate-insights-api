@@ -6,14 +6,13 @@ import pe.com.graduate.insights.api.application.ports.generic.GenericList;
 import pe.com.graduate.insights.api.application.ports.generic.GenericPaginate;
 import pe.com.graduate.insights.api.application.ports.generic.GenericRead;
 import pe.com.graduate.insights.api.application.ports.generic.GenericUpdate;
-import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
-import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
-import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
+import pe.com.graduate.insights.api.domain.models.request.JobRequest;
+import pe.com.graduate.insights.api.domain.models.response.JobResponse;
 
-public interface GraduateUseCase
-    extends GenericCreate<GraduateRequest>,
-        GenericUpdate<GraduateRequest>,
-        GenericList<KeyValueResponse>,
-        GenericRead<GraduateResponse>,
-        GenericPaginate<GraduateResponse>,
-        GenericDelete {}
+public interface JobUseCase
+    extends GenericCreate<JobRequest>,
+        GenericUpdate<JobRequest>,
+        GenericList<JobResponse>,
+        GenericRead<JobResponse>,
+        GenericPaginate<JobResponse>,
+        GenericDelete {} 

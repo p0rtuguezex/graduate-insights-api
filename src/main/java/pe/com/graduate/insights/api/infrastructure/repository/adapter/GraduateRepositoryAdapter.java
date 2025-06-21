@@ -14,6 +14,7 @@ import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.GraduateEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
@@ -56,9 +57,9 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
   }
 
   @Override
-  public List<GraduateResponse> getList() {
+  public List<KeyValueResponse> getList() {
     return graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-        .map(graduateMapper::toDomain)
+        .map(graduateMapper::toKeyValueResponse)
         .toList();
   }
 

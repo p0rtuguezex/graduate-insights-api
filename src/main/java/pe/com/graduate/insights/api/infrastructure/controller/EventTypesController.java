@@ -27,7 +27,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RestController
 @RequestMapping("/event_types")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('USER')")
+@PreAuthorize("hasRole('DIRECTOR')")
 public class EventTypesController {
 
   private final EventTypesUseCase eventTypesUseCase;

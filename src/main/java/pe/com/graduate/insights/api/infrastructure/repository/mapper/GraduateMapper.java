@@ -9,6 +9,7 @@ import org.mapstruct.factory.Mappers;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.GraduateEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
 
@@ -29,6 +30,11 @@ public interface GraduateMapper {
   @Mapping(source = "user.dni", target = "dni")
   @Mapping(source = "user.celular", target = "celular")
   GraduateResponse toDomain(GraduateEntity graduateEntity);
+
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "id", target = "key")
+  @Mapping(source = "user.nombreCompleto", target = "value")
+  KeyValueResponse toKeyValueResponse(GraduateEntity graduateEntity);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(target = "user", source = "userEntity")

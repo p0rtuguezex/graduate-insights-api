@@ -48,6 +48,9 @@ public class UserEntity extends Auditable implements UserDetails{
     return List.of(new SimpleGrantedAuthority("ROLE_USER"));
   }
 
+  public String getNombreCompleto() {
+    return nombres + " " + apellidos;
+  }
   @Override
   public String getPassword() {
     return contrasena;
