@@ -14,6 +14,8 @@ import pe.com.graduate.insights.api.infrastructure.repository.entities.EmployerE
 public interface EmployerRepository extends JpaRepository<EmployerEntity, Long> {
 
   boolean existsByIdAndUserEstado(Long employerId, String estado);
+  
+  boolean existsByUserIdAndUserEstado(Long userId, String estado);
 
   Optional<EmployerEntity> findByIdAndUserEstado(Long id, String estado);
 

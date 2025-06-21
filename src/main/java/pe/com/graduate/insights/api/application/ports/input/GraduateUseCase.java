@@ -8,11 +8,12 @@ import pe.com.graduate.insights.api.application.ports.generic.GenericRead;
 import pe.com.graduate.insights.api.application.ports.generic.GenericUpdate;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
 import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 public interface GraduateUseCase
     extends GenericCreate<GraduateRequest>,
         GenericUpdate<GraduateRequest>,
-        GenericList<GraduateResponse>,
+        GenericList<KeyValueResponse>,
         GenericRead<GraduateResponse>,
         GenericPaginate<GraduateResponse>,
         GenericDelete {}

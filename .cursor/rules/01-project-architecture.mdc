@@ -1,0 +1,43 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Arquitectura del Proyecto Graduate Insights API
+
+Este proyecto sigue una arquitectura hexagonal (también conocida como arquitectura de puertos y adaptadores) con las siguientes capas principales:
+
+## Estructura de Paquetes
+
+### 1. Application
+- **Ports**: Contiene los puertos (interfaces) que definen los contratos entre las diferentes capas
+  - `generic/`: Interfaces genéricas para operaciones CRUD
+  - `input/`: Casos de uso de la aplicación (puertos primarios)
+  - `output/`: Interfaces de repositorio (puertos secundarios)
+- **Service**: Implementaciones de los casos de uso
+
+### 2. Domain
+- **Exception**: Excepciones personalizadas del dominio
+- **Models**: 
+  - `dto/`: Objetos de transferencia de datos
+  - `request/`: Objetos para las peticiones
+  - `response/`: Objetos para las respuestas
+- **Utils**: Utilidades comunes
+
+### 3. Infrastructure
+- **Advice**: Manejador global de excepciones
+- **AOP**: Aspectos para logging
+- **Config**: Configuraciones de la aplicación y seguridad
+- **Controller**: Controladores REST
+- **Repository**: 
+  - `adapter/`: Adaptadores de repositorio
+  - `entities/`: Entidades JPA
+  - `jpa/`: Interfaces de repositorio JPA
+  - `mapper/`: Mapeadores entre entidades y modelos
+- **Security**: Implementación de seguridad con JWT
+
+## Archivos Principales
+- [GraduateInsightsApplication.java](mdc:src/main/java/pe/com/graduate/insights/api/GraduateInsightsApplication.java): Punto de entrada de la aplicación
+- [SecurityConfig.java](mdc:src/main/java/pe/com/graduate/insights/api/infrastructure/config/SecurityConfig.java): Configuración de seguridad
+- [application.yml](mdc:src/main/resources/application.yml): Configuración de la aplicación
+

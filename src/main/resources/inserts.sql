@@ -18,7 +18,7 @@ VALUES
     ('Patricia', 'Morales', '1986-05-25', 'F', 'patricia.morales@example.com', '1', '45645645', '933455667', 'login123', NOW(), NOW()),
     ('Fernando', 'Cruz', '1991-12-12', 'M', 'fernando.cruz@example.com', '1', '56756756', '944566778', 'cruzpass', NOW(), NOW()),
     ('Isabel', 'Salas', '1995-01-01', 'F', 'isabel.salas@example.com', '1', '67867867', '955677889', 'isapass', NOW(), NOW()),
-    ('Diego', 'Ortega', '1990-06-15', 'M', 'diego.ortega@example.com', '1', '78978978', '966788990', 'diego123', NOW(), NOW()),
+    ('Diego', 'Ortega', '1990-06-15', 'M', 'diego.ortega@example.com', '1', '78978978', '966788990', '$2a$10$AzS.1vRFEWlMYCZT4SCbu.QqlRGci70s.5WiyFnljZctq2vs4xfNG', NOW(), NOW()),
     ('Valeria', 'Reyes', '1988-09-22', 'F', 'valeria.reyes@example.com', '1', '89089089', '977899001', 'reyesclave', NOW(), NOW()),
     ('Manuel', 'Aguilar', '1992-08-30', 'M', 'manuel.aguilar@example.com', '1', '90190190', '988900112', 'aguipass', NOW(), NOW()),
     ('Camila', 'Campos', '1996-03-03', 'F', 'camila.campos@example.com', '1', '81281281', '999011223', 'camp123', NOW(), NOW()),
@@ -29,7 +29,8 @@ VALUES
     ('Álvaro', 'Mora', '1986-04-17', 'M', 'alvaro.mora@example.com', '1', '56756756', '944566778', 'moraclave', NOW(), NOW()),
     ('Paula', 'Vega', '1995-10-10', 'F', 'paula.vega@example.com', '1', '47847847', '955677889', 'vegapass', NOW(), NOW()),
     ('Julio', 'Delgado', '1990-02-02', 'M', 'julio.delgado@example.com', '1', '38938938', '966788990', 'delgado123', NOW(), NOW()),
-    ('Rocío', 'Castañeda', '1991-09-09', 'F', 'rocio.castaneda@example.com', '1', '29029029', '977899001', 'rocio456', NOW(), NOW());
+    ('Rocío', 'Castañeda', '1991-09-09', 'F', 'rocio.castaneda@example.com', '1', '29029029', '977899001', 'rocio456', NOW(), NOW()),
+    ('Mc Giver', 'Avila', '1991-09-09', 'F', 'xmcgiver12@gmail.com', '1', '71450633', '977899001', '$2a$10$AzS.1vRFEWlMYCZT4SCbu.QqlRGci70s.5WiyFnljZctq2vs4xfNG', NOW(), NOW());
 
 
 INSERT INTO graduates
@@ -49,7 +50,8 @@ VALUES
 ('2020-03-12', '2024-06-29', 'cv_diego_rojas.pdf', NOW(), NOW(), 12),
 ('2018-07-22', '2022-05-05', 'cv_camila_nunez.docx', NOW(), NOW(), 13),
 ('2019-12-01', '2023-10-20', 'cv_fernando_silva.pdf', NOW(), NOW(), 14),
-('2017-09-10', '2021-07-30', 'cv_valeria_reyes.docx', NOW(), NOW(), 15);
+('2017-09-10', '2021-07-30', 'cv_valeria_reyes.docx', NOW(), NOW(), 15),
+('2017-09-10', '2021-07-30', 'cv_valeria_reyes.docx', NOW(), NOW(), 31);
 
 INSERT INTO employers
 (ruc, razon_social, created_date, modified_date, user_id)

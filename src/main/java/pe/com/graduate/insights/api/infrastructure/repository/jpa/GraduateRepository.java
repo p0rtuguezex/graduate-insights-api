@@ -16,6 +16,10 @@ import pe.com.graduate.insights.api.infrastructure.repository.entities.GraduateE
 public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> {
 
   boolean existsByIdAndUserEstado(Long graduateId, String estado);
+  
+  boolean existsByUserIdAndUserEstado(Long userId, String estado);
+  
+  Optional<GraduateEntity> findByUserIdAndUserEstado(Long userId, String estado);
 
   Optional<GraduateEntity> findByIdAndUserEstado(Long id, String estado);
 

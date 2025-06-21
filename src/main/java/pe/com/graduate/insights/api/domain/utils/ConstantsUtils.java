@@ -22,4 +22,12 @@ public class ConstantsUtils {
       "El tipo de evento ya existe con el nombre: %s";
   public static final String STATUS_ACTIVE = "1";
   public static final String STATUS_INACTIVE = "0";
+  public static final String SURVEY_NOT_FOUND = "Encuesta no encontrada con ID: %s";
+  public static final String SURVEY_CONFLICT = "Titulo de encuesta ya existe: %s";
+  
+  // Roles
+  public static final String ROLE_DIRECTOR = "ROLE_DIRECTOR";
+  public static final String ROLE_EMPLOYER = "ROLE_EMPLOYER";
+  public static final String ROLE_GRADUATE = "ROLE_GRADUATE";
+  public static final String ROLE_USER = "ROLE_USER";
 }

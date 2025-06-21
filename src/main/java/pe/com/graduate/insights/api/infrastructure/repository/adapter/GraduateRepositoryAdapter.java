@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.GraduateRepositoryPort;
 import pe.com.graduate.insights.api.domain.exception.GraduateException;
@@ -13,6 +14,7 @@ import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.GraduateEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
@@ -33,6 +35,8 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
 
   private final UserMapper userMapper;
 
+  private final PasswordEncoder passwordEncoder;
+
   @Override
   public void save(GraduateRequest graduateRequest) {
     userRepository
@@ -45,6 +49,7 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
             () -> {
               UserRequest userRequest = graduateMapper.toGraduateRequest(graduateRequest);
               UserEntity userEntity = userMapper.toEntity(userRequest);
+              userEntity.setContrasena(passwordEncoder.encode(userEntity.getContrasena()));
               userEntity = userRepository.save(userEntity);
               GraduateEntity graduateEntity = graduateMapper.toEntity(graduateRequest, userEntity);
               graduateRepository.save(graduateEntity);
@@ -52,9 +57,9 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
   }
 
   @Override
-  public List<GraduateResponse> getList() {
+  public List<KeyValueResponse> getList() {
     return graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-        .map(graduateMapper::toDomain)
+        .map(graduateMapper::toKeyValueResponse)
         .toList();
   }
 
@@ -88,6 +93,7 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
         .map(
             graduateEntity -> {
               graduateMapper.updateGraduateEntity(request, graduateEntity);
+              graduateEntity.getUser().setContrasena(passwordEncoder.encode(request.getContrasena()));
               return graduateRepository.save(graduateEntity);
             })
         .orElseThrow(

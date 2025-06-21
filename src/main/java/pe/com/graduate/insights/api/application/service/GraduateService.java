@@ -9,6 +9,7 @@ import pe.com.graduate.insights.api.application.ports.input.GraduateUseCase;
 import pe.com.graduate.insights.api.application.ports.output.GraduateRepositoryPort;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
 import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +23,7 @@ public class GraduateService implements GraduateUseCase {
   }
 
   @Override
-  public List<GraduateResponse> getList() {
+  public List<KeyValueResponse> getList() {
     return graduateRepositoryPort.getList();
   }
 
