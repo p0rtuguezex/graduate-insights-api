@@ -57,11 +57,33 @@ public class SurveyController {
     ResponseEntity<ApiResponse<List<SurveyResponse>>> getListSurveysPaginate(
             @RequestParam(value = "search", defaultValue = "") String search,
             @RequestParam(value = "page", defaultValue = "1") String page,
-            @RequestParam(value = "size", defaultValue = "10") String size) {
+            @RequestParam(value = "size", defaultValue = "10") String size,
+            @RequestParam(value = "status", required = false) String status) {
         Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size));
         Page<SurveyResponse> surveyPage = surveyUseCase.getPagination(search, pageable);
         return ResponseUtils.successResponsePaginate(
                 surveyPage.getContent(), paginateMapper.toDomain(surveyPage));
+    }
+    
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ApiResponse<Void>> updateSurveyStatus(
+            @PathVariable Long id,
+            @RequestParam("status") String status) {
+        surveyUseCase.updateStatus(id, status);
+        return ResponseUtils.successUpdateResponse();
+    }
+    
+    @GetMapping("/active")
+    public ResponseEntity<ApiResponse<List<SurveyResponse>>> getActiveSurveys() {
+        List<SurveyResponse> activeSurveys = surveyUseCase.getActiveSurveys();
+        return ResponseUtils.successResponse(activeSurveys);
+    }
+    
+    @GetMapping("/status/{status}")
+    public ResponseEntity<ApiResponse<List<SurveyResponse>>> getSurveysByStatus(
+            @PathVariable String status) {
+        List<SurveyResponse> surveys = surveyUseCase.getSurveysByStatus(status);
+        return ResponseUtils.successResponse(surveys);
     }
 
 } 

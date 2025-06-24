@@ -79,4 +79,33 @@ public class SurveyRepositoryAdapter implements SurveyRepositoryPort {
         }
         surveyRepository.deleteById(id);
     }
+
+    @Override
+    public void updateStatus(Long id, pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyStatus status) {
+        surveyRepository
+                .findById(id)
+                .map(surveyEntity -> {
+                    surveyEntity.setStatus(status);
+                    return surveyRepository.save(surveyEntity);
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(ConstantsUtils.SURVEY_NOT_FOUND, id)));
+    }
+
+    @Override
+    public List<SurveyResponse> getActiveSurveys() {
+        List<SurveyEntity> activeSurveys = surveyRepository.findByStatus(
+            pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyStatus.ACTIVE
+        );
+        return activeSurveys.stream()
+                .map(surveyMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<SurveyResponse> getSurveysByStatus(pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyStatus status) {
+        List<SurveyEntity> surveys = surveyRepository.findByStatus(status);
+        return surveys.stream()
+                .map(surveyMapper::toDomain)
+                .toList();
+    }
 } 

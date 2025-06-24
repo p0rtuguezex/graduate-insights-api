@@ -10,6 +10,7 @@ import pe.com.graduate.insights.api.domain.models.request.SurveyRequest;
 import pe.com.graduate.insights.api.domain.models.response.SurveyResponse;
 import pe.com.graduate.insights.api.domain.models.response.SurveyStatisticsResponse;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyType;
+import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyStatus;
 
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -21,4 +22,19 @@ public interface SurveyRepositoryPort
         GenericRead<SurveyResponse>,
         GenericPaginate<SurveyResponse>,
         GenericDelete {
+        
+    /**
+     * Actualiza el estado de una encuesta
+     */
+    void updateStatus(Long id, SurveyStatus status);
+    
+    /**
+     * Obtiene todas las encuestas activas
+     */
+    List<SurveyResponse> getActiveSurveys();
+    
+    /**
+     * Obtiene encuestas por estado específico
+     */
+    List<SurveyResponse> getSurveysByStatus(SurveyStatus status);
 } 

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -24,6 +26,13 @@ public class SurveyEntity extends Auditable {
     
     @Enumerated(EnumType.STRING)
     private SurveyType surveyType;
+    
+    @Enumerated(EnumType.STRING)
+    private SurveyStatus status;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
     
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionEntity> questions;

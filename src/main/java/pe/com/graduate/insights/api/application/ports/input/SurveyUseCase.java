@@ -22,4 +22,18 @@ public interface SurveyUseCase
         GenericPaginate<SurveyResponse>,
         GenericDelete {
 
+    /**
+     * Actualiza el estado de una encuesta
+     */
+    void updateStatus(Long id, String status);
+    
+    /**
+     * Obtiene todas las encuestas activas
+     */
+    List<SurveyResponse> getActiveSurveys();
+    
+    /**
+     * Obtiene encuestas por estado específico
+     */
+    List<SurveyResponse> getSurveysByStatus(String status);
 } 

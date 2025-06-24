@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyType;
+import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyStatus;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,5 +20,8 @@ public class SurveyResponse {
     private String title;
     private String description;
     private SurveyType surveyType;
+    private SurveyStatus status;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private List<QuestionResponse> questions;
 } 
