@@ -10,6 +10,7 @@ import pe.com.graduate.insights.api.domain.models.response.QuestionDetailRespons
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.SurveyRepository;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.GraduateSurveyResponseRepository;
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.SurveyMapper;
+import pe.com.graduate.insights.api.infrastructure.repository.mapper.SurveyTypeMapper;
 
 import java.util.List;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class GraduateSurveyRepositoryAdapter implements GraduateSurveyRepository
     private final SurveyRepository surveyRepository;
     private final GraduateSurveyResponseRepository graduateSurveyResponseRepository;
     private final SurveyMapper surveyMapper;
+    private final SurveyTypeMapper surveyTypeMapper;
 
     @Override
     public List<GraduateSurveyListResponse> getAllSurveysForGraduate(Long graduateId) {
@@ -45,7 +47,7 @@ public class GraduateSurveyRepositoryAdapter implements GraduateSurveyRepository
                             .surveyId(survey.getId())
                             .title(survey.getTitle())
                             .description(survey.getDescription())
-                            .surveyType(survey.getSurveyType())
+                            .surveyType(surveyTypeMapper.toDomain(survey.getSurveyType()))
                             .completed(isCompleted)
                             .submittedAt(completedResponse.map(response -> response.getSubmittedAt()).orElse(null))
                             .createdDate(survey.getCreatedDate())
@@ -120,7 +122,7 @@ public class GraduateSurveyRepositoryAdapter implements GraduateSurveyRepository
                         .surveyId(survey.getId())
                         .surveyTitle(survey.getTitle())
                         .surveyDescription(survey.getDescription())
-                        .surveyType(survey.getSurveyType())
+                        .surveyType(surveyTypeMapper.toDomain(survey.getSurveyType()))
                         .completed(graduateResponse.isPresent())
                         .createdDate(survey.getCreatedDate())
                         .questions(questionDetails);

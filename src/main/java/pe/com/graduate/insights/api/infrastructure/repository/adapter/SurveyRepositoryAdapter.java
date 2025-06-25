@@ -13,7 +13,9 @@ import pe.com.graduate.insights.api.domain.models.request.SurveyRequest;
 import pe.com.graduate.insights.api.domain.models.response.SurveyResponse;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyEntity;
+import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyTypeEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.SurveyRepository;
+import pe.com.graduate.insights.api.infrastructure.repository.jpa.SurveyTypeRepository;
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.SurveyMapper;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.List;
 public class SurveyRepositoryAdapter implements SurveyRepositoryPort {
 
     private final SurveyRepository surveyRepository;
+    private final SurveyTypeRepository surveyTypeRepository;
     private final SurveyMapper surveyMapper;
 
     @Override
@@ -35,6 +38,12 @@ public class SurveyRepositoryAdapter implements SurveyRepositoryPort {
             },
             () -> {
                 SurveyEntity surveyEntity = surveyMapper.toEntity(request);
+                
+                // Establecer la relación con SurveyType
+                SurveyTypeEntity surveyType = surveyTypeRepository.findById(request.getSurveyTypeId())
+                    .orElseThrow(() -> new NotFoundException("Tipo de encuesta no encontrado con ID: " + request.getSurveyTypeId()));
+                surveyEntity.setSurveyType(surveyType);
+                
                 surveyRepository.save(surveyEntity);
             });
     }
@@ -67,6 +76,15 @@ public class SurveyRepositoryAdapter implements SurveyRepositoryPort {
                 .findById(id)
                 .map(surveyEntity -> {
                     surveyMapper.updateSurveyEntity(request, surveyEntity);
+                    
+                    // Actualizar la relación con SurveyType si cambió
+                    if (request.getSurveyTypeId() != null && 
+                        !request.getSurveyTypeId().equals(surveyEntity.getSurveyType().getId())) {
+                        SurveyTypeEntity surveyType = surveyTypeRepository.findById(request.getSurveyTypeId())
+                            .orElseThrow(() -> new NotFoundException("Tipo de encuesta no encontrado con ID: " + request.getSurveyTypeId()));
+                        surveyEntity.setSurveyType(surveyType);
+                    }
+                    
                     return surveyRepository.save(surveyEntity);
                 })
                 .orElseThrow(() -> new NotFoundException(String.format(ConstantsUtils.SURVEY_NOT_FOUND, id)));

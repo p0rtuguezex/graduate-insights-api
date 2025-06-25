@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyType;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -16,7 +14,7 @@ public class GraduateSurveyListResponse {
     private Long surveyId;
     private String title;
     private String description;
-    private SurveyType surveyType;
+    private SurveyTypeResponse surveyType;
     private boolean completed;
     private LocalDateTime submittedAt;
     private LocalDateTime createdDate;

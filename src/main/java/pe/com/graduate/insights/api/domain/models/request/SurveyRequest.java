@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
-import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyType;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyStatus;
 
 import jakarta.validation.constraints.NotBlank;
@@ -35,7 +34,7 @@ public class SurveyRequest implements Serializable {
     private String description;
     
     @NotNull(message = "El tipo de encuesta es requerido")
-    private SurveyType surveyType;
+    private Long surveyTypeId;
     
     @NotNull(message = "El estado de la encuesta es requerido")
     private SurveyStatus status;

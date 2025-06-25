@@ -11,7 +11,6 @@ import pe.com.graduate.insights.api.domain.models.response.SurveyResponse;
 import pe.com.graduate.insights.api.domain.models.response.SurveyStatisticsResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyType;
 
 import java.util.List;
 

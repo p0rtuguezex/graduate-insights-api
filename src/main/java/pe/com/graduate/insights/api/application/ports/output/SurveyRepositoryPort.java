@@ -9,7 +9,6 @@ import pe.com.graduate.insights.api.application.ports.generic.GenericUpdate;
 import pe.com.graduate.insights.api.domain.models.request.SurveyRequest;
 import pe.com.graduate.insights.api.domain.models.response.SurveyResponse;
 import pe.com.graduate.insights.api.domain.models.response.SurveyStatisticsResponse;
-import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyType;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyStatus;
 
 import java.util.List;

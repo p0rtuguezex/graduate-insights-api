@@ -12,13 +12,17 @@ import pe.com.graduate.insights.api.domain.models.response.SurveyResponse;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.QuestionEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.QuestionOptionEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyEntity;
+import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyTypeEntity;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.Iterator;
+import java.util.Objects;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {SurveyTypeMapper.class})
 public interface SurveyMapper {
 
     SurveyMapper INSTANCE = Mappers.getMapper(SurveyMapper.class);
@@ -35,6 +39,7 @@ public interface SurveyMapper {
     @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "questions", source = "questions")
+    @Mapping(target = "surveyType", ignore = true)
     SurveyEntity toEntity(SurveyRequest surveyRequest);
 
     @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -46,6 +51,7 @@ public interface SurveyMapper {
     QuestionOptionEntity toEntity(QuestionOptionRequest optionRequest);
 
     @Mapping(target = "questions", ignore = true)
+    @Mapping(target = "surveyType", ignore = true)
     void updateSurveyEntity(SurveyRequest request, @MappingTarget SurveyEntity entity);
 
     @Mapping(target = "options", ignore = true)
@@ -83,9 +89,24 @@ public interface SurveyMapper {
                 .filter(q -> q.getId() != null)
                 .collect(Collectors.toMap(QuestionEntity::getId, q -> q));
 
-        // Lista para las preguntas actualizadas
-        List<QuestionEntity> updatedQuestions = new ArrayList<>();
+        // Crear un set con los IDs de preguntas en el request
+        Set<Long> requestQuestionIds = request.getQuestions().stream()
+                .map(QuestionRequest::getId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
 
+        // Eliminar preguntas que no están en el request (pero solo si no tienen respuestas)
+        Iterator<QuestionEntity> iterator = entity.getQuestions().iterator();
+        while (iterator.hasNext()) {
+            QuestionEntity question = iterator.next();
+            if (question.getId() != null && !requestQuestionIds.contains(question.getId())) {
+                // Solo eliminar si la pregunta no tiene respuestas asociadas
+                // Para mayor seguridad, por ahora no eliminamos preguntas existentes
+                // iterator.remove();
+            }
+        }
+
+        // Procesar preguntas del request
         for (QuestionRequest questionRequest : request.getQuestions()) {
             QuestionEntity questionEntity;
             
@@ -98,14 +119,9 @@ public interface SurveyMapper {
                 // Crear nueva pregunta
                 questionEntity = toEntity(questionRequest);
                 questionEntity.setSurvey(entity);
+                entity.getQuestions().add(questionEntity);
             }
-            
-            updatedQuestions.add(questionEntity);
         }
-
-        // Limpiar y establecer las preguntas actualizadas
-        entity.getQuestions().clear();
-        entity.getQuestions().addAll(updatedQuestions);
         
         // Establecer las relaciones
         linkSurveyRelations(entity);
@@ -126,9 +142,22 @@ public interface SurveyMapper {
                 .filter(o -> o.getId() != null)
                 .collect(Collectors.toMap(QuestionOptionEntity::getId, o -> o));
 
-        // Lista para las opciones actualizadas
-        List<QuestionOptionEntity> updatedOptions = new ArrayList<>();
+        // Crear un set con los IDs de opciones en el request
+        Set<Long> requestOptionIds = request.getOptions().stream()
+                .map(QuestionOptionRequest::getId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
 
+        // Eliminar opciones que no están en el request
+        Iterator<QuestionOptionEntity> iterator = entity.getOptions().iterator();
+        while (iterator.hasNext()) {
+            QuestionOptionEntity option = iterator.next();
+            if (option.getId() != null && !requestOptionIds.contains(option.getId())) {
+                iterator.remove();
+            }
+        }
+
+        // Procesar opciones del request
         for (QuestionOptionRequest optionRequest : request.getOptions()) {
             QuestionOptionEntity optionEntity;
             
@@ -140,13 +169,8 @@ public interface SurveyMapper {
                 // Crear nueva opción
                 optionEntity = toEntity(optionRequest);
                 optionEntity.setQuestion(entity);
+                entity.getOptions().add(optionEntity);
             }
-            
-            updatedOptions.add(optionEntity);
         }
-
-        // Limpiar y establecer las opciones actualizadas
-        entity.getOptions().clear();
-        entity.getOptions().addAll(updatedOptions);
     }
 } 

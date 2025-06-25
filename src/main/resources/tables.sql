@@ -1,18 +1,19 @@
 SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS graduate_question_response_options;
+DROP TABLE IF EXISTS graduate_question_responses;
+DROP TABLE IF EXISTS graduate_survey_responses;
+DROP TABLE IF EXISTS question_options;
+DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS surveys;
+DROP TABLE IF EXISTS survey_types;
+DROP TABLE IF EXISTS jobs_offers;
 DROP TABLE IF EXISTS jobs;
 DROP TABLE IF EXISTS graduates;
 DROP TABLE IF EXISTS director;
 DROP TABLE IF EXISTS employers;
 DROP TABLE IF EXISTS education_centers;
-DROP TABLE IF EXISTS jobs_offers;
 DROP TABLE IF EXISTS event_types;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS surveys;
-DROP TABLE IF EXISTS questions;
-DROP TABLE IF EXISTS question_options;
-DROP TABLE IF EXISTS graduate_survey_responses;
-DROP TABLE IF EXISTS graduate_question_responses;
-DROP TABLE IF EXISTS graduate_question_response_options;
 SET FOREIGN_KEY_CHECKS = 1;
 
 
@@ -111,21 +112,32 @@ CREATE TABLE jobs_offers (
   FOREIGN KEY (employer_id) REFERENCES employers(id)
 );
 
--- Tabla de encuestas
-CREATE TABLE IF NOT EXISTS surveys (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    description TEXT,
-    survey_type VARCHAR(50) NOT NULL,
-    status VARCHAR(20) DEFAULT 'DRAFT' NOT NULL,
-    start_date DATE NOT NULL,
-    end_date DATE NULL,
+-- Tabla de tipos de encuesta
+CREATE TABLE survey_types (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description VARCHAR(500),
+    active BOOLEAN NOT NULL DEFAULT TRUE,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Tabla de encuestas
+CREATE TABLE surveys (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    survey_type_id BIGINT NOT NULL,
+    status VARCHAR(20) DEFAULT 'DRAFT' NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NULL,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_surveys_survey_type FOREIGN KEY (survey_type_id) REFERENCES survey_types(id)
+);
+
 -- Tabla de preguntas
-CREATE TABLE IF NOT EXISTS questions (
+CREATE TABLE questions (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     survey_id BIGINT NOT NULL,
     question_text VARCHAR(500) NOT NULL,
@@ -137,7 +149,7 @@ CREATE TABLE IF NOT EXISTS questions (
 );
 
 -- Tabla de opciones de respuesta
-CREATE TABLE IF NOT EXISTS question_options (
+CREATE TABLE question_options (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     question_id BIGINT NOT NULL,
     option_text VARCHAR(255) NOT NULL,
@@ -148,7 +160,7 @@ CREATE TABLE IF NOT EXISTS question_options (
 );
 
 -- Tabla de respuestas de graduados a encuestas
-CREATE TABLE IF NOT EXISTS graduate_survey_responses (
+CREATE TABLE graduate_survey_responses (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     survey_id BIGINT NOT NULL,
     graduate_id BIGINT NOT NULL,
@@ -162,7 +174,7 @@ CREATE TABLE IF NOT EXISTS graduate_survey_responses (
 );
 
 -- Tabla de respuestas individuales a preguntas
-CREATE TABLE IF NOT EXISTS graduate_question_responses (
+CREATE TABLE graduate_question_responses (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     graduate_survey_response_id BIGINT NOT NULL,
     question_id BIGINT NOT NULL,
@@ -175,7 +187,7 @@ CREATE TABLE IF NOT EXISTS graduate_question_responses (
 );
 
 -- Tabla de relación entre respuestas y opciones seleccionadas
-CREATE TABLE IF NOT EXISTS graduate_question_response_options (
+CREATE TABLE graduate_question_response_options (
     response_id BIGINT NOT NULL,
     option_id BIGINT NOT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

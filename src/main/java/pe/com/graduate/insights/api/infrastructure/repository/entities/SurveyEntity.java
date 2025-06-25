@@ -24,8 +24,9 @@ public class SurveyEntity extends Auditable {
     private String title;
     private String description;
     
-    @Enumerated(EnumType.STRING)
-    private SurveyType surveyType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "survey_type_id", nullable = false)
+    private SurveyTypeEntity surveyType;
     
     @Enumerated(EnumType.STRING)
     private SurveyStatus status;

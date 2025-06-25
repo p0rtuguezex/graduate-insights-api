@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyEntity;
-import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyType;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.SurveyStatus;
 
 import java.time.LocalDateTime;
@@ -18,14 +17,14 @@ import java.util.Optional;
 public interface SurveyRepository extends JpaRepository<SurveyEntity, Long> {
     
     Optional<SurveyEntity> findByTitle(String title);
-    List<SurveyEntity> findBySurveyType(SurveyType surveyType);
+    List<SurveyEntity> findBySurveyTypeId(Long surveyTypeId);
     
-    Page<SurveyEntity> findBySurveyType(SurveyType surveyType, Pageable pageable);
+    Page<SurveyEntity> findBySurveyTypeId(Long surveyTypeId, Pageable pageable);
     
     Page<SurveyEntity> findByTitleContainingIgnoreCase(String search, Pageable pageable);
     
-    Page<SurveyEntity> findBySurveyTypeAndTitleContainingIgnoreCase(
-        SurveyType surveyType, 
+    Page<SurveyEntity> findBySurveyTypeIdAndTitleContainingIgnoreCase(
+        Long surveyTypeId, 
         String search, 
         Pageable pageable
     );

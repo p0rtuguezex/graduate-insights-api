@@ -12,11 +12,13 @@ import pe.com.graduate.insights.api.application.ports.output.GraduateSurveyRespo
 import pe.com.graduate.insights.api.domain.models.response.*;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.*;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.*;
+import pe.com.graduate.insights.api.infrastructure.repository.mapper.SurveyTypeMapper;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
     private final GraduateSurveyResponseRepository graduateSurveyResponseRepository;
     private final GraduateQuestionResponseRepository graduateQuestionResponseRepository;
     private final EducationCenterRepository educationCenterRepository;
+    private final SurveyTypeMapper surveyTypeMapper;
     
     @Override
     public SurveyStatisticsResponse getSurveyStatistics(Long surveyId) {
@@ -66,7 +69,7 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
             .surveyId(surveyId)
             .surveyTitle(survey.getTitle())
             .surveyDescription(survey.getDescription())
-            .surveyType(survey.getSurveyType())
+            .surveyType(surveyTypeMapper.toDomain(survey.getSurveyType()))
             .status(survey.getStatus())
             .startDate(survey.getStartDate())
             .endDate(survey.getEndDate())
@@ -345,16 +348,73 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
                     break;
                     
                 case SCALE:
+                    // Para preguntas tipo SCALE, usar las opciones seleccionadas (como "5 - Muy satisfecho")
+                    Map<String, Long> scaleOptionCounts = getOptionCountsForQuestion(question.getId());
+                    Map<String, Double> scalePercentages = calculatePercentages(scaleOptionCounts, totalResponses);
+                    builder.optionCounts(scaleOptionCounts)
+                           .percentages(scalePercentages)
+                           .recommendedChartType("bar");
+                    
+                    // Si también quieres estadísticas numéricas, extrae los valores de las opciones
+                    if (!scaleOptionCounts.isEmpty()) {
+                        try {
+                            List<Double> numericValues = scaleOptionCounts.entrySet().stream()
+                                .flatMap(entry -> {
+                                    // Extraer el número del texto de la opción (ej: "5 - Muy satisfecho" -> 5)
+                                    String optionText = entry.getKey();
+                                    String[] parts = optionText.split(" - ");
+                                    if (parts.length > 0) {
+                                        try {
+                                            double value = Double.parseDouble(parts[0]);
+                                            return Collections.nCopies(entry.getValue().intValue(), value).stream();
+                                        } catch (NumberFormatException e) {
+                                            return Stream.empty();
+                                        }
+                                    }
+                                    return Stream.empty();
+                                })
+                                .collect(Collectors.toList());
+                            
+                            if (!numericValues.isEmpty()) {
+                                double average = numericValues.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+                                double min = numericValues.stream().mapToDouble(Double::doubleValue).min().orElse(0.0);
+                                double max = numericValues.stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+                                
+                                builder.average(average)
+                                       .min(min)
+                                       .max(max);
+                            }
+                        } catch (Exception e) {
+                            // Si hay error extrayendo valores numéricos, continuar sin estadísticas numéricas
+                            System.out.println("No se pudieron extraer valores numéricos de las opciones SCALE para pregunta " + question.getId());
+                        }
+                    }
+                    break;
+                    
                 case NUMBER:
+                    // Para preguntas tipo NUMBER, usar valores numéricos directos
                     List<Integer> numericResponses = graduateQuestionResponseRepository.findNumericResponsesByQuestionId(question.getId());
+                    
                     if (!numericResponses.isEmpty()) {
+                        // Estadísticas numéricas básicas
                         double average = numericResponses.stream().mapToDouble(Integer::doubleValue).average().orElse(0.0);
                         double min = numericResponses.stream().mapToDouble(Integer::doubleValue).min().orElse(0.0);
                         double max = numericResponses.stream().mapToDouble(Integer::doubleValue).max().orElse(0.0);
                         
+                        // Generar conteos por valor (importante para gráficos de barras)
+                        Map<String, Long> numberDistribution = numericResponses.stream()
+                            .collect(Collectors.groupingBy(
+                                String::valueOf,
+                                Collectors.counting()
+                            ));
+                        
+                        Map<String, Double> numberPercentages = calculatePercentages(numberDistribution, totalResponses);
+                        
                         builder.average(average)
                                .min(min)
                                .max(max)
+                               .optionCounts(numberDistribution)
+                               .percentages(numberPercentages)
                                .recommendedChartType("bar");
                     }
                     break;

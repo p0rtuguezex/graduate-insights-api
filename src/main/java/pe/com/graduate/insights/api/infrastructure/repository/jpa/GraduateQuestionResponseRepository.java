@@ -33,15 +33,16 @@ public interface GraduateQuestionResponseRepository extends JpaRepository<Gradua
      */
     @Query("SELECT qo.optionText, COUNT(qr) FROM GraduateQuestionResponseEntity qr " +
            "JOIN qr.selectedOptions qo " +
-           "WHERE qr.question.id = :questionId " +
+           "WHERE qr.question.id = :questionId AND qo.question.id = :questionId " +
            "GROUP BY qo.id, qo.optionText")
     List<Object[]> countResponsesByOptionForQuestion(@Param("questionId") Long questionId);
     
     /**
      * Obtiene todas las respuestas numéricas para una pregunta
      */
-    @Query("SELECT qr.numericResponse FROM GraduateQuestionResponseEntity qr " +
-           "WHERE qr.question.id = :questionId AND qr.numericResponse IS NOT NULL")
+    @Query(value = "SELECT numeric_response FROM graduate_question_responses " +
+           "WHERE question_id = :questionId AND numeric_response IS NOT NULL", 
+           nativeQuery = true)
     List<Integer> findNumericResponsesByQuestionId(@Param("questionId") Long questionId);
     
     /**
@@ -63,4 +64,11 @@ public interface GraduateQuestionResponseRepository extends JpaRepository<Gradua
     @Query("SELECT COUNT(DISTINCT qr.graduateSurveyResponse.id) FROM GraduateQuestionResponseEntity qr " +
            "WHERE qr.graduateSurveyResponse.survey.id = :surveyId")
     Long countDistinctResponsesBySurveyId(@Param("surveyId") Long surveyId);
+    
+    /**
+     * Método de debug para verificar respuestas numéricas específicas
+     */
+    @Query(value = "SELECT id, question_id, numeric_response FROM graduate_question_responses " +
+           "WHERE question_id = :questionId", nativeQuery = true)
+    List<Object[]> debugNumericResponsesByQuestionId(@Param("questionId") Long questionId);
 } 
