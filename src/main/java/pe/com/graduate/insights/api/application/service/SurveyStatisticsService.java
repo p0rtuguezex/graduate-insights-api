@@ -132,7 +132,25 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
                 break;
                 
             case SCALE:
+                // Para preguntas SCALE, usar las opciones seleccionadas
+                Map<String, Long> scaleOptionCounts = getOptionCountsForQuestion(questionId);
+                List<String> scaleLabels = new ArrayList<>(scaleOptionCounts.keySet());
+                List<Object> scaleData = scaleLabels.stream()
+                    .map(scaleOptionCounts::get)
+                    .collect(Collectors.toList());
+                
+                builder.labels(scaleLabels)
+                       .datasets(Arrays.asList(
+                           ChartDataResponse.ChartDataset.builder()
+                               .label("Respuestas")
+                               .data(scaleData)
+                               .backgroundColors(generateColors(scaleLabels.size()))
+                               .build()
+                       ));
+                break;
+                
             case NUMBER:
+                // Para preguntas NUMBER, usar valores numéricos directos
                 List<Integer> numericResponses = graduateQuestionResponseRepository.findNumericResponsesByQuestionId(questionId);
                 Map<String, Long> distribution = numericResponses.stream()
                     .collect(Collectors.groupingBy(
@@ -422,6 +440,7 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
                 case TEXT:
                     List<String> textResponses = graduateQuestionResponseRepository.findTextResponsesByQuestionId(question.getId());
                     if (!textResponses.isEmpty()) {
+                        // Estadísticas existentes
                         List<String> sampleResponses = textResponses.stream()
                             .limit(5)
                             .collect(Collectors.toList());
@@ -431,8 +450,36 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
                             .average()
                             .orElse(0.0);
                         
+                        // Análisis de frecuencia de palabras (top 10)
+                        Map<String, Long> wordFrequency = getWordFrequency(textResponses);
+                        Map<String, Long> topWords = wordFrequency.entrySet().stream()
+                            .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                            .limit(10)
+                            .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue,
+                                (e1, e2) -> e1,
+                                LinkedHashMap::new
+                            ));
+                        
+                        // Calcular porcentajes basados en el total de palabras
+                        long totalWords = wordFrequency.values().stream().mapToLong(Long::longValue).sum();
+                        Map<String, Double> wordPercentages = new HashMap<>();
+                        topWords.forEach((word, count) -> {
+                            double percentage = totalWords > 0 ? (count * 100.0) / totalWords : 0.0;
+                            wordPercentages.put(word, Math.round(percentage * 100.0) / 100.0);
+                        });
+                        
+                        // Estadísticas de longitud adicionales
+                        int minLength = textResponses.stream().mapToInt(String::length).min().orElse(0);
+                        int maxLength = textResponses.stream().mapToInt(String::length).max().orElse(0);
+                        
                         builder.sampleResponses(sampleResponses)
                                .averageResponseLength(avgLength)
+                               .optionCounts(topWords)
+                               .percentages(wordPercentages)
+                               .min((double) minLength)
+                               .max((double) maxLength)
                                .recommendedChartType("word_cloud");
                     }
                     break;
