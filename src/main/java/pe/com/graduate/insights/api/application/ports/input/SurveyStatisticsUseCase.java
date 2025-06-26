@@ -20,9 +20,9 @@ public interface SurveyStatisticsUseCase {
     ChartDataResponse getQuestionChartData(Long surveyId, Long questionId, String chartType);
     
     /**
-     * Obtiene datos para el dashboard general
+     * Obtiene datos para el dashboard general filtrado por año de graduación
      */
-    DashboardOverviewResponse getDashboardOverview(Integer graduationYear, Long educationCenterId);
+    DashboardOverviewResponse getDashboardOverview(Integer graduationYear);
     
     /**
      * Compara estadísticas entre múltiples encuestas

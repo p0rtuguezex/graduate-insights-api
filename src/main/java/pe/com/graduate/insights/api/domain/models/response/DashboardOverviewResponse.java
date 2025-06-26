@@ -40,7 +40,6 @@ public class DashboardOverviewResponse {
         private Double overallResponseRate;
         private Long activeSurveys;
         private Long completedSurveys;
-        private Map<String, Long> responsesByEducationCenter;
         private Map<String, Long> responsesByGraduationYear;
     }
     
@@ -64,8 +63,6 @@ public class DashboardOverviewResponse {
     @AllArgsConstructor
     public static class DashboardFilters {
         private Integer graduationYear;
-        private Long educationCenterId;
-        private String educationCenterName;
         private String surveyType;
         private String dateRange;
     }

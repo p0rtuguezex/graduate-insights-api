@@ -54,10 +54,9 @@ public class SurveyStatisticsController {
      */
     @GetMapping("/dashboard")
     public ResponseEntity<ApiResponse<DashboardOverviewResponse>> getDashboardOverview(
-            @RequestParam(value = "graduationYear", required = false) Integer graduationYear,
-            @RequestParam(value = "educationCenterId", required = false) Long educationCenterId) {
+            @RequestParam(value = "graduation_year", required = false) Integer graduationYear) {
         return ResponseUtils.successResponse(
-            surveyStatisticsUseCase.getDashboardOverview(graduationYear, educationCenterId)
+            surveyStatisticsUseCase.getDashboardOverview(graduationYear)
         );
     }
     

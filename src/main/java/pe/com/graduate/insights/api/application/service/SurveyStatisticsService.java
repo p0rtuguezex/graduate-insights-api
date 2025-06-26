@@ -206,14 +206,34 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
     }
     
     @Override
-    public DashboardOverviewResponse getDashboardOverview(Integer graduationYear, Long educationCenterId) {
+    public DashboardOverviewResponse getDashboardOverview(Integer graduationYear) {
         // Obtener estadísticas generales
         Long totalSurveys = surveyRepository.count();
         Long activeSurveys = surveyRepository.findByStatus(SurveyStatus.ACTIVE).stream().count();
-        Long totalGraduates = graduateRepository.countByUserEstado("1");
         
-        // Obtener total de respuestas (asumiendo respuestas únicas por graduado)
-        Long totalResponses = graduateSurveyResponseRepository.count();
+        // Filtrar graduados por año de graduación si se especifica
+        Long totalGraduates;
+        Long totalResponses;
+        
+        if (graduationYear != null) {
+            // Filtrar por año de graduación real (fechaFin)
+            totalGraduates = graduateRepository.findAll().stream()
+                .filter(graduate -> graduate.getUser().getEstado().equals("1"))
+                .filter(graduate -> graduate.getFechaFin() != null && 
+                                   graduate.getFechaFin().getYear() == graduationYear)
+                .count();
+            
+            // Filtrar respuestas de graduados del año especificado
+            totalResponses = graduateSurveyResponseRepository.findAll().stream()
+                .filter(response -> response.getGraduate().getFechaFin() != null &&
+                                   response.getGraduate().getFechaFin().getYear() == graduationYear)
+                .count();
+        } else {
+            // Sin filtro, todos los graduados activos
+            totalGraduates = graduateRepository.countByUserEstado("1");
+            totalResponses = graduateSurveyResponseRepository.count();
+        }
+        
         Double overallResponseRate = totalGraduates > 0 ? (totalResponses * 100.0) / totalGraduates : 0.0;
         
         // Crear estadísticas generales
@@ -224,15 +244,14 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
             .overallResponseRate(overallResponseRate)
             .activeSurveys(activeSurveys)
             .completedSurveys(surveyRepository.findByStatus(SurveyStatus.COMPLETED).stream().count())
-            .responsesByEducationCenter(getResponsesByEducationCenter())
-            .responsesByGraduationYear(getResponsesByGraduationYear())
+            .responsesByGraduationYear(getResponsesByGraduationYear(graduationYear))
             .build();
         
         // Crear gráficos del dashboard
-        List<ChartDataResponse> dashboardCharts = generateDashboardCharts();
+        List<ChartDataResponse> dashboardCharts = generateDashboardCharts(graduationYear);
         
         // Crear KPIs
-        List<DashboardOverviewResponse.KpiIndicator> kpiIndicators = generateKpiIndicators(overallResponseRate);
+        List<DashboardOverviewResponse.KpiIndicator> kpiIndicators = generateKpiIndicators(overallResponseRate, totalGraduates);
         
         // Obtener encuestas recientes
         List<SurveyResponse> recentSurveys = getRecentSurveys();
@@ -244,7 +263,6 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
             .recentSurveys(recentSurveys)
             .appliedFilters(DashboardOverviewResponse.DashboardFilters.builder()
                 .graduationYear(graduationYear)
-                .educationCenterId(educationCenterId)
                 .build())
             .build();
     }
@@ -638,38 +656,46 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
             .build();
     }
     
-    private Map<String, Long> getResponsesByEducationCenter() {
+    private Map<String, Long> getResponsesByEducationCenter(Integer graduationYear) {
         List<GraduateSurveyResponseEntity> responses = graduateSurveyResponseRepository.findAll();
         
         return responses.stream()
+            .filter(response -> graduationYear == null || 
+                    (response.getGraduate().getFechaFin() != null && 
+                     response.getGraduate().getFechaFin().getYear() == graduationYear))
             .collect(Collectors.groupingBy(
                 response -> {
-                    // Aquí necesitarías acceder al centro educativo del graduado
-                    // Dependiendo de tu modelo de datos
-                    return "Centro Educativo"; // Placeholder
+                    // Por ahora, como no hay relación directa con educationCenter, usar un valor por defecto
+                    // En el futuro, esto debería ser: response.getGraduate().getEducationCenter().getNombre()
+                    return "Sin centro educativo definido";
                 },
                 Collectors.counting()
             ));
     }
     
-    private Map<String, Long> getResponsesByGraduationYear() {
+    private Map<String, Long> getResponsesByGraduationYear(Integer graduationYear) {
         List<GraduateSurveyResponseEntity> responses = graduateSurveyResponseRepository.findAll();
         
         return responses.stream()
+            .filter(response -> graduationYear == null || 
+                    (response.getGraduate().getFechaFin() != null && 
+                     response.getGraduate().getFechaFin().getYear() == graduationYear))
             .collect(Collectors.groupingBy(
                 response -> {
-                    // Aquí necesitarías acceder al año de graduación
-                    // Dependiendo de tu modelo de datos
-                    return "2024"; // Placeholder
+                    if (response.getGraduate().getFechaFin() != null) {
+                        // Usar el año real de graduación (fechaFin)
+                        return String.valueOf(response.getGraduate().getFechaFin().getYear());
+                    }
+                    return "Sin fecha de graduación";
                 },
                 Collectors.counting()
             ));
     }
     
-    private List<ChartDataResponse> generateDashboardCharts() {
+    private List<ChartDataResponse> generateDashboardCharts(Integer graduationYear) {
         List<ChartDataResponse> charts = new ArrayList<>();
         
-        // Gráfico de encuestas por estado
+        // Gráfico de encuestas por estado (no cambia con el filtro de año)
         Map<String, Long> surveysByStatus = Arrays.stream(SurveyStatus.values())
             .collect(Collectors.toMap(
                 Enum::name,
@@ -690,17 +716,24 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
             .configuration(createDefaultChartConfiguration("pie"))
             .build());
         
-        // Gráfico de respuestas por mes
+        // Gráfico de respuestas por mes (filtrado por año de graduación)
         Map<String, Long> responsesByMonth = graduateSurveyResponseRepository.findAll().stream()
             .filter(response -> response.getSubmittedAt() != null)
+            .filter(response -> graduationYear == null || 
+                    (response.getGraduate().getFechaFin() != null && 
+                     response.getGraduate().getFechaFin().getYear() == graduationYear))
             .collect(Collectors.groupingBy(
                 response -> response.getSubmittedAt().getMonth().toString(),
                 Collectors.counting()
             ));
         
+        String chartTitle = graduationYear != null ? 
+            "Respuestas por Mes (Graduados " + graduationYear + ")" : 
+            "Respuestas por Mes";
+        
         charts.add(ChartDataResponse.builder()
             .chartType("line")
-            .title("Respuestas por Mes")
+            .title(chartTitle)
             .labels(new ArrayList<>(responsesByMonth.keySet()))
             .datasets(Arrays.asList(
                 ChartDataResponse.ChartDataset.builder()
@@ -716,7 +749,7 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
         return charts;
     }
     
-    private List<DashboardOverviewResponse.KpiIndicator> generateKpiIndicators(Double responseRate) {
+    private List<DashboardOverviewResponse.KpiIndicator> generateKpiIndicators(Double responseRate, Long totalGraduates) {
         List<DashboardOverviewResponse.KpiIndicator> kpis = new ArrayList<>();
         
         kpis.add(DashboardOverviewResponse.KpiIndicator.builder()
@@ -740,7 +773,6 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
             .color("#2196F3")
             .build());
         
-        Long totalGraduates = graduateRepository.countByUserEstado("1");
         kpis.add(DashboardOverviewResponse.KpiIndicator.builder()
             .name("Total Graduados")
             .value(totalGraduates.toString())
