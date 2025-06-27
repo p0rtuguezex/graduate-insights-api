@@ -13,6 +13,7 @@ import pe.com.graduate.insights.api.application.ports.output.JobRepositoryPort;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.JobRequest;
 import pe.com.graduate.insights.api.domain.models.response.JobResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.JobEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.GraduateRepository;
@@ -118,5 +119,15 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
     List<JobResponse> jobResponseList =
         jobEntities.getContent().stream().map(jobMapper::toJobResponse).toList();
     return new PageImpl<>(jobResponseList, pageable, jobEntities.getTotalElements());
+  }
+
+  @Override
+  public List<KeyValueResponse> getJobList() {
+    return jobRepository
+        .findAllByEstadoAndGraduate_User_Estado(
+            ConstantsUtils.STATUS_ACTIVE, ConstantsUtils.STATUS_ACTIVE)
+        .stream()
+        .map(jobMapper::toKeyValueResponse)
+        .toList();
   }
 }

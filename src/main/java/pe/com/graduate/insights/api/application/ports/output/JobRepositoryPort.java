@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pe.com.graduate.insights.api.domain.models.request.JobRequest;
 import pe.com.graduate.insights.api.domain.models.response.JobResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 public interface JobRepositoryPort {
   List<JobResponse> getJobsList(Long graduateId);
@@ -18,4 +19,6 @@ public interface JobRepositoryPort {
   void delete(Long graduateId, Long jobId);
 
   Page<JobResponse> getPagination(String search, Pageable pageable, Long graduateId);
+
+  List<KeyValueResponse> getJobList();
 }

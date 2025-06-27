@@ -15,10 +15,10 @@ import pe.com.graduate.insights.api.infrastructure.repository.entities.JobEntity
 @Repository
 public interface JobRepository extends JpaRepository<JobEntity, Long> {
 
-  Optional<JobEntity> findByIdAndEstado(Long jobId, String estado);
-
   Optional<JobEntity> findByIdAndEstadoAndGraduateId(
       Long jobOfferId, String estado, Long graduateId);
+
+  List<JobEntity> findAllByEstadoAndGraduate_User_Estado(String jobEstado, String userEstado);
 
   List<JobEntity> findAllByEstadoAndGraduateId(String estado, Long graduateId);
 

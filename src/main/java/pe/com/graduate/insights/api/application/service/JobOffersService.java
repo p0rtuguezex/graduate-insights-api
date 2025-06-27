@@ -9,6 +9,7 @@ import pe.com.graduate.insights.api.application.ports.input.JobOffersUseCase;
 import pe.com.graduate.insights.api.application.ports.output.JobOffersRepositoryPort;
 import pe.com.graduate.insights.api.domain.models.request.JobOffersRequest;
 import pe.com.graduate.insights.api.domain.models.response.JobOffersResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 @Service
 @AllArgsConstructor
@@ -44,5 +45,10 @@ public class JobOffersService implements JobOffersUseCase {
   @Override
   public Page<JobOffersResponse> getPagination(String search, Pageable pageable, Long employerId) {
     return jobOffersRepositoryPort.getPagination(search, pageable, employerId);
+  }
+
+  @Override
+  public List<KeyValueResponse> getJobOffersList() {
+    return jobOffersRepositoryPort.getJobOffersList();
   }
 }

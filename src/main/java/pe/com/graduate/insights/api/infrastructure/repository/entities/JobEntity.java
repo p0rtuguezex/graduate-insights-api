@@ -40,4 +40,8 @@ public class JobEntity extends Auditable {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "graduate_id")
   private GraduateEntity graduate;
+
+  public String getValues() {
+    return compania + " - " + cargo;
+  }
 }
