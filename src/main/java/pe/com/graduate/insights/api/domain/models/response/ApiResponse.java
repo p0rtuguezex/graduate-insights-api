@@ -27,6 +27,7 @@ public class ApiResponse<T> {
 
   public ApiResponse(T data) {
     this.data = data;
+    this.success = true;
   }
 
   public ApiResponse(T data, Object errors) {

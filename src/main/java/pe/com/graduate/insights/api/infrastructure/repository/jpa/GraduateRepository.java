@@ -49,4 +49,7 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
   @Query(
       "UPDATE UserEntity u SET u.estado = '0' WHERE u.id = (SELECT g.user.id FROM GraduateEntity g WHERE g.id = :graduateId)")
   void deactivateUserByGraduateId(@Param("graduateId") Long graduateId);
+  
+  @Query("SELECT COUNT(g) FROM GraduateEntity g WHERE g.user.estado = :estado")
+  Long countByUserEstado(@Param("estado") String estado);
 }
