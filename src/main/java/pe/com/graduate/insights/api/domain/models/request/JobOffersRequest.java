@@ -25,4 +25,6 @@ public class JobOffersRequest implements Serializable {
 
   @NotNull(message = "La descripcion no puede estar vacio")
   private String descripcion;
+
+  private Long employerId;
 }

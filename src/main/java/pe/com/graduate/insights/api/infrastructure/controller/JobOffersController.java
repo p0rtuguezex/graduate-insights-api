@@ -1,6 +1,7 @@
 package pe.com.graduate.insights.api.infrastructure.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,53 +26,60 @@ import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMapper;
 
 @RestController
-@RequestMapping("/employer/{employerId}/jobs_offers")
+@RequestMapping("/jobs_offers")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('DIRECTOR')")
+@PreAuthorize("hasAnyRole('EMPLOYER', 'DIRECTOR')")
 public class JobOffersController {
 
   private final JobOffersUseCase jobOffersUseCase;
-
   private final PaginateMapper paginateMapper;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<List<JobOffersResponse>>> getJobsListByemployerId(
-      @PathVariable Long employerId) {
+  public ResponseEntity<ApiResponse<List<JobOffersResponse>>> getJobsListByEmployerId(
+      @RequestParam(required = false)
+          @Positive(message = "El employerId debe ser un número positivo")
+          Long employerId) {
     return ResponseUtils.successResponse(jobOffersUseCase.getJobsList(employerId));
   }
 
-  @GetMapping("/{jobId}")
+  @GetMapping("/{jobOfferId}")
   public ResponseEntity<ApiResponse<JobOffersResponse>> getJobsByemployerId(
-      @PathVariable Long employerId, @PathVariable Long jobId) {
-    return ResponseUtils.successResponse(jobOffersUseCase.getDomain(employerId, jobId));
+      @RequestParam(required = false)
+          @Positive(message = "El employerId debe ser un número positivo")
+          Long employerId,
+      @PathVariable Long jobOfferId) {
+    return ResponseUtils.successResponse(jobOffersUseCase.getDomain(employerId, jobOfferId));
   }
 
   @PostMapping
   public ResponseEntity<ApiResponse<Void>> createJob(
-      @Valid @RequestBody JobOffersRequest jobOffersRequest, @PathVariable Long employerId) {
-    jobOffersUseCase.save(jobOffersRequest, employerId);
+      @Valid @RequestBody JobOffersRequest jobOffersRequest) {
+    jobOffersUseCase.save(jobOffersRequest);
     return ResponseUtils.sucessCreateResponse();
   }
 
-  @PutMapping("/{jobId}")
+  @PutMapping("/{jobOfferId}")
   public ResponseEntity<ApiResponse<Void>> updateJob(
-      @RequestBody JobOffersRequest jobOffersRequest,
-      @PathVariable Long employerId,
-      @PathVariable Long jobId) {
-    jobOffersUseCase.update(jobOffersRequest, employerId, jobId);
+      @RequestBody JobOffersRequest jobOffersRequest, @PathVariable Long jobOfferId) {
+    jobOffersUseCase.update(jobOffersRequest, jobOfferId);
     return ResponseUtils.successUpdateResponse();
   }
 
-  @DeleteMapping("/{jobId}")
+  @DeleteMapping("/{jobOfferId}")
   public ResponseEntity<ApiResponse<Void>> deleteJob(
-      @PathVariable Long employerId, @PathVariable Long jobId) {
-    jobOffersUseCase.delete(employerId, jobId);
+      @RequestParam(required = false)
+          @Positive(message = "El employerId debe ser un número positivo")
+          Long employerId,
+      @PathVariable Long jobOfferId) {
+    jobOffersUseCase.delete(employerId, jobOfferId);
     return ResponseUtils.successDeleteResponse();
   }
 
   @GetMapping("/pagination")
   ResponseEntity<ApiResponse<List<JobOffersResponse>>> getGraduatesJobsPaginated(
-      @PathVariable Long employerId,
+      @RequestParam(required = false)
+          @Positive(message = "El employerId debe ser un número positivo")
+          Long employerId,
       @RequestParam(value = "search", defaultValue = "") String search,
       @RequestParam(value = "page", defaultValue = "1") String page,
       @RequestParam(value = "size", defaultValue = "10") String size) {

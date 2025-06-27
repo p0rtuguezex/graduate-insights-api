@@ -9,6 +9,7 @@ import pe.com.graduate.insights.api.application.ports.input.EmployerUseCase;
 import pe.com.graduate.insights.api.application.ports.output.EmployerRepositoryPort;
 import pe.com.graduate.insights.api.domain.models.request.EmployerRequest;
 import pe.com.graduate.insights.api.domain.models.response.EmployerResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 @Service
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class EmployerService implements EmployerUseCase {
   }
 
   @Override
-  public List<EmployerResponse> getList() {
+  public List<KeyValueResponse> getList() {
     return employerRepositoryPort.getList();
   }
 

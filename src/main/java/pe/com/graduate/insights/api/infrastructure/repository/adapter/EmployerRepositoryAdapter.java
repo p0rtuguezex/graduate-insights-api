@@ -14,6 +14,7 @@ import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.EmployerRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.EmployerResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.EmployerEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
@@ -63,9 +64,9 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
   }
 
   @Override
-  public List<EmployerResponse> getList() {
+  public List<KeyValueResponse> getList() {
     return employerRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-        .map(employerMapper::toDomain)
+        .map(employerMapper::toKeyValueResponse)
         .toList();
   }
 
@@ -99,7 +100,9 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
         .map(
             graduateEntity -> {
               employerMapper.updateEmployerEntity(request, graduateEntity);
-              graduateEntity.getUser().setContrasena(passwordEncoder.encode(request.getContrasena()));
+              graduateEntity
+                  .getUser()
+                  .setContrasena(passwordEncoder.encode(request.getContrasena()));
               return employerRepository.save(graduateEntity);
             })
         .orElseThrow(

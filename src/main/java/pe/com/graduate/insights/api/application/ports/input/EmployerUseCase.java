@@ -8,11 +8,12 @@ import pe.com.graduate.insights.api.application.ports.generic.GenericRead;
 import pe.com.graduate.insights.api.application.ports.generic.GenericUpdate;
 import pe.com.graduate.insights.api.domain.models.request.EmployerRequest;
 import pe.com.graduate.insights.api.domain.models.response.EmployerResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 public interface EmployerUseCase
     extends GenericCreate<EmployerRequest>,
         GenericUpdate<EmployerRequest>,
-        GenericList<EmployerResponse>,
+        GenericList<KeyValueResponse>,
         GenericRead<EmployerResponse>,
         GenericPaginate<EmployerResponse>,
         GenericDelete {}

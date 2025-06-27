@@ -17,13 +17,16 @@ public interface JobRepository extends JpaRepository<JobEntity, Long> {
 
   Optional<JobEntity> findByIdAndEstado(Long jobId, String estado);
 
-  List<JobEntity> findAllByEstado(String estado);
+  Optional<JobEntity> findByIdAndEstadoAndGraduateId(
+      Long jobOfferId, String estado, Long graduateId);
 
-  Page<JobEntity> findAllByEstado(String status, Pageable pageable);
+  List<JobEntity> findAllByEstadoAndGraduateId(String estado, Long graduateId);
+
+  Page<JobEntity> findAllByEstadoAndGraduateId(String status, Pageable pageable, Long graduateId);
 
   @Query(
       "SELECT j FROM JobEntity j "
-          + "WHERE j.estado = :status "
+          + "WHERE j.estado = :status and j.graduate.id = :graduateId "
           + "AND ("
           + " LOWER(j.compania) LIKE LOWER(CONCAT('%', :search, '%')) OR "
           + " STR(j.fechaInicio) LIKE CONCAT('%', :search, '%') OR "
@@ -33,10 +36,11 @@ public interface JobRepository extends JpaRepository<JobEntity, Long> {
           + " LOWER(j.graduate.user.nombres) LIKE LOWER(CONCAT('%', :search, '%')) OR "
           + " LOWER(j.graduate.user.apellidos) LIKE LOWER(CONCAT('%', :search, '%')) "
           + ")")
-  Page<JobEntity> findAllByEstadoAndSearch(String search, String status, Pageable pageable);
+  Page<JobEntity> findAllByEstadoAndSearchAndGraduateId(
+      String search, String status, Pageable pageable, Long graduateId);
 
   @Transactional
   @Modifying
   @Query("UPDATE JobEntity j SET j.estado = '0' WHERE j.id = :jobId")
   void deactivateJob(@Param("jobId") Long jobId);
-} 
+}

@@ -26,21 +26,30 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
   private final JobRepository jobRepository;
   private final GraduateRepository graduateRepository;
   private final JobMapper jobMapper;
+  private final ValidationUtilsAdapter validationUtilsAdapter;
 
   @Override
-  public List<JobResponse> getList() {
-    return Optional.of(jobRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE))
+  public List<JobResponse> getJobsList(Long graduateId) {
+    var graduate = validationUtilsAdapter.getAuthenticatedGraduateId(graduateId);
+    return Optional.of(
+            jobRepository.findAllByEstadoAndGraduateId(
+                ConstantsUtils.STATUS_ACTIVE, graduate.getId()))
         .filter(jobs -> !jobs.isEmpty())
-        .orElseThrow(() -> new NotFoundException("No se encontraron trabajos registrados"))
+        .orElseThrow(
+            () ->
+                new NotFoundException(
+                    String.format(
+                        ConstantsUtils.JOB_OFFERS_NOT_FOUND_BY_EMPLOYER, graduate.getId())))
         .stream()
         .map(jobMapper::toJobResponse)
         .collect(Collectors.toList());
   }
 
   @Override
-  public JobResponse getDomain(Long jobId) {
+  public JobResponse getDomain(Long graduateId, Long jobId) {
+    var graduate = validationUtilsAdapter.getAuthenticatedGraduateId(graduateId);
     return jobRepository
-        .findByIdAndEstado(jobId, ConstantsUtils.STATUS_ACTIVE)
+        .findByIdAndEstadoAndGraduateId(jobId, ConstantsUtils.STATUS_ACTIVE, graduate.getId())
         .map(jobMapper::toJobResponse)
         .orElseThrow(
             () -> new NotFoundException(String.format(ConstantsUtils.JOB_NOT_FOUND, jobId)));
@@ -48,24 +57,17 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
 
   @Override
   public void save(JobRequest jobRequest) {
-    graduateRepository
-        .findByIdAndUserEstado(jobRequest.getGraduateId(), ConstantsUtils.STATUS_ACTIVE)
-        .ifPresentOrElse(
-            graduateEntity -> {
-              JobEntity jobEntity = jobMapper.toEntity(jobRequest, graduateEntity);
-              jobRepository.save(jobEntity);
-            },
-            () -> {
-              throw new NotFoundException(
-                  String.format(ConstantsUtils.GRADUATE_NOT_FOUND, jobRequest.getGraduateId()));
-            });
+    var graduate = validationUtilsAdapter.getAuthenticatedGraduateId(jobRequest.getGraduateId());
+    JobEntity jobEntity = jobMapper.toEntity(jobRequest, graduate);
+    jobRepository.save(jobEntity);
   }
 
   @Override
   public void update(JobRequest jobRequest, Long jobId) {
+    var graduate = validationUtilsAdapter.getAuthenticatedGraduateId(jobRequest.getGraduateId());
     JobEntity jobEntity =
         jobRepository
-            .findByIdAndEstado(jobId, ConstantsUtils.STATUS_ACTIVE)
+            .findByIdAndEstadoAndGraduateId(jobId, ConstantsUtils.STATUS_ACTIVE, graduate.getId())
             .orElseThrow(
                 () -> new NotFoundException(String.format(ConstantsUtils.JOB_NOT_FOUND, jobId)));
 
@@ -90,9 +92,10 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
   }
 
   @Override
-  public void delete(Long jobId) {
+  public void delete(Long graduateId, Long jobId) {
+    var graduate = validationUtilsAdapter.getAuthenticatedGraduateId(graduateId);
     jobRepository
-        .findByIdAndEstado(jobId, ConstantsUtils.STATUS_ACTIVE)
+        .findByIdAndEstadoAndGraduateId(jobId, ConstantsUtils.STATUS_ACTIVE, graduate.getId())
         .ifPresentOrElse(
             jobEntity -> jobRepository.deactivateJob(jobId),
             () -> {
@@ -101,16 +104,19 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
   }
 
   @Override
-  public Page<JobResponse> getPagination(String search, Pageable pageable) {
+  public Page<JobResponse> getPagination(String search, Pageable pageable, Long graduateId) {
+    var graduate = validationUtilsAdapter.getAuthenticatedGraduateId(graduateId);
     boolean hasSearch = !StringUtils.isEmpty(search);
 
     Page<JobEntity> jobEntities =
         hasSearch
-            ? jobRepository.findAllByEstadoAndSearch(search, ConstantsUtils.STATUS_ACTIVE, pageable)
-            : jobRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE, pageable);
+            ? jobRepository.findAllByEstadoAndSearchAndGraduateId(
+                search, ConstantsUtils.STATUS_ACTIVE, pageable, graduate.getId())
+            : jobRepository.findAllByEstadoAndGraduateId(
+                ConstantsUtils.STATUS_ACTIVE, pageable, graduate.getId());
 
     List<JobResponse> jobResponseList =
         jobEntities.getContent().stream().map(jobMapper::toJobResponse).toList();
     return new PageImpl<>(jobResponseList, pageable, jobEntities.getTotalElements());
   }
-} 
+}

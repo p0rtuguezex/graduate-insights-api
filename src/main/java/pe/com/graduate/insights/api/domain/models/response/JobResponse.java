@@ -17,4 +17,4 @@ public class JobResponse {
   private String fechaFin;
   private Long graduateId;
   private String graduateName;
-} 
+}

@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.config;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +19,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pe.com.graduate.insights.api.infrastructure.security.JwtAuthenticationFilter;
 
-import java.util.List;
-
 @Slf4j
 @Configuration
 @EnableWebSecurity
@@ -27,43 +26,56 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
+  private final JwtAuthenticationFilter jwtAuthFilter;
+  private final AuthenticationProvider authenticationProvider;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        log.info("Configurando SecurityFilterChain");
-        
-        http
-            .securityMatcher("/api/v1/**")
-            .csrf(AbstractHttpConfigurer::disable)
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.OPTIONS, "/api/v1/**").permitAll()
-                    .requestMatchers("/api/v1/auth/login").permitAll()
-                    .requestMatchers("/api/v1/auth/me").authenticated()
-                    .requestMatchers("/api/v1/api-docs/**", "/api/v1/swagger-ui/**", "/api/v1/swagger-resources/**").permitAll()
-                    .anyRequest().authenticated()
-            )
-            .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    log.info("Configurando SecurityFilterChain");
 
-        return http.build();
-    }
+    http.securityMatcher("/api/v1/**")
+        .csrf(AbstractHttpConfigurer::disable)
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(
+            auth ->
+                auth.requestMatchers(HttpMethod.OPTIONS, "/api/v1/**")
+                    .permitAll()
+                    .requestMatchers("/api/v1/auth/login")
+                    .permitAll()
+                    .requestMatchers("/api/v1/graduate/register")
+                    .permitAll()
+                    .requestMatchers("/api/v1/employer/register")
+                    .permitAll()
+                    .requestMatchers("/api/v1/director/register")
+                    .permitAll()
+                    .requestMatchers("/api/v1/auth/me")
+                    .authenticated()
+                    .requestMatchers(
+                        "/api/v1/api-docs/**",
+                        "/api/v1/swagger-ui/**",
+                        "/api/v1/swagger-resources/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
+        .authenticationProvider(authenticationProvider)
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // ✅ origen explícito
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setExposedHeaders(List.of("Authorization"));
-        configuration.setAllowCredentials(true); // ✅ habilitar cookies/sesiones
+    return http.build();
+  }
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+    configuration.setAllowedHeaders(List.of("*"));
+    configuration.setExposedHeaders(List.of("Authorization"));
+    configuration.setAllowCredentials(true);
 
-} 
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
+}

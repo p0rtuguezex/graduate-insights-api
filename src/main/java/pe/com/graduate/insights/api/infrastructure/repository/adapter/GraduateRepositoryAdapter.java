@@ -93,7 +93,9 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
         .map(
             graduateEntity -> {
               graduateMapper.updateGraduateEntity(request, graduateEntity);
-              graduateEntity.getUser().setContrasena(passwordEncoder.encode(request.getContrasena()));
+              graduateEntity
+                  .getUser()
+                  .setContrasena(passwordEncoder.encode(request.getContrasena()));
               return graduateRepository.save(graduateEntity);
             })
         .orElseThrow(

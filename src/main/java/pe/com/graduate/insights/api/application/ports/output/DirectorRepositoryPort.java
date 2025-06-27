@@ -8,11 +8,12 @@ import pe.com.graduate.insights.api.application.ports.generic.GenericRead;
 import pe.com.graduate.insights.api.application.ports.generic.GenericUpdate;
 import pe.com.graduate.insights.api.domain.models.request.DirectorRequest;
 import pe.com.graduate.insights.api.domain.models.response.DirectorResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 public interface DirectorRepositoryPort
     extends GenericCreate<DirectorRequest>,
         GenericUpdate<DirectorRequest>,
-        GenericList<DirectorResponse>,
+        GenericList<KeyValueResponse>,
         GenericRead<DirectorResponse>,
         GenericPaginate<DirectorResponse>,
         GenericDelete {}

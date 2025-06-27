@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionOptionResponse {
-    private Long id;
-    private String optionText;
-    private Integer orderNumber;
-} 
+  private Long id;
+  private String optionText;
+  private Integer orderNumber;
+}

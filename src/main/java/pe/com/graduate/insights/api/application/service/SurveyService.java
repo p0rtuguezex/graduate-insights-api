@@ -13,32 +13,30 @@ import pe.com.graduate.insights.api.domain.models.response.SurveyResponse;
 @RequiredArgsConstructor
 public class SurveyService implements SurveyUseCase {
 
-    private final SurveyRepositoryPort surveyRepositoryPort;
+  private final SurveyRepositoryPort surveyRepositoryPort;
 
-    @Override
-    public void save(SurveyRequest request) {
-        surveyRepositoryPort.save(request);
-    }
+  @Override
+  public void save(SurveyRequest request) {
+    surveyRepositoryPort.save(request);
+  }
 
+  @Override
+  public Page<SurveyResponse> getPagination(String search, Pageable pageable) {
+    return surveyRepositoryPort.getPagination(search, pageable);
+  }
 
-    @Override
-    public Page<SurveyResponse> getPagination(String search, Pageable pageable) {
-        return surveyRepositoryPort.getPagination(search, pageable);
-    }
+  @Override
+  public SurveyResponse getDomain(Long id) {
+    return surveyRepositoryPort.getDomain(id);
+  }
 
-    @Override
-    public SurveyResponse getDomain(Long id) {
-        return surveyRepositoryPort.getDomain(id);
-    }
+  @Override
+  public void update(SurveyRequest request, Long id) {
+    surveyRepositoryPort.update(request, id);
+  }
 
-    @Override
-    public void update(SurveyRequest request, Long id) {
-        surveyRepositoryPort.update(request, id);
-    }
-
-    @Override
-    public void delete(Long id) {
-        surveyRepositoryPort.delete(id);
-    }
-
-} 
+  @Override
+  public void delete(Long id) {
+    surveyRepositoryPort.delete(id);
+  }
+}

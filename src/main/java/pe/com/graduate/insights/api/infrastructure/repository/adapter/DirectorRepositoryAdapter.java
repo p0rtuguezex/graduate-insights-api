@@ -14,6 +14,7 @@ import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.DirectorRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.DirectorResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.DirectorEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
@@ -56,9 +57,9 @@ public class DirectorRepositoryAdapter implements DirectorRepositoryPort {
   }
 
   @Override
-  public List<DirectorResponse> getList() {
+  public List<KeyValueResponse> getList() {
     return directorRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-        .map(directorMapper::toDomain)
+        .map(directorMapper::toKeyValueResponse)
         .toList();
   }
 
@@ -92,7 +93,9 @@ public class DirectorRepositoryAdapter implements DirectorRepositoryPort {
         .map(
             directorEntity -> {
               directorMapper.updateDirectorEntity(request, directorEntity);
-              directorEntity.getUser().setContrasena(passwordEncoder.encode(request.getContrasena()));
+              directorEntity
+                  .getUser()
+                  .setContrasena(passwordEncoder.encode(request.getContrasena()));
               return directorRepository.save(directorEntity);
             })
         .orElseThrow(

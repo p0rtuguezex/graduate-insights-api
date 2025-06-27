@@ -19,38 +19,40 @@ import pe.com.graduate.insights.api.infrastructure.repository.jpa.UserRepository
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository userRepository;
-    private final UserRoleService userRoleService;
+  private final UserRepository userRepository;
+  private final UserRoleService userRoleService;
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> {
-            UserEntity user = userRepository.findByCorreo(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-            
-            // Establecer el rol del usuario
-            user.setUserRole(userRoleService.getUserRole(user.getId()));
-            
-            return user;
-        };
-    }
+  @Bean
+  public UserDetailsService userDetailsService() {
+    return username -> {
+      UserEntity user =
+          userRepository
+              .findByCorreo(username)
+              .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
+      // Establecer el rol del usuario
+      user.setUserRole(userRoleService.getUserRole(user.getId()));
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+      return user;
+    };
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public AuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    authProvider.setUserDetailsService(userDetailsService());
+    authProvider.setPasswordEncoder(passwordEncoder());
+    return authProvider;
+  }
 
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
+      throws Exception {
+    return config.getAuthenticationManager();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }

@@ -1,18 +1,21 @@
 package pe.com.graduate.insights.api.application.ports.output;
 
-import pe.com.graduate.insights.api.application.ports.generic.GenericCreate;
-import pe.com.graduate.insights.api.application.ports.generic.GenericDelete;
-import pe.com.graduate.insights.api.application.ports.generic.GenericList;
-import pe.com.graduate.insights.api.application.ports.generic.GenericPaginate;
-import pe.com.graduate.insights.api.application.ports.generic.GenericRead;
-import pe.com.graduate.insights.api.application.ports.generic.GenericUpdate;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pe.com.graduate.insights.api.domain.models.request.JobRequest;
 import pe.com.graduate.insights.api.domain.models.response.JobResponse;
 
-public interface JobRepositoryPort
-    extends GenericCreate<JobRequest>,
-        GenericUpdate<JobRequest>,
-        GenericList<JobResponse>,
-        GenericRead<JobResponse>,
-        GenericPaginate<JobResponse>,
-        GenericDelete {} 
+public interface JobRepositoryPort {
+  List<JobResponse> getJobsList(Long graduateId);
+
+  JobResponse getDomain(Long graduateId, Long jobId);
+
+  void save(JobRequest jobRequest);
+
+  void update(JobRequest jobRequest, Long jobId);
+
+  void delete(Long graduateId, Long jobId);
+
+  Page<JobResponse> getPagination(String search, Pageable pageable, Long graduateId);
+}

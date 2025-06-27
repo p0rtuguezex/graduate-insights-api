@@ -22,27 +22,27 @@ public class JobService implements JobUseCase {
   }
 
   @Override
-  public void delete(Long id) {
-    jobRepositoryPort.delete(id);
+  public void delete(Long graduateId, Long jobId) {
+    jobRepositoryPort.delete(graduateId, jobId);
   }
 
   @Override
-  public List<JobResponse> getList() {
-    return jobRepositoryPort.getList();
+  public List<JobResponse> getJobsList(Long graduateId) {
+    return jobRepositoryPort.getJobsList(graduateId);
   }
 
   @Override
-  public Page<JobResponse> getPagination(String search, Pageable pageable) {
-    return jobRepositoryPort.getPagination(search, pageable);
+  public Page<JobResponse> getPagination(String search, Pageable pageable, Long graduateId) {
+    return jobRepositoryPort.getPagination(search, pageable, graduateId);
   }
 
   @Override
-  public JobResponse getDomain(Long id) {
-    return jobRepositoryPort.getDomain(id);
+  public JobResponse getDomain(Long graduateId, Long jobId) {
+    return jobRepositoryPort.getDomain(graduateId, jobId);
   }
 
   @Override
-  public void update(JobRequest request, Long id) {
-    jobRepositoryPort.update(request, id);
+  public void update(JobRequest request, Long jobId) {
+    jobRepositoryPort.update(request, jobId);
   }
-} 
+}

@@ -39,4 +39,4 @@ public interface JobMapper {
   @Mapping(target = "estado", ignore = true)
   @Mapping(target = "graduate", ignore = true)
   void updateJobEntity(JobRequest jobRequest, @MappingTarget JobEntity jobEntity);
-} 
+}

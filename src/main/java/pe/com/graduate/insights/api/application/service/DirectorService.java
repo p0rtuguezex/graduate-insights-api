@@ -9,6 +9,7 @@ import pe.com.graduate.insights.api.application.ports.input.DirectorUseCase;
 import pe.com.graduate.insights.api.application.ports.output.DirectorRepositoryPort;
 import pe.com.graduate.insights.api.domain.models.request.DirectorRequest;
 import pe.com.graduate.insights.api.domain.models.response.DirectorResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +23,7 @@ public class DirectorService implements DirectorUseCase {
   }
 
   @Override
-  public List<DirectorResponse> getList() {
+  public List<KeyValueResponse> getList() {
     return directorRepositoryPort.getList();
   }
 

@@ -38,6 +38,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
   @Modifying
   @Query("UPDATE UserEntity e SET e.estado = :status WHERE e.id = :id")
   void updateStatusById(Long id, String status);
+
   @Transactional
   Optional<UserEntity> findByCorreo(String email);
 }

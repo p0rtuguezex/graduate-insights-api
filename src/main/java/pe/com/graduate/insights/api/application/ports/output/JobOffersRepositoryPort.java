@@ -11,9 +11,9 @@ public interface JobOffersRepositoryPort {
 
   JobOffersResponse getDomain(Long employerId, Long jobOfferId);
 
-  void save(JobOffersRequest jobOffersRequest, Long employerId);
+  void save(JobOffersRequest jobOffersRequest);
 
-  void update(JobOffersRequest jobOffersRequest, Long employerId, Long jobOfferId);
+  void update(JobOffersRequest jobOffersRequest, Long jobOfferId);
 
   void delete(Long employerId, Long jobOfferId);
 

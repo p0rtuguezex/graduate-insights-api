@@ -9,7 +9,6 @@ import jakarta.persistence.Transient;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +20,7 @@ import pe.com.graduate.insights.api.domain.models.enums.UserRole;
 @Setter
 @Entity
 @Table(name = "users")
-public class UserEntity extends Auditable implements UserDetails{
+public class UserEntity extends Auditable implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,9 +35,8 @@ public class UserEntity extends Auditable implements UserDetails{
   private String dni;
   private String celular;
   private String contrasena;
-  
-  @Transient
-  private UserRole userRole;
+
+  @Transient private UserRole userRole;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -51,6 +49,7 @@ public class UserEntity extends Auditable implements UserDetails{
   public String getNombreCompleto() {
     return nombres + " " + apellidos;
   }
+
   @Override
   public String getPassword() {
     return contrasena;
@@ -60,6 +59,7 @@ public class UserEntity extends Auditable implements UserDetails{
   public String getUsername() {
     return correo;
   }
+
   @Override
   public boolean isAccountNonExpired() {
     return true;

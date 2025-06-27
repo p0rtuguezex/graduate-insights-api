@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.QuestionOptionEntity;
 
 @Repository
-public interface QuestionOptionRepository extends JpaRepository<QuestionOptionEntity, Long> {
-} 
+public interface QuestionOptionRepository extends JpaRepository<QuestionOptionEntity, Long> {}

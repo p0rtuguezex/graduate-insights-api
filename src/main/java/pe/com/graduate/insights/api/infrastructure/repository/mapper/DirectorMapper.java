@@ -9,6 +9,7 @@ import org.mapstruct.factory.Mappers;
 import pe.com.graduate.insights.api.domain.models.request.DirectorRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.DirectorResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.DirectorEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
 
@@ -29,6 +30,11 @@ public interface DirectorMapper {
   @Mapping(source = "user.dni", target = "dni")
   @Mapping(source = "user.celular", target = "celular")
   DirectorResponse toDomain(DirectorEntity directorEntity);
+
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "id", target = "key")
+  @Mapping(source = "user.nombreCompleto", target = "value")
+  KeyValueResponse toKeyValueResponse(DirectorEntity directorEntity);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(target = "user", source = "userEntity")

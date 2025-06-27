@@ -50,50 +50,39 @@ public class ApiResponse<T> {
   }
 
   public static <T> ApiResponse<T> success(T data) {
-    return ApiResponse.<T>builder()
-            .success(true)
-            .message("Operación exitosa")
-            .data(data)
-            .build();
+    return ApiResponse.<T>builder().success(true).message("Operación exitosa").data(data).build();
   }
 
   public static <T> ApiResponse<T> success() {
-    return ApiResponse.<T>builder()
-            .success(true)
-            .message("Operación exitosa")
-            .build();
+    return ApiResponse.<T>builder().success(true).message("Operación exitosa").build();
   }
 
   public static <T> ApiResponse<T> success(T data, String message) {
-    return ApiResponse.<T>builder()
-            .success(true)
-            .message(message)
-            .data(data)
-            .build();
+    return ApiResponse.<T>builder().success(true).message(message).data(data).build();
   }
 
   public static <T> ApiResponse<T> success(T data, Paginate paginate) {
     return ApiResponse.<T>builder()
-            .success(true)
-            .message("Operación exitosa")
-            .data(data)
-            .paginate(paginate)
-            .build();
+        .success(true)
+        .message("Operación exitosa")
+        .data(data)
+        .paginate(paginate)
+        .build();
   }
 
   public static <T> ApiResponse<T> error(String message) {
     return ApiResponse.<T>builder()
-            .success(false)
-            .message(message)
-            .error(new ApiResponseError(message))
-            .build();
+        .success(false)
+        .message(message)
+        .error(new ApiResponseError(message))
+        .build();
   }
 
   public static <T> ApiResponse<T> error(String message, String errorCode) {
     return ApiResponse.<T>builder()
-            .success(false)
-            .message(message)
-            .error(new ApiResponseError(message, errorCode))
-            .build();
+        .success(false)
+        .message(message)
+        .error(new ApiResponseError(message, errorCode))
+        .build();
   }
 }

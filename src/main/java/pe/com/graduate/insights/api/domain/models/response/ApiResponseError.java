@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApiResponseError {
-    private String message;
-    private String errorCode;
+  private String message;
+  private String errorCode;
 
-    public ApiResponseError(String message) {
-        this.message = message;
-        this.errorCode = "ERROR";
-    }
-} 
+  public ApiResponseError(String message) {
+    this.message = message;
+    this.errorCode = "ERROR";
+  }
+}

@@ -36,6 +36,5 @@ public class JobRequest implements Serializable {
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate fechaFin;
 
-  @NotNull(message = "El ID del graduado no puede ser nulo")
   private Long graduateId;
-} 
+}

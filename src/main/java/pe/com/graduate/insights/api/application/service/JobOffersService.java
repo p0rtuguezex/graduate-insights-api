@@ -27,13 +27,13 @@ public class JobOffersService implements JobOffersUseCase {
   }
 
   @Override
-  public void save(JobOffersRequest jobOffersRequest, Long employerId) {
-    jobOffersRepositoryPort.save(jobOffersRequest, employerId);
+  public void save(JobOffersRequest jobOffersRequest) {
+    jobOffersRepositoryPort.save(jobOffersRequest);
   }
 
   @Override
-  public void update(JobOffersRequest jobOffersRequest, Long employerId, Long jobOfferId) {
-    jobOffersRepositoryPort.update(jobOffersRequest, employerId, jobOfferId);
+  public void update(JobOffersRequest jobOffersRequest, Long jobOfferId) {
+    jobOffersRepositoryPort.update(jobOffersRequest, jobOfferId);
   }
 
   @Override
