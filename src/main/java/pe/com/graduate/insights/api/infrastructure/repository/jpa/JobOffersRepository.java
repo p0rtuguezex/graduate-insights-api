@@ -16,6 +16,9 @@ public interface JobOffersRepository extends JpaRepository<JobOffersEntity, Long
   Optional<JobOffersEntity> findByIdAndEstadoAndEmployerId(
       Long jobOfferId, String estado, Long employerId);
 
+  List<JobOffersEntity> findAllByEstadoAndEmployer_User_Estado(
+      String jobOfferEstado, String userEstado);
+
   List<JobOffersEntity> findAllByEstadoAndEmployerId(String estado, Long employerId);
 
   Page<JobOffersEntity> findAllByEstadoAndEmployerId(

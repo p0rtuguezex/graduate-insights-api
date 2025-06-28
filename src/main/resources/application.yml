@@ -22,8 +22,6 @@ spring:
       mode: always
       schema-locations: classpath:tables.sql
       data-locations: classpath:inserts.sql
-
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -37,19 +35,6 @@ spring:
           starttls:
             enable: true
 
-springdoc:
-  api-docs:
-    enabled: true
-    path: "/api-docs"
-  swagger-ui:
-    enabled: true
-    path: "/index.html"
-
-logging:
-  level:
-    root: INFO
-    pe.com.graduate.insights.api: DEBUG
-
 application:
   security:
     jwt:
@@ -57,3 +42,17 @@ application:
       expiration: 86400000 # 24 horas
       refresh-token:
         expiration: 604800000 # 7 días
+
+springdoc:
+  api-docs:
+    enabled: true
+#    path: "/api/v1/api-docs"
+  swagger-ui:
+    enabled: true
+#    path: "/api/v1/index.html"
+
+logging:
+  level:
+    root: INFO
+    pe.com.graduate.insights.api: DEBUG
+    org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: error

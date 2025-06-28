@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +24,7 @@ import pe.com.graduate.insights.api.application.ports.input.JobUseCase;
 import pe.com.graduate.insights.api.domain.models.request.JobRequest;
 import pe.com.graduate.insights.api.domain.models.response.ApiResponse;
 import pe.com.graduate.insights.api.domain.models.response.JobResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMapper;
 
@@ -88,5 +90,10 @@ public class JobsController {
     Page<JobResponse> jobPage = jobUseCase.getPagination(search, pageable, graduateId);
     return ResponseUtils.successResponsePaginate(
         jobPage.getContent(), paginateMapper.toDomain(jobPage));
+  }
+
+  @GetMapping("/list")
+  public ResponseEntity<List<KeyValueResponse>> getListGraduateAll() {
+    return new ResponseEntity<>(jobUseCase.getJobList(), HttpStatus.OK);
   }
 }

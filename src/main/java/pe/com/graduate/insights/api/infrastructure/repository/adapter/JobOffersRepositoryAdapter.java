@@ -13,6 +13,7 @@ import pe.com.graduate.insights.api.application.ports.output.JobOffersRepository
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.JobOffersRequest;
 import pe.com.graduate.insights.api.domain.models.response.JobOffersResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.JobOffersEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.EmployerRepository;
@@ -125,5 +126,15 @@ public class JobOffersRepositoryAdapter implements JobOffersRepositoryPort {
     List<JobOffersResponse> graduateResponseList =
         jobOffersEntities.getContent().stream().map(jobOffersMapper::toJobOffersResponse).toList();
     return new PageImpl<>(graduateResponseList, pageable, jobOffersEntities.getTotalElements());
+  }
+
+  @Override
+  public List<KeyValueResponse> getJobOffersList() {
+    return jobOffersRepository
+        .findAllByEstadoAndEmployer_User_Estado(
+            ConstantsUtils.STATUS_ACTIVE, ConstantsUtils.STATUS_ACTIVE)
+        .stream()
+        .map(jobOffersMapper::toKeyValueResponse)
+        .toList();
   }
 }

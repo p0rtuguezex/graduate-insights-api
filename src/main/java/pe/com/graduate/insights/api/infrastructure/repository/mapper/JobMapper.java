@@ -8,6 +8,7 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pe.com.graduate.insights.api.domain.models.request.JobRequest;
 import pe.com.graduate.insights.api.domain.models.response.JobResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.GraduateEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.JobEntity;
 
@@ -26,6 +27,11 @@ public interface JobMapper {
   @Mapping(source = "jobRequest.fechaFin", target = "fechaFin")
   @Mapping(target = "id", ignore = true)
   JobEntity toEntity(JobRequest jobRequest, GraduateEntity graduateEntity);
+
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "id", target = "key")
+  @Mapping(source = "values", target = "value")
+  KeyValueResponse toKeyValueResponse(JobEntity jobEntity);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(source = "id", target = "jobId")

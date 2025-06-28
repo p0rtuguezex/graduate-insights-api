@@ -8,6 +8,7 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pe.com.graduate.insights.api.domain.models.request.JobOffersRequest;
 import pe.com.graduate.insights.api.domain.models.response.JobOffersResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.EmployerEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.JobOffersEntity;
 
@@ -24,6 +25,11 @@ public interface JobOffersMapper {
   @Mapping(source = "jobOffersRequest.descripcion", target = "descripcion")
   @Mapping(target = "id", ignore = true)
   JobOffersEntity toEntity(JobOffersRequest jobOffersRequest, EmployerEntity employerEntity);
+
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "id", target = "key")
+  @Mapping(source = "titulo", target = "value")
+  KeyValueResponse toKeyValueResponse(JobOffersEntity jobOffersEntity);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(source = "id", target = "jobOffersId")
