@@ -82,10 +82,4 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
         .map(userMapper::toDomain)
         .collect(Collectors.toList());
   }
-
-  @Override
-  public Object saveEntity(UserRequest request) {
-    UserEntity userEntity = userMapper.toEntity(request);
-    return userRepository.save(userEntity);
-  }
 }
