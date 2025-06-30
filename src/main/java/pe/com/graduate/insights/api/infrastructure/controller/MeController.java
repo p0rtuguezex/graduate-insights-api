@@ -54,6 +54,7 @@ public class MeController {
             .id(user.getId())
             .name(user.getNombres() + " " + user.getApellidos())
             .email(user.getCorreo())
+            .verified(user.isVerificado())
             .role(userRoleService.getUserRoleDisplayName(user.getId()))
             .build();
     return ResponseEntity.ok(

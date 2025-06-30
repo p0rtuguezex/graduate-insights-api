@@ -12,6 +12,7 @@ import pe.com.graduate.insights.api.application.ports.output.GraduateRepositoryP
 import pe.com.graduate.insights.api.domain.exception.GraduateException;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
+import pe.com.graduate.insights.api.domain.models.request.MailRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
 import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
@@ -28,14 +29,11 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.UserMapper;
 public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
 
   private final GraduateRepository graduateRepository;
-
   private final UserRepository userRepository;
-
   private final GraduateMapper graduateMapper;
-
   private final UserMapper userMapper;
-
   private final PasswordEncoder passwordEncoder;
+  private final MailRepositoryAdapter mailRepositoryAdapter;
 
   @Override
   public void save(GraduateRequest graduateRequest) {
@@ -54,6 +52,12 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
               GraduateEntity graduateEntity = graduateMapper.toEntity(graduateRequest, userEntity);
               graduateRepository.save(graduateEntity);
             });
+    MailRequest mailRequest =
+        MailRequest.builder()
+            .email(graduateRequest.getCorreo())
+            .type(ConstantsUtils.SENT_CODE_VALIDATED)
+            .build();
+    mailRepositoryAdapter.sendCode(mailRequest);
   }
 
   @Override

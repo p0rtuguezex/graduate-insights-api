@@ -28,6 +28,9 @@ SET FOREIGN_KEY_CHECKS = 1;
         dni VARCHAR(20),
         celular VARCHAR(20),
         contrasena VARCHAR(100),
+        verificado BOOLEAN DEFAULT FALSE,
+        code_confirm CHAR(6) DEFAULT NULL,
+        password_recovery_code CHAR(6) DEFAULT NULL,
         created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );

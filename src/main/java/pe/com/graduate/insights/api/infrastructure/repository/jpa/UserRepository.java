@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
@@ -41,4 +42,20 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
   @Transactional
   Optional<UserEntity> findByCorreo(String email);
+
+  @Modifying
+  @Transactional
+  @Query(
+      "UPDATE UserEntity u SET u.passwordRecoveryCode = :code WHERE u.id = :userId AND u.estado='1' ")
+  void updateRecoveryCodeByUserId(@Param("code") String code, @Param("userId") Long userId);
+
+  @Modifying
+  @Transactional
+  @Query("UPDATE UserEntity u SET u.contrasena = :newPwd WHERE u.id = :userId AND  u.estado='1' ")
+  void updatePasswordByUserId(@Param("newPassword") String newPwd, @Param("userId") Long userId);
+
+  @Modifying
+  @Transactional
+  @Query("UPDATE UserEntity u SET u.codeConfirm = :code WHERE u.id = :userId AND u.estado='1'")
+  void updateCodeConfirmByUserId(@Param("code") String code, @Param("userId") Long userId);
 }

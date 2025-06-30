@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.advice;
 
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class GraduateInsightsExceptionHandler {
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ApiResponse<List<String>>> notFoundException(NotFoundException ex) {
-    HttpStatus status = HttpStatus.NOT_FOUND;
+    HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
     List<String> errors = List.of(ex.getMessage());
     return ResponseUtils.errorResponse(status, errors);
   }
@@ -60,7 +61,8 @@ public class GraduateInsightsExceptionHandler {
     EventTypesException.class,
     EducationCenterException.class,
     DirectorException.class,
-    SurveyException.class
+    SurveyException.class,
+    UnknownHostException.class
   })
   public ResponseEntity<ApiResponse<List<String>>> handleDomainExceptions(RuntimeException ex) {
     HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;

@@ -26,5 +26,10 @@ public interface UserMapper {
   @Mapping(target = "estado", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "modifiedDate", ignore = true)
+  @Mapping(target = "verificado", ignore = true)
+  @Mapping(target = "codeConfirm", ignore = true)
+  @Mapping(target = "passwordRecoveryCode", ignore = true)
+  @Mapping(target = "userRole", ignore = true)
+  @Mapping(target = "authorities", ignore = true)
   void updateUserEntity(UserRequest userRequest, @MappingTarget UserEntity userEntity);
 }

@@ -12,6 +12,7 @@ import pe.com.graduate.insights.api.application.ports.output.EmployerRepositoryP
 import pe.com.graduate.insights.api.domain.exception.GraduateException;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.EmployerRequest;
+import pe.com.graduate.insights.api.domain.models.request.MailRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.EmployerResponse;
 import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
@@ -32,6 +33,7 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
   private final UserRepository userRepository;
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
+  private final MailRepositoryAdapter mailRepositoryAdapter;
 
   @Override
   public void save(EmployerRequest request) {
@@ -50,6 +52,12 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
               EmployerEntity employerEntity = employerMapper.toEntity(request, userEntity);
               employerRepository.save(employerEntity);
             });
+    MailRequest mailRequest =
+        MailRequest.builder()
+            .email(request.getCorreo())
+            .type(ConstantsUtils.SENT_CODE_VALIDATED)
+            .build();
+    mailRepositoryAdapter.sendCode(mailRequest);
   }
 
   @Override

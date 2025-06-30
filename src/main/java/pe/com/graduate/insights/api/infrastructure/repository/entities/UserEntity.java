@@ -35,6 +35,9 @@ public class UserEntity extends Auditable implements UserDetails {
   private String dni;
   private String celular;
   private String contrasena;
+  private boolean verificado;
+  private String codeConfirm;
+  private String passwordRecoveryCode;
 
   @Transient private UserRole userRole;
 

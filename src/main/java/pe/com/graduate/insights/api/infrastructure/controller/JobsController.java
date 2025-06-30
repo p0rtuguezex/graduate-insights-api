@@ -38,14 +38,6 @@ public class JobsController {
   private final JobUseCase jobUseCase;
   private final PaginateMapper paginateMapper;
 
-  @GetMapping
-  public ResponseEntity<ApiResponse<List<JobResponse>>> getListJobsByGraduateId(
-      @RequestParam(required = false)
-          @Positive(message = "El graduateId debe ser un número positivo")
-          Long graduateId) {
-    return ResponseUtils.successResponse(jobUseCase.getJobsList(graduateId));
-  }
-
   @GetMapping("/{jobId}")
   public ResponseEntity<ApiResponse<JobResponse>> getJob(
       @RequestParam(required = false)
@@ -78,7 +70,7 @@ public class JobsController {
     return ResponseUtils.successDeleteResponse();
   }
 
-  @GetMapping("/pagination")
+  @GetMapping
   ResponseEntity<ApiResponse<List<JobResponse>>> getListJobsPaginate(
       @RequestParam(required = false)
           @Positive(message = "El graduateId debe ser un número positivo")
