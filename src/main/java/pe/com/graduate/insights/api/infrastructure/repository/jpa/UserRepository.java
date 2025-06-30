@@ -52,10 +52,16 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
   @Modifying
   @Transactional
   @Query("UPDATE UserEntity u SET u.contrasena = :newPwd WHERE u.id = :userId AND  u.estado='1' ")
-  void updatePasswordByUserId(@Param("newPassword") String newPwd, @Param("userId") Long userId);
+  void updatePasswordByUserId(
+      @Param("newPassword") String newPassword, @Param("userId") Long userId);
 
   @Modifying
   @Transactional
   @Query("UPDATE UserEntity u SET u.codeConfirm = :code WHERE u.id = :userId AND u.estado='1'")
   void updateCodeConfirmByUserId(@Param("code") String code, @Param("userId") Long userId);
+
+  @Modifying
+  @Transactional
+  @Query("UPDATE UserEntity u SET u.verificado= true WHERE u.id = :userId AND u.estado='1'")
+  void updateVerifiecTrueByUserId(@Param("userId") Long userId);
 }
