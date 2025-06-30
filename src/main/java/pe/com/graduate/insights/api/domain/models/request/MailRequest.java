@@ -4,11 +4,15 @@ import static pe.com.graduate.insights.api.domain.utils.ConstantsUtils.RESET_PAS
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
+@Builder
 @Getter
-@Setter
+@AllArgsConstructor
+@ToString
 public class MailRequest {
 
   @NotNull(message = "email cannot be null")

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.application.ports.input.MailUseCase;
 import pe.com.graduate.insights.api.domain.models.request.MailRequest;
+import pe.com.graduate.insights.api.domain.models.request.ValidateCodeRequest;
 import pe.com.graduate.insights.api.domain.models.response.ApiResponse;
 import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 
@@ -24,6 +25,13 @@ public class MailController {
   @PostMapping("/send-code")
   public ResponseEntity<ApiResponse<Void>> sendCode(@Valid @RequestBody MailRequest mailRequest) {
     mailUseCase.sendCode(mailRequest);
+    return ResponseUtils.successResponse();
+  }
+
+  @PostMapping("/validate-code")
+  public ResponseEntity<ApiResponse<Void>> validateCode(
+      @Valid @RequestBody ValidateCodeRequest validateCodeRequest) {
+    mailUseCase.validateCode(validateCodeRequest);
     return ResponseUtils.successResponse();
   }
 }

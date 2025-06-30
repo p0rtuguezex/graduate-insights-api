@@ -57,7 +57,7 @@ public class ConstantsUtils {
           + "text-align: center; color: #888888; } </style> </head> <body> <div class=\"container\"> "
           + "<div class=\"content\"> <p>Hola {{user}}</p> <p>Hemos recibido una solicitud para restablecer tu contraseña. "
           + "Utiliza el siguiente código de verificación para completar el proceso de recuperación:</p> <div class=\"code\">{{code}}</div> "
-          + "<p>Por favor, ingresa este código en la página web del SISEG 2025. Si no solicitaste un cambio de contraseña, por favor, "
+          + "<p>Si no solicitaste un cambio de contraseña, por favor, "
           + "ignora este correo o contacta a nuestro equipo de soporte para más ayuda.</p> <p>Gracias por tu atención.</p> </div> <div "
           + "class=\"footer\"> <p>Atentamente,</p> <p>SISEG 2025</p> <p>garlee016@gmail.com | 954886187</p> </div> "
           + "</div> </body> </html> ";
@@ -72,7 +72,7 @@ public class ConstantsUtils {
           + "text-align: center; color: #888888; } </style> </head> <body> <div class=\"container\"> "
           + "<div class=\"content\"> <p>Hola {{user}}</p> <p>"
           + "Utiliza el siguiente código de verificación para validar su cuenta:</p> <div class=\"code\">{{code}}</div> "
-          + "<p>Por favor, ingresa este código en la página web de inicio de sesión del SISEG 2025. Si no iniciaste sesión, por favor, "
+          + "<p>Por favor, ingresa este código en la página web de inicio de sesión del SISEG 2025. Si no solicitaste este código, por favor, "
           + "ignora este correo o contacta a nuestro equipo de soporte para más ayuda.</p> <p>Gracias por tu atención.</p> </div> <div "
           + "class=\"footer\"> <p>Atentamente,</p> <p>SISEG 2025</p> <p>garlee016@gmail.com | 954886187</p> </div> "
           + "</div> </body> </html> ";
