@@ -9,5 +9,6 @@ public class UserDataResponse {
   private Long id;
   private String name;
   private String email;
+  private boolean verified;
   private String role;
 }

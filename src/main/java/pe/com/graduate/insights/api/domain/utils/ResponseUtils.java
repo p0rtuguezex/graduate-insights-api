@@ -15,6 +15,10 @@ public class ResponseUtils {
     return new ResponseEntity<>(new ApiResponse<>(data), HttpStatus.OK);
   }
 
+  public static <T> ResponseEntity<ApiResponse<T>> successResponse() {
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
   public static <T> ResponseEntity<ApiResponse<T>> successUpdateResponse() {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
