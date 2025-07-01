@@ -24,11 +24,11 @@ public interface JobOffersRepositoryPort {
 
   void saveByRole(JobOffersRequest jobOffersRequest, boolean isDirector, Long currentUserId);
 
-  void updateByRole(JobOffersRequest jobOffersRequest, Long id, boolean isDirector, Long currentUserId);
+  void updateByRole(
+      JobOffersRequest jobOffersRequest, Long id, boolean isDirector, Long currentUserId);
 
   void deleteByRole(Long id, boolean isDirector, Long currentUserId);
 
-  Page<JobOffersResponse> getPaginationByRole(String search, Pageable pageable, boolean isDirector, Long currentUserId);
-
-  List<KeyValueResponse> getListByRole(boolean isDirector, Long currentUserId);
+  Page<JobOffersResponse> getPaginationByRole(
+      String search, Pageable pageable, boolean isDirector, Long currentUserId);
 }

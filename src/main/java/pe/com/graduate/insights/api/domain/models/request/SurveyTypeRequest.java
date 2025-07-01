@@ -14,13 +14,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SurveyTypeRequest {
 
-    @NotBlank(message = "El nombre del tipo de encuesta es obligatorio")
-    @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
-    private String name;
+  @NotBlank(message = "El nombre del tipo de encuesta es obligatorio")
+  @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
+  private String name;
 
-    @Size(max = 500, message = "La descripción no puede exceder 500 caracteres")
-    private String description;
+  @Size(max = 500, message = "La descripción no puede exceder 500 caracteres")
+  private String description;
 
-    @NotNull(message = "El estado activo es obligatorio")
-    private Boolean active;
-} 
+  @NotNull(message = "El estado activo es obligatorio")
+  private Boolean active;
+}

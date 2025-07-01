@@ -5,20 +5,13 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
-import pe.com.graduate.insights.api.infrastructure.repository.entities.DirectorEntity;
-import pe.com.graduate.insights.api.infrastructure.repository.entities.EmployerEntity;
-import pe.com.graduate.insights.api.infrastructure.repository.entities.GraduateEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.DirectorRepository;
-import pe.com.graduate.insights.api.infrastructure.repository.jpa.EmployerRepository;
-import pe.com.graduate.insights.api.infrastructure.repository.jpa.GraduateRepository;
 
 @Component
 @RequiredArgsConstructor
 public class ValidationUtilsAdapter {
   private final DirectorRepository directorRepository;
-
 
   private Authentication getAuthentication() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -28,7 +28,8 @@ public interface JobRepositoryPort {
 
   void deleteByRole(Long id, boolean isDirector, Long currentUserId);
 
-  Page<JobResponse> getPaginationByRole(String search, Pageable pageable, boolean isDirector, Long currentUserId);
+  Page<JobResponse> getPaginationByRole(
+      String search, Pageable pageable, boolean isDirector, Long currentUserId);
 
   List<KeyValueResponse> getListByRole(boolean isDirector, Long currentUserId);
 }

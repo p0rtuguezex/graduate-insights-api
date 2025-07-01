@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -28,12 +27,11 @@ import pe.com.graduate.insights.api.domain.models.enums.UserRole;
 import pe.com.graduate.insights.api.domain.models.request.JobOffersRequest;
 import pe.com.graduate.insights.api.domain.models.response.ApiResponse;
 import pe.com.graduate.insights.api.domain.models.response.JobOffersResponse;
-import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMapper;
 
 @RestController
-@RequestMapping("/jobs_offers")
+@RequestMapping("/job-offers")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @PreAuthorize("hasAnyRole('DIRECTOR', 'EMPLOYER')")
@@ -45,9 +43,9 @@ public class JobOffersController {
   private final UserRoleService userRoleService;
 
   /**
-   * Función para identificar el rol del usuario autenticado.
-   * - DIRECTOR: Ve todas las ofertas de trabajo con todos los atributos (incluye employer_id)
-   * - EMPLOYER: Ve solo sus ofertas sin el atributo employer_id
+   * Función para identificar el rol del usuario autenticado. - DIRECTOR: Ve todas las ofertas de
+   * trabajo con todos los atributos (incluye employer_id) - EMPLOYER: Ve solo sus ofertas sin el
+   * atributo employer_id
    */
   private boolean isUserDirector() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -66,16 +64,18 @@ public class JobOffersController {
   public ResponseEntity<ApiResponse<JobOffersResponse>> getJobOffer(@PathVariable Long id) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
-    
-    JobOffersResponse jobOffersResponse = jobOffersUseCase.getDomainByRole(id, isDirector, currentUserId);
+
+    JobOffersResponse jobOffersResponse =
+        jobOffersUseCase.getDomainByRole(id, isDirector, currentUserId);
     return ResponseUtils.successResponse(jobOffersResponse);
   }
 
   @PostMapping
-  public ResponseEntity<ApiResponse<Void>> createJobOffer(@Valid @RequestBody JobOffersRequest jobOffersRequest) {
+  public ResponseEntity<ApiResponse<Void>> createJobOffer(
+      @Valid @RequestBody JobOffersRequest jobOffersRequest) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
-    
+
     jobOffersUseCase.saveByRole(jobOffersRequest, isDirector, currentUserId);
     return ResponseUtils.sucessCreateResponse();
   }
@@ -85,7 +85,7 @@ public class JobOffersController {
       @RequestBody JobOffersRequest jobOffersRequest, @PathVariable Long id) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
-    
+
     jobOffersUseCase.updateByRole(jobOffersRequest, id, isDirector, currentUserId);
     return ResponseUtils.successUpdateResponse();
   }
@@ -94,7 +94,7 @@ public class JobOffersController {
   public ResponseEntity<ApiResponse<Void>> deleteJobOffer(@PathVariable Long id) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
-    
+
     jobOffersUseCase.deleteByRole(id, isDirector, currentUserId);
     return ResponseUtils.successDeleteResponse();
   }
@@ -106,19 +106,11 @@ public class JobOffersController {
       @RequestParam(value = "size", defaultValue = "10") String size) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
-    
+
     Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size));
-    Page<JobOffersResponse> jobOffersPage = jobOffersUseCase.getPaginationByRole(search, pageable, isDirector, currentUserId);
+    Page<JobOffersResponse> jobOffersPage =
+        jobOffersUseCase.getPaginationByRole(search, pageable, isDirector, currentUserId);
     return ResponseUtils.successResponsePaginate(
         jobOffersPage.getContent(), paginateMapper.toDomain(jobOffersPage));
-  }
-
-  @GetMapping("/list")
-  public ResponseEntity<List<KeyValueResponse>> getListJobOffersAll() {
-    boolean isDirector = isUserDirector();
-    Long currentUserId = getCurrentUserId();
-    
-    List<KeyValueResponse> jobOffersList = jobOffersUseCase.getListByRole(isDirector, currentUserId);
-    return new ResponseEntity<>(jobOffersList, HttpStatus.OK);
   }
 }

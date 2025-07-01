@@ -31,38 +31,44 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
     return jobRepository
         .findByIdAndEstado(id, ConstantsUtils.STATUS_ACTIVE)
         .map(jobMapper::toJobResponse)
-        .orElseThrow(
-            () -> new NotFoundException(String.format(ConstantsUtils.JOB_NOT_FOUND, id)));
+        .orElseThrow(() -> new NotFoundException(String.format(ConstantsUtils.JOB_NOT_FOUND, id)));
   }
 
   @Override
   public void save(JobRequest jobRequest) {
-    var graduate = graduateRepository
-        .findByIdAndUserEstado(jobRequest.getGraduateId(), ConstantsUtils.STATUS_ACTIVE)
-        .orElseThrow(
-            () -> new NotFoundException(
-                String.format(ConstantsUtils.GRADUATE_NOT_FOUND, jobRequest.getGraduateId())));
+    var graduate =
+        graduateRepository
+            .findByIdAndUserEstado(jobRequest.getGraduateId(), ConstantsUtils.STATUS_ACTIVE)
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        String.format(
+                            ConstantsUtils.GRADUATE_NOT_FOUND, jobRequest.getGraduateId())));
     JobEntity jobEntity = jobMapper.toEntity(jobRequest, graduate);
     jobRepository.save(jobEntity);
   }
 
   @Override
   public void update(JobRequest jobRequest, Long id) {
-    JobEntity jobEntity = jobRepository
-        .findByIdAndEstado(id, ConstantsUtils.STATUS_ACTIVE)
-        .orElseThrow(
-            () -> new NotFoundException(String.format(ConstantsUtils.JOB_NOT_FOUND, id)));
+    JobEntity jobEntity =
+        jobRepository
+            .findByIdAndEstado(id, ConstantsUtils.STATUS_ACTIVE)
+            .orElseThrow(
+                () -> new NotFoundException(String.format(ConstantsUtils.JOB_NOT_FOUND, id)));
 
     // Verificar si se está cambiando el graduado
     if (!jobEntity.getGraduate().getId().equals(jobRequest.getGraduateId())) {
-      var newGraduate = graduateRepository
-          .findByIdAndUserEstado(jobRequest.getGraduateId(), ConstantsUtils.STATUS_ACTIVE)
-          .orElseThrow(
-              () -> new NotFoundException(
-                  String.format(ConstantsUtils.GRADUATE_NOT_FOUND, jobRequest.getGraduateId())));
+      var newGraduate =
+          graduateRepository
+              .findByIdAndUserEstado(jobRequest.getGraduateId(), ConstantsUtils.STATUS_ACTIVE)
+              .orElseThrow(
+                  () ->
+                      new NotFoundException(
+                          String.format(
+                              ConstantsUtils.GRADUATE_NOT_FOUND, jobRequest.getGraduateId())));
       jobEntity.setGraduate(newGraduate);
     }
-    
+
     jobMapper.updateJobEntity(jobRequest, jobEntity);
     jobRepository.save(jobEntity);
   }
@@ -82,9 +88,10 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
   public Page<JobResponse> getPagination(String search, Pageable pageable) {
     boolean hasSearch = !StringUtils.isEmpty(search);
 
-    Page<JobEntity> jobEntities = hasSearch
-        ? jobRepository.findAllByEstadoAndSearch(search, ConstantsUtils.STATUS_ACTIVE, pageable)
-        : jobRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE, pageable);
+    Page<JobEntity> jobEntities =
+        hasSearch
+            ? jobRepository.findAllByEstadoAndSearch(search, ConstantsUtils.STATUS_ACTIVE, pageable)
+            : jobRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE, pageable);
 
     List<JobResponse> jobResponseList =
         jobEntities.getContent().stream().map(jobMapper::toJobResponse).toList();
@@ -126,22 +133,27 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
   public void saveByRole(JobRequest jobRequest, boolean isDirector, Long currentUserId) {
     if (isDirector) {
       // Director puede crear trabajo para cualquier graduado
-      var graduate = graduateRepository
-          .findByIdAndUserEstado(jobRequest.getGraduateId(), ConstantsUtils.STATUS_ACTIVE)
-          .orElseThrow(
-              () -> new NotFoundException(
-                  String.format(ConstantsUtils.GRADUATE_NOT_FOUND, jobRequest.getGraduateId())));
+      var graduate =
+          graduateRepository
+              .findByIdAndUserEstado(jobRequest.getGraduateId(), ConstantsUtils.STATUS_ACTIVE)
+              .orElseThrow(
+                  () ->
+                      new NotFoundException(
+                          String.format(
+                              ConstantsUtils.GRADUATE_NOT_FOUND, jobRequest.getGraduateId())));
       JobEntity jobEntity = jobMapper.toEntity(jobRequest, graduate);
       jobRepository.save(jobEntity);
     } else {
       // Graduado solo puede crear trabajos para sí mismo
       Long graduateId = getGraduateIdByUserId(currentUserId);
-      var graduate = graduateRepository
-          .findByIdAndUserEstado(graduateId, ConstantsUtils.STATUS_ACTIVE)
-          .orElseThrow(
-              () -> new NotFoundException(
-                  String.format(ConstantsUtils.GRADUATE_NOT_FOUND, graduateId)));
-      
+      var graduate =
+          graduateRepository
+              .findByIdAndUserEstado(graduateId, ConstantsUtils.STATUS_ACTIVE)
+              .orElseThrow(
+                  () ->
+                      new NotFoundException(
+                          String.format(ConstantsUtils.GRADUATE_NOT_FOUND, graduateId)));
+
       // Forzar que el graduate_id sea el del usuario autenticado
       jobRequest.setGraduateId(graduateId);
       JobEntity jobEntity = jobMapper.toEntity(jobRequest, graduate);
@@ -153,31 +165,36 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
   public void updateByRole(JobRequest jobRequest, Long id, boolean isDirector, Long currentUserId) {
     if (isDirector) {
       // Director puede actualizar cualquier trabajo
-      JobEntity jobEntity = jobRepository
-          .findByIdAndEstado(id, ConstantsUtils.STATUS_ACTIVE)
-          .orElseThrow(
-              () -> new NotFoundException(String.format(ConstantsUtils.JOB_NOT_FOUND, id)));
+      JobEntity jobEntity =
+          jobRepository
+              .findByIdAndEstado(id, ConstantsUtils.STATUS_ACTIVE)
+              .orElseThrow(
+                  () -> new NotFoundException(String.format(ConstantsUtils.JOB_NOT_FOUND, id)));
 
       // Verificar si se está cambiando el graduado
       if (!jobEntity.getGraduate().getId().equals(jobRequest.getGraduateId())) {
-        var newGraduate = graduateRepository
-            .findByIdAndUserEstado(jobRequest.getGraduateId(), ConstantsUtils.STATUS_ACTIVE)
-            .orElseThrow(
-                () -> new NotFoundException(
-                    String.format(ConstantsUtils.GRADUATE_NOT_FOUND, jobRequest.getGraduateId())));
+        var newGraduate =
+            graduateRepository
+                .findByIdAndUserEstado(jobRequest.getGraduateId(), ConstantsUtils.STATUS_ACTIVE)
+                .orElseThrow(
+                    () ->
+                        new NotFoundException(
+                            String.format(
+                                ConstantsUtils.GRADUATE_NOT_FOUND, jobRequest.getGraduateId())));
         jobEntity.setGraduate(newGraduate);
       }
-      
+
       jobMapper.updateJobEntity(jobRequest, jobEntity);
       jobRepository.save(jobEntity);
     } else {
       // Graduado solo puede actualizar sus propios trabajos
       Long graduateId = getGraduateIdByUserId(currentUserId);
-      JobEntity jobEntity = jobRepository
-          .findByIdAndEstadoAndGraduateId(id, ConstantsUtils.STATUS_ACTIVE, graduateId)
-          .orElseThrow(
-              () -> new NotFoundException(String.format(ConstantsUtils.JOB_NOT_FOUND, id)));
-      
+      JobEntity jobEntity =
+          jobRepository
+              .findByIdAndEstadoAndGraduateId(id, ConstantsUtils.STATUS_ACTIVE, graduateId)
+              .orElseThrow(
+                  () -> new NotFoundException(String.format(ConstantsUtils.JOB_NOT_FOUND, id)));
+
       // Asegurar que el graduate_id no cambie
       jobRequest.setGraduateId(graduateId);
       jobMapper.updateJobEntity(jobRequest, jobEntity);
@@ -210,14 +227,17 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
   }
 
   @Override
-  public Page<JobResponse> getPaginationByRole(String search, Pageable pageable, boolean isDirector, Long currentUserId) {
+  public Page<JobResponse> getPaginationByRole(
+      String search, Pageable pageable, boolean isDirector, Long currentUserId) {
     boolean hasSearch = !StringUtils.isEmpty(search);
 
     if (isDirector) {
       // Director ve todos los trabajos con todos los atributos
-      Page<JobEntity> jobEntities = hasSearch
-          ? jobRepository.findAllByEstadoAndSearch(search, ConstantsUtils.STATUS_ACTIVE, pageable)
-          : jobRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE, pageable);
+      Page<JobEntity> jobEntities =
+          hasSearch
+              ? jobRepository.findAllByEstadoAndSearch(
+                  search, ConstantsUtils.STATUS_ACTIVE, pageable)
+              : jobRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE, pageable);
 
       List<JobResponse> jobResponseList =
           jobEntities.getContent().stream().map(jobMapper::toJobResponse).toList();
@@ -225,11 +245,12 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
     } else {
       // Graduado ve solo sus trabajos sin graduate_id
       Long graduateId = getGraduateIdByUserId(currentUserId);
-      Page<JobEntity> jobEntities = hasSearch
-          ? jobRepository.findAllByEstadoAndSearchAndGraduateId(
-              search, ConstantsUtils.STATUS_ACTIVE, pageable, graduateId)
-          : jobRepository.findAllByEstadoAndGraduateId(
-              ConstantsUtils.STATUS_ACTIVE, pageable, graduateId);
+      Page<JobEntity> jobEntities =
+          hasSearch
+              ? jobRepository.findAllByEstadoAndSearchAndGraduateId(
+                  search, ConstantsUtils.STATUS_ACTIVE, pageable, graduateId)
+              : jobRepository.findAllByEstadoAndGraduateId(
+                  ConstantsUtils.STATUS_ACTIVE, pageable, graduateId);
 
       List<JobResponse> jobResponseList =
           jobEntities.getContent().stream().map(jobMapper::toJobResponseWithoutGraduateId).toList();
@@ -258,14 +279,13 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
     }
   }
 
-  /**
-   * Método auxiliar para obtener el graduateId asociado al userId
-   */
+  /** Método auxiliar para obtener el graduateId asociado al userId */
   private Long getGraduateIdByUserId(Long userId) {
     return graduateRepository
         .findByUserIdAndUserEstado(userId, ConstantsUtils.STATUS_ACTIVE)
         .map(graduate -> graduate.getId())
         .orElseThrow(
-            () -> new NotFoundException("El usuario autenticado no es un graduado o no está activo"));
+            () ->
+                new NotFoundException("El usuario autenticado no es un graduado o no está activo"));
   }
 }

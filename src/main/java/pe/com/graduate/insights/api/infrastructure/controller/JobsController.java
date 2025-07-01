@@ -45,9 +45,9 @@ public class JobsController {
   private final UserRoleService userRoleService;
 
   /**
-   * Función para identificar el rol del usuario autenticado.
-   * - DIRECTOR: Ve todos los trabajos con todos los atributos (incluye graduate_id)
-   * - GRADUATE: Ve solo sus trabajos sin el atributo graduate_id
+   * Función para identificar el rol del usuario autenticado. - DIRECTOR: Ve todos los trabajos con
+   * todos los atributos (incluye graduate_id) - GRADUATE: Ve solo sus trabajos sin el atributo
+   * graduate_id
    */
   private boolean isUserDirector() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -66,7 +66,7 @@ public class JobsController {
   public ResponseEntity<ApiResponse<JobResponse>> getJob(@PathVariable Long id) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
-    
+
     JobResponse jobResponse = jobUseCase.getDomainByRole(id, isDirector, currentUserId);
     return ResponseUtils.successResponse(jobResponse);
   }
@@ -75,7 +75,7 @@ public class JobsController {
   public ResponseEntity<ApiResponse<Void>> saveJob(@Valid @RequestBody JobRequest jobRequest) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
-    
+
     jobUseCase.saveByRole(jobRequest, isDirector, currentUserId);
     return ResponseUtils.sucessCreateResponse();
   }
@@ -85,7 +85,7 @@ public class JobsController {
       @RequestBody JobRequest jobRequest, @PathVariable Long id) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
-    
+
     jobUseCase.updateByRole(jobRequest, id, isDirector, currentUserId);
     return ResponseUtils.successUpdateResponse();
   }
@@ -94,7 +94,7 @@ public class JobsController {
   public ResponseEntity<ApiResponse<Void>> deleteJob(@PathVariable Long id) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
-    
+
     jobUseCase.deleteByRole(id, isDirector, currentUserId);
     return ResponseUtils.successDeleteResponse();
   }
@@ -106,9 +106,10 @@ public class JobsController {
       @RequestParam(value = "size", defaultValue = "10") String size) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
-    
+
     Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size));
-    Page<JobResponse> jobPage = jobUseCase.getPaginationByRole(search, pageable, isDirector, currentUserId);
+    Page<JobResponse> jobPage =
+        jobUseCase.getPaginationByRole(search, pageable, isDirector, currentUserId);
     return ResponseUtils.successResponsePaginate(
         jobPage.getContent(), paginateMapper.toDomain(jobPage));
   }
@@ -117,7 +118,7 @@ public class JobsController {
   public ResponseEntity<List<KeyValueResponse>> getListJobsAll() {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
-    
+
     List<KeyValueResponse> jobList = jobUseCase.getListByRole(isDirector, currentUserId);
     return new ResponseEntity<>(jobList, HttpStatus.OK);
   }

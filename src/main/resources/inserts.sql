@@ -30,7 +30,7 @@ VALUES
     ('Alejandro', 'Castillo Ramos', '1994-09-13', 'M', 'xmcgiver12@gmail.com', '1', '56789013', '987654335', '$2a$10$AzS.1vRFEWlMYCZT4SCbu.QqlRGci70s.5WiyFnljZctq2vs4xfNG', NOW(), NOW()),
     ('Sofía Alejandra', 'Luna Espinoza', '1997-01-08', 'F', 'sofia.luna@email.com', '1', '67890124', '987654336', '$2a$10$example', NOW(), NOW()),
     -- Usuarios para empleadores
-    ('Tech Solutions', 'SAC', '1990-01-01', 'M', 'contact@techsolutions.com', '1', '20123456789', '987654340', '$2a$10$example', NOW(), NOW()),
+    ('Tech Solutions', 'SAC', '1990-01-01', 'M', 'contact@techsolutions.com', '1', '20123456789', '987654340', '$2a$10$AzS.1vRFEWlMYCZT4SCbu.QqlRGci70s.5WiyFnljZctq2vs4xfNG', NOW(), NOW()),
     ('Banco Nacional', 'SA', '1985-01-01', 'M', 'info@banconacional.com', '1', '20234567890', '987654341', '$2a$10$example', NOW(), NOW()),
     ('Clínica San Miguel', 'SAC', '1995-01-01', 'F', 'contacto@clinicasanmiguel.com', '1', '20345678901', '987654342', '$2a$10$example', NOW(), NOW()),
     -- Usuario para director

@@ -69,7 +69,8 @@ public class JobService implements JobUseCase {
   }
 
   @Override
-  public Page<JobResponse> getPaginationByRole(String search, Pageable pageable, boolean isDirector, Long currentUserId) {
+  public Page<JobResponse> getPaginationByRole(
+      String search, Pageable pageable, boolean isDirector, Long currentUserId) {
     return jobRepositoryPort.getPaginationByRole(search, pageable, isDirector, currentUserId);
   }
 

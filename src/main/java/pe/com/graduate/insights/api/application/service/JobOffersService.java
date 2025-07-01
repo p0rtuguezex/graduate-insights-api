@@ -1,6 +1,5 @@
 package pe.com.graduate.insights.api.application.service;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +8,6 @@ import pe.com.graduate.insights.api.application.ports.input.JobOffersUseCase;
 import pe.com.graduate.insights.api.application.ports.output.JobOffersRepositoryPort;
 import pe.com.graduate.insights.api.domain.models.request.JobOffersRequest;
 import pe.com.graduate.insights.api.domain.models.response.JobOffersResponse;
-import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 @Service
 @AllArgsConstructor
@@ -43,22 +41,19 @@ public class JobOffersService implements JobOffersUseCase {
   }
 
   @Override
-  public List<KeyValueResponse> getList() {
-    return jobOffersRepositoryPort.getList();
-  }
-
-  @Override
   public JobOffersResponse getDomainByRole(Long id, boolean isDirector, Long currentUserId) {
     return jobOffersRepositoryPort.getDomainByRole(id, isDirector, currentUserId);
   }
 
   @Override
-  public void saveByRole(JobOffersRequest jobOffersRequest, boolean isDirector, Long currentUserId) {
+  public void saveByRole(
+      JobOffersRequest jobOffersRequest, boolean isDirector, Long currentUserId) {
     jobOffersRepositoryPort.saveByRole(jobOffersRequest, isDirector, currentUserId);
   }
 
   @Override
-  public void updateByRole(JobOffersRequest jobOffersRequest, Long id, boolean isDirector, Long currentUserId) {
+  public void updateByRole(
+      JobOffersRequest jobOffersRequest, Long id, boolean isDirector, Long currentUserId) {
     jobOffersRepositoryPort.updateByRole(jobOffersRequest, id, isDirector, currentUserId);
   }
 
@@ -68,12 +63,8 @@ public class JobOffersService implements JobOffersUseCase {
   }
 
   @Override
-  public Page<JobOffersResponse> getPaginationByRole(String search, Pageable pageable, boolean isDirector, Long currentUserId) {
+  public Page<JobOffersResponse> getPaginationByRole(
+      String search, Pageable pageable, boolean isDirector, Long currentUserId) {
     return jobOffersRepositoryPort.getPaginationByRole(search, pageable, isDirector, currentUserId);
-  }
-
-  @Override
-  public List<KeyValueResponse> getListByRole(boolean isDirector, Long currentUserId) {
-    return jobOffersRepositoryPort.getListByRole(isDirector, currentUserId);
   }
 }

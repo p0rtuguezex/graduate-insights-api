@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.application.ports.input;
 
+import java.util.List;
 import pe.com.graduate.insights.api.application.ports.generic.GenericCreate;
 import pe.com.graduate.insights.api.application.ports.generic.GenericDelete;
 import pe.com.graduate.insights.api.application.ports.generic.GenericList;
@@ -10,8 +11,6 @@ import pe.com.graduate.insights.api.domain.models.request.SurveyTypeRequest;
 import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.domain.models.response.SurveyTypeResponse;
 
-import java.util.List;
-
 public interface SurveyTypeUseCase
     extends GenericCreate<SurveyTypeRequest>,
         GenericUpdate<SurveyTypeRequest>,
@@ -19,6 +18,6 @@ public interface SurveyTypeUseCase
         GenericRead<SurveyTypeResponse>,
         GenericPaginate<SurveyTypeResponse>,
         GenericDelete {
-    
-    List<SurveyTypeResponse> getActiveTypes();
-} 
+
+  List<SurveyTypeResponse> getActiveTypes();
+}

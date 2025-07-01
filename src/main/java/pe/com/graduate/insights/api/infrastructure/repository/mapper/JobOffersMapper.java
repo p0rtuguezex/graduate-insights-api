@@ -37,9 +37,7 @@ public interface JobOffersMapper {
   @Mapping(source = "employer.razonSocial", target = "employerName")
   JobOffersResponse toJobOffersResponse(JobOffersEntity jobOffersEntity);
 
-  /**
-   * Método especial para employers que no deben ver su propio employer_id
-   */
+  /** Método especial para employers que no deben ver su propio employer_id */
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(source = "id", target = "jobOffersId")
   @Mapping(target = "employerId", ignore = true)
