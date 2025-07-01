@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.application.ports.input.MailUseCase;
+import pe.com.graduate.insights.api.domain.models.request.ChangePasswordRequest;
 import pe.com.graduate.insights.api.domain.models.request.MailRequest;
 import pe.com.graduate.insights.api.domain.models.request.ValidateCodeRequest;
 import pe.com.graduate.insights.api.domain.models.response.ApiResponse;
@@ -32,6 +33,13 @@ public class MailController {
   public ResponseEntity<ApiResponse<Void>> validateCode(
       @Valid @RequestBody ValidateCodeRequest validateCodeRequest) {
     mailUseCase.validateCode(validateCodeRequest);
+    return ResponseUtils.successResponse();
+  }
+
+  @PostMapping("/change-password")
+  public ResponseEntity<ApiResponse<Void>> changePassword(
+      @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+    mailUseCase.changePassword(changePasswordRequest);
     return ResponseUtils.successResponse();
   }
 }

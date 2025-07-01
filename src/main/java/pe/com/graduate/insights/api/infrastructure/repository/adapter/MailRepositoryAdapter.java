@@ -71,8 +71,32 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
   }
 
   @Override
-  public void validateCode(ValidateCodeRequest validateCodeRequest) {}
+  public void validateCode(ValidateCodeRequest validateCodeRequest) {
+    userRepository
+        .findByCorreoAndEstado(validateCodeRequest.getEmail(), ConstantsUtils.STATUS_ACTIVE)
+        .ifPresentOrElse(
+            userEntity -> userRepository.updateVerifiedTrueByUserId(userEntity.getId()),
+            () -> {
+              throw new NotFoundException(
+                  String.format(
+                      ConstantsUtils.USER_NOT_FOUND_BY_EMAIL, validateCodeRequest.getEmail()));
+            });
+  }
 
   @Override
-  public void changePassword(ChangePasswordRequest changePasswordRequest) {}
+  public void changePassword(ChangePasswordRequest changePasswordRequest) {
+    userRepository
+        .findByCorreoAndEstado(changePasswordRequest.getEmail(), ConstantsUtils.STATUS_ACTIVE)
+        .ifPresentOrElse(
+            userEntity -> {
+              String newPasswordEncode =
+                  passwordEncoder.encode(changePasswordRequest.getNewPassword());
+              userRepository.updatePasswordByUserId(newPasswordEncode, userEntity.getId());
+            },
+            () -> {
+              throw new NotFoundException(
+                  String.format(
+                      ConstantsUtils.USER_NOT_FOUND_BY_EMAIL, changePasswordRequest.getEmail()));
+            });
+  }
 }
