@@ -13,30 +13,49 @@ import pe.com.graduate.insights.api.infrastructure.repository.entities.JobOffers
 
 public interface JobOffersRepository extends JpaRepository<JobOffersEntity, Long> {
 
+  Optional<JobOffersEntity> findByIdAndEstado(Long id, String estado);
+
+  @Query("SELECT j FROM JobOffersEntity j WHERE j.id = :id AND j.estado = :estado AND j.employer.id = :employerId")
   Optional<JobOffersEntity> findByIdAndEstadoAndEmployerId(
-      Long jobOfferId, String estado, Long employerId);
+      @Param("id") Long id, @Param("estado") String estado, @Param("employerId") Long employerId);
 
+  @Query("SELECT j FROM JobOffersEntity j WHERE j.estado = :estado AND j.employer.user.estado = :userEstado")
   List<JobOffersEntity> findAllByEstadoAndEmployer_User_Estado(
-      String jobOfferEstado, String userEstado);
+      @Param("estado") String estado, @Param("userEstado") String userEstado);
 
-  List<JobOffersEntity> findAllByEstadoAndEmployerId(String estado, Long employerId);
+  @Query("SELECT j FROM JobOffersEntity j WHERE j.estado = :estado AND j.employer.id = :employerId")
+  List<JobOffersEntity> findAllByEstadoAndEmployerId(
+      @Param("estado") String estado, @Param("employerId") Long employerId);
 
+  @Query("SELECT j FROM JobOffersEntity j WHERE j.estado = :estado AND j.employer.id = :employerId")
   Page<JobOffersEntity> findAllByEstadoAndEmployerId(
-      String status, Pageable pageable, Long employerId);
+      @Param("estado") String estado, Pageable pageable, @Param("employerId") Long employerId);
 
-  @Query(
-      "SELECT j FROM JobOffersEntity j "
-          + "WHERE j.estado = :status and j.employer.id = :employerId "
-          + "AND ("
-          + " LOWER(j.link) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-          + " LOWER(j.titulo) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-          + " LOWER(j.descripcion) LIKE LOWER(CONCAT('%', :search, '%')) "
-          + ")")
+  @Query("SELECT j FROM JobOffersEntity j WHERE j.estado = :estado AND " +
+         "(LOWER(j.titulo) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+         "LOWER(j.descripcion) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
+         "j.employer.id = :employerId")
   Page<JobOffersEntity> findAllByEstadoSearchAndEmployerId(
-      String search, String status, Pageable pageable, Long employerId);
+      @Param("search") String search, @Param("estado") String estado, 
+      Pageable pageable, @Param("employerId") Long employerId);
 
   @Transactional
   @Modifying
   @Query("UPDATE JobOffersEntity j SET j.estado = '0' WHERE j.id = :jobOfferId")
   void deactivateJobOffers(@Param("jobOfferId") Long jobOfferId);
+
+  // Métodos para directores - obtener todas las ofertas de trabajo
+  Page<JobOffersEntity> findAllByEstado(String status, Pageable pageable);
+
+  @Query(
+      "SELECT j FROM JobOffersEntity j "
+          + "WHERE j.estado = :status "
+          + "AND ("
+          + " LOWER(j.link) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(j.titulo) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(j.descripcion) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(j.employer.user.nombres) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(j.employer.user.apellidos) LIKE LOWER(CONCAT('%', :search, '%')) "
+          + ")")
+  Page<JobOffersEntity> findAllByEstadoAndSearch(String search, String status, Pageable pageable);
 }

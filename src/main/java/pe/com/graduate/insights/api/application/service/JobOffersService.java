@@ -18,13 +18,8 @@ public class JobOffersService implements JobOffersUseCase {
   private final JobOffersRepositoryPort jobOffersRepositoryPort;
 
   @Override
-  public List<JobOffersResponse> getJobsList(Long employerId) {
-    return jobOffersRepositoryPort.getJobsList(employerId);
-  }
-
-  @Override
-  public JobOffersResponse getDomain(Long employerId, Long jobOfferId) {
-    return jobOffersRepositoryPort.getDomain(employerId, jobOfferId);
+  public JobOffersResponse getDomain(Long id) {
+    return jobOffersRepositoryPort.getDomain(id);
   }
 
   @Override
@@ -33,22 +28,52 @@ public class JobOffersService implements JobOffersUseCase {
   }
 
   @Override
-  public void update(JobOffersRequest jobOffersRequest, Long jobOfferId) {
-    jobOffersRepositoryPort.update(jobOffersRequest, jobOfferId);
+  public void update(JobOffersRequest jobOffersRequest, Long id) {
+    jobOffersRepositoryPort.update(jobOffersRequest, id);
   }
 
   @Override
-  public void delete(Long employerId, Long jobOfferId) {
-    jobOffersRepositoryPort.delete(employerId, jobOfferId);
+  public void delete(Long id) {
+    jobOffersRepositoryPort.delete(id);
   }
 
   @Override
-  public Page<JobOffersResponse> getPagination(String search, Pageable pageable, Long employerId) {
-    return jobOffersRepositoryPort.getPagination(search, pageable, employerId);
+  public Page<JobOffersResponse> getPagination(String search, Pageable pageable) {
+    return jobOffersRepositoryPort.getPagination(search, pageable);
   }
 
   @Override
-  public List<KeyValueResponse> getJobOffersList() {
-    return jobOffersRepositoryPort.getJobOffersList();
+  public List<KeyValueResponse> getList() {
+    return jobOffersRepositoryPort.getList();
+  }
+
+  @Override
+  public JobOffersResponse getDomainByRole(Long id, boolean isDirector, Long currentUserId) {
+    return jobOffersRepositoryPort.getDomainByRole(id, isDirector, currentUserId);
+  }
+
+  @Override
+  public void saveByRole(JobOffersRequest jobOffersRequest, boolean isDirector, Long currentUserId) {
+    jobOffersRepositoryPort.saveByRole(jobOffersRequest, isDirector, currentUserId);
+  }
+
+  @Override
+  public void updateByRole(JobOffersRequest jobOffersRequest, Long id, boolean isDirector, Long currentUserId) {
+    jobOffersRepositoryPort.updateByRole(jobOffersRequest, id, isDirector, currentUserId);
+  }
+
+  @Override
+  public void deleteByRole(Long id, boolean isDirector, Long currentUserId) {
+    jobOffersRepositoryPort.deleteByRole(id, isDirector, currentUserId);
+  }
+
+  @Override
+  public Page<JobOffersResponse> getPaginationByRole(String search, Pageable pageable, boolean isDirector, Long currentUserId) {
+    return jobOffersRepositoryPort.getPaginationByRole(search, pageable, isDirector, currentUserId);
+  }
+
+  @Override
+  public List<KeyValueResponse> getListByRole(boolean isDirector, Long currentUserId) {
+    return jobOffersRepositoryPort.getListByRole(isDirector, currentUserId);
   }
 }

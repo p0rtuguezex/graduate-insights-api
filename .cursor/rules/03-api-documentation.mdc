@@ -3,3 +3,45 @@ description:
 globs:
 alwaysApply: false
 ---
+# Documentación de API y Pruebas
+
+## Colección Postman
+
+La API está documentada usando una colección de Postman que se encuentra en:
+[GraduateApi.postman_collection.json](mdc:postman/GraduateApi.postman_collection.json)
+
+### Estructura de la Colección
+- Autenticación y Autorización
+- Gestión de Graduados
+- Gestión de Centros Educativos
+- Gestión de Empleadores
+- Gestión de Ofertas de Trabajo
+- Gestión de Tipos de Eventos
+
+## Convenciones de API REST
+
+1. **Endpoints**
+- Usar sustantivos en plural para recursos (ej: `/graduates`, `/employers`)
+- Versionar la API en la URL (ej: `/api/v1/graduates`)
+- Usar métodos HTTP apropiadamente:
+  - GET: Consultar
+  - POST: Crear
+  - PUT: Actualizar completo
+  - PATCH: Actualizar parcial
+  - DELETE: Eliminar
+
+2. **Respuestas**
+- Usar [ApiResponse](mdc:src/main/java/pe/com/graduate/insights/api/domain/models/response/ApiResponse.java) para respuestas consistentes
+- Seguir estándares HTTP para códigos de estado
+- Incluir mensajes de error descriptivos
+
+3. **Seguridad**
+- Implementar autenticación JWT
+- Validar roles y permisos
+- Sanitizar datos de entrada
+
+## Scripts SQL
+
+Los scripts para la base de datos se encuentran en:
+- [tables.sql](mdc:src/main/resources/tables.sql): Definición de tablas
+- [inserts.sql](mdc:src/main/resources/inserts.sql): Datos iniciales

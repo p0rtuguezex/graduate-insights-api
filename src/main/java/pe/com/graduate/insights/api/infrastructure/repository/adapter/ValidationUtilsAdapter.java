@@ -17,73 +17,8 @@ import pe.com.graduate.insights.api.infrastructure.repository.jpa.GraduateReposi
 @Component
 @RequiredArgsConstructor
 public class ValidationUtilsAdapter {
-
-  private final GraduateRepository graduateRepository;
-  private final EmployerRepository employerRepository;
   private final DirectorRepository directorRepository;
-  private final AuthRepositoryAdapter authRepositoryAdapter;
 
-  public GraduateEntity getAuthenticatedGraduateId(Long graduateId) {
-    if (graduateId != null) {
-      return graduateRepository
-          .findByIdAndUserEstado(graduateId, ConstantsUtils.STATUS_ACTIVE)
-          .orElseThrow(
-              () ->
-                  new NotFoundException(
-                      String.format(ConstantsUtils.GRADUATE_NOT_FOUND, graduateId)));
-    }
-    Authentication authentication = getAuthentication();
-    var user = authRepositoryAdapter.getCurrentUser(authentication);
-
-    // Obtener el graduado asociado al usuario autenticado
-    return graduateRepository
-        .findByUserIdAndUserEstado(user.getId(), ConstantsUtils.STATUS_ACTIVE)
-        .orElseThrow(
-            () ->
-                new NotFoundException("El usuario autenticado no es un graduado o no está activo"));
-  }
-
-  public EmployerEntity getAuthenticatedEmployerId(Long employerId) {
-    if (employerId != null) {
-      return employerRepository
-          .findByIdAndUserEstado(employerId, ConstantsUtils.STATUS_ACTIVE)
-          .orElseThrow(
-              () ->
-                  new NotFoundException(
-                      String.format(ConstantsUtils.EMPLOYER_NOT_FOUND, employerId)));
-    }
-    Authentication authentication = getAuthentication();
-    var user = authRepositoryAdapter.getCurrentUser(authentication);
-
-    // Obtener el empleador asociado al usuario autenticado
-    return employerRepository
-        .findByUserIdAndUserEstado(user.getId(), ConstantsUtils.STATUS_ACTIVE)
-        .orElseThrow(
-            () ->
-                new NotFoundException(
-                    "El usuario autenticado no es un empleador o no está activo"));
-  }
-
-  public DirectorEntity getAuthenticatedDirectorId(Long directorId) {
-    if (directorId != null) {
-      return directorRepository
-          .findByIdAndUserEstado(directorId, ConstantsUtils.STATUS_ACTIVE)
-          .orElseThrow(
-              () ->
-                  new NotFoundException(
-                      String.format(ConstantsUtils.EMPLOYER_NOT_FOUND, directorId)));
-    }
-
-    Authentication authentication = getAuthentication();
-    var user = authRepositoryAdapter.getCurrentUser(authentication);
-
-    // Obtener el director asociado al usuario autenticado
-    return directorRepository
-        .findByUserIdAndUserEstado(user.getId(), ConstantsUtils.STATUS_ACTIVE)
-        .orElseThrow(
-            () ->
-                new NotFoundException("El usuario autenticado no es un director o no está activo"));
-  }
 
   private Authentication getAuthentication() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -92,5 +27,15 @@ public class ValidationUtilsAdapter {
     }
 
     return authentication;
+  }
+
+  // Método público para obtener la autenticación
+  public Authentication getCurrentAuthentication() {
+    return getAuthentication();
+  }
+
+  // Método para verificar si el usuario es director
+  public boolean isUserDirector(Long userId) {
+    return directorRepository.existsByUserIdAndUserEstado(userId, ConstantsUtils.STATUS_ACTIVE);
   }
 }

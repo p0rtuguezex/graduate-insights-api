@@ -8,17 +8,27 @@ import pe.com.graduate.insights.api.domain.models.response.JobOffersResponse;
 import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 public interface JobOffersRepositoryPort {
-  List<JobOffersResponse> getJobsList(Long employerId);
-
-  JobOffersResponse getDomain(Long employerId, Long jobOfferId);
+  JobOffersResponse getDomain(Long id);
 
   void save(JobOffersRequest jobOffersRequest);
 
-  void update(JobOffersRequest jobOffersRequest, Long jobOfferId);
+  void update(JobOffersRequest jobOffersRequest, Long id);
 
-  void delete(Long employerId, Long jobOfferId);
+  void delete(Long id);
 
-  Page<JobOffersResponse> getPagination(String search, Pageable pageable, Long employerId);
+  Page<JobOffersResponse> getPagination(String search, Pageable pageable);
 
-  List<KeyValueResponse> getJobOffersList();
+  List<KeyValueResponse> getList();
+
+  JobOffersResponse getDomainByRole(Long id, boolean isDirector, Long currentUserId);
+
+  void saveByRole(JobOffersRequest jobOffersRequest, boolean isDirector, Long currentUserId);
+
+  void updateByRole(JobOffersRequest jobOffersRequest, Long id, boolean isDirector, Long currentUserId);
+
+  void deleteByRole(Long id, boolean isDirector, Long currentUserId);
+
+  Page<JobOffersResponse> getPaginationByRole(String search, Pageable pageable, boolean isDirector, Long currentUserId);
+
+  List<KeyValueResponse> getListByRole(boolean isDirector, Long currentUserId);
 }

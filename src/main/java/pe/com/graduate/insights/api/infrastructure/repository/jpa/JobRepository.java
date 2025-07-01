@@ -15,6 +15,8 @@ import pe.com.graduate.insights.api.infrastructure.repository.entities.JobEntity
 @Repository
 public interface JobRepository extends JpaRepository<JobEntity, Long> {
 
+  Optional<JobEntity> findByIdAndEstado(Long id, String estado);
+
   Optional<JobEntity> findByIdAndEstadoAndGraduateId(
       Long jobOfferId, String estado, Long graduateId);
 
@@ -43,4 +45,21 @@ public interface JobRepository extends JpaRepository<JobEntity, Long> {
   @Modifying
   @Query("UPDATE JobEntity j SET j.estado = '0' WHERE j.id = :jobId")
   void deactivateJob(@Param("jobId") Long jobId);
+
+  // Métodos para directores - obtener todos los trabajos
+  Page<JobEntity> findAllByEstado(String status, Pageable pageable);
+
+  @Query(
+      "SELECT j FROM JobEntity j "
+          + "WHERE j.estado = :status "
+          + "AND ("
+          + " LOWER(j.compania) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " STR(j.fechaInicio) LIKE CONCAT('%', :search, '%') OR "
+          + " STR(j.fechaFin) LIKE CONCAT('%', :search, '%') OR "
+          + " LOWER(j.cargo) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(j.modalidad) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(j.graduate.user.nombres) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(j.graduate.user.apellidos) LIKE LOWER(CONCAT('%', :search, '%')) "
+          + ")")
+  Page<JobEntity> findAllByEstadoAndSearch(String search, String status, Pageable pageable);
 }

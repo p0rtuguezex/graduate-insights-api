@@ -3,3 +3,45 @@ description:
 globs:
 alwaysApply: false
 ---
+# Convenciones de Desarrollo
+
+Este proyecto sigue estrictas convenciones de desarrollo y utiliza varias herramientas de calidad de código:
+
+## Herramientas de Calidad
+
+### 1. Checkstyle
+- Basado en Google Java Style Guide
+- Configuración en [google_checks.xml](mdc:config/checkstyle/google_checks.xml)
+- Supresiones específicas en [checkstyle-suppression.xml](mdc:config/checkstyle/checkstyle-suppression.xml)
+
+### 2. PMD
+- Reglas personalizadas definidas en [ruleset.xml](mdc:config/pmd/ruleset.xml)
+- Enfocado en buenas prácticas y detección de código potencialmente problemático
+
+### 3. JaCoCo
+- Configuración de cobertura de código en [jacoco.gradle](mdc:gradle/jacoco.gradle)
+- Se requiere una cobertura mínima del código
+
+### 4. SonarQube
+- Configuración en [sonar-project.properties](mdc:sonar-project.properties)
+- Análisis continuo de calidad del código
+
+## Convenciones de Código
+
+1. **Lombok**
+- Usar anotaciones de Lombok para reducir código boilerplate
+- Configuración en [lombok.config](mdc:lombok.config)
+
+2. **Estructura de Paquetes**
+- Seguir la estructura de paquetes definida en la arquitectura hexagonal
+- Mantener la separación de responsabilidades entre capas
+
+3. **Nomenclatura**
+- Clases: PascalCase (ej: `GraduateService`)
+- Métodos y variables: camelCase (ej: `findById`)
+- Constantes: UPPER_SNAKE_CASE (ej: `MAX_ATTEMPTS`)
+
+4. **Tests**
+- Requeridos para nueva funcionalidad
+- Nombrar las clases de test con sufijo "Test"
+- Usar convención Given/When/Then en nombres de métodos de test

@@ -39,6 +39,13 @@ public interface JobMapper {
   @Mapping(source = "graduate.user.nombres", target = "graduateName")
   JobResponse toJobResponse(JobEntity jobEntity);
 
+  // Método especial para graduados - sin mostrar graduateId
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "id", target = "jobId")
+  @Mapping(target = "graduateId", ignore = true) // No mapear graduateId para graduados
+  @Mapping(source = "graduate.user.nombres", target = "graduateName")
+  JobResponse toJobResponseWithoutGraduateId(JobEntity jobEntity);
+
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "modifiedDate", ignore = true)
