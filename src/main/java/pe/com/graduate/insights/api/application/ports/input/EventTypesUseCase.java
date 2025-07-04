@@ -8,11 +8,12 @@ import pe.com.graduate.insights.api.application.ports.generic.GenericRead;
 import pe.com.graduate.insights.api.application.ports.generic.GenericUpdate;
 import pe.com.graduate.insights.api.domain.models.request.EventTypesRequest;
 import pe.com.graduate.insights.api.domain.models.response.EventTypesResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 public interface EventTypesUseCase
     extends GenericCreate<EventTypesRequest>,
         GenericUpdate<EventTypesRequest>,
-        GenericList<EventTypesResponse>,
+        GenericList<KeyValueResponse>,
         GenericRead<EventTypesResponse>,
         GenericPaginate<EventTypesResponse>,
         GenericDelete {}

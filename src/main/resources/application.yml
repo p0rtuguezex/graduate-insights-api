@@ -46,10 +46,8 @@ application:
 springdoc:
   api-docs:
     enabled: true
-#    path: "/api/v1/api-docs"
   swagger-ui:
     enabled: true
-#    path: "/api/v1/index.html"
 
 logging:
   level:

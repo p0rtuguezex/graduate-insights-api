@@ -34,7 +34,8 @@ VALUES
     ('Banco Nacional', 'SA', '1985-01-01', 'M', 'info@banconacional.com', '1', '20234567890', '987654341', '$2a$10$example', NOW(), NOW()),
     ('Clínica San Miguel', 'SAC', '1995-01-01', 'F', 'contacto@clinicasanmiguel.com', '1', '20345678901', '987654342', '$2a$10$example', NOW(), NOW()),
     -- Usuario para director
-    ('Director', 'Académico', '1970-01-01', 'M', 'director@university.edu', '1', '12345670', '987654343', '$2a$10$AzS.1vRFEWlMYCZT4SCbu.QqlRGci70s.5WiyFnljZctq2vs4xfNG', NOW(), NOW());
+    ('Director', 'Académico', '1970-01-01', 'M', 'director@university.edu', '1', '12345670', '987654343', '$2a$10$AzS.1vRFEWlMYCZT4SCbu.QqlRGci70s.5WiyFnljZctq2vs4xfNG', NOW(), NOW()),
+    ('Enrrique', 'portuguez', '2025-05-09', 'M', 'portuguezei@gmail.com', '1', '73372296', '921423211', '$2a$10$cjUu3yJ7xN7RvDWLxz3UnOKv3oYyTv.HKLkikYswT1FjbR5sK1FPi', NOW(), NOW());
 
 -- ============================================
 -- GRADUADOS
@@ -65,7 +66,8 @@ VALUES
 
 INSERT INTO director (user_id, created_date, modified_date)
 VALUES
-    (20, NOW(), NOW());
+    (20, NOW(), NOW()),
+    (21, NOW(), NOW());
 
 -- ============================================
 -- EMPLEADORES
@@ -97,6 +99,17 @@ VALUES
     ('Feria de Empleo', '1', NOW(), NOW()),
     ('Workshop de Emprendimiento', '1', NOW(), NOW()),
     ('Seminario de Liderazgo', '1', NOW(), NOW());
+
+-- ============================================
+-- EVENTOS
+-- ============================================
+
+INSERT INTO event (nombre, contenido, estado, director_id, event_type_id, created_date, modified_date)
+VALUES
+    ('Conferencia de Inteligencia Artificial 2024', 'Evento anual sobre las últimas tendencias en IA y machine learning. Incluye charlas de expertos, demostraciones prácticas y networking.', '1', 1, 1, NOW(), NOW()),
+    ('Feria de Empleo Tecnológico', 'Feria de empleo especializada en el sector tecnológico. Participan las principales empresas del país con ofertas de trabajo para egresados.', '1', 1, 2, NOW(), NOW()),
+    ('Workshop: Cómo Emprender en Tecnología', 'Taller práctico sobre emprendimiento en el sector tecnológico. Incluye casos de éxito, mentorías y networking con inversores.', '1', 1, 3, NOW(), NOW()),
+    ('Seminario de Liderazgo Digital', 'Seminario sobre liderazgo en la era digital. Aborda temas como gestión de equipos remotos, transformación digital y liderazgo ágil.', '1', 1, 4, NOW(), NOW());
 
 -- ============================================
 -- TRABAJOS

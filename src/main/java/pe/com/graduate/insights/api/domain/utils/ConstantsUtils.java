@@ -28,6 +28,8 @@ public class ConstantsUtils {
   public static final String SURVEY_NOT_FOUND = "Encuesta no encontrada con ID: %s";
   public static final String SURVEY_CONFLICT = "Titulo de encuesta ya existe: %s";
   public static final String SURVEY_TYPE_CONFLICT = "Titulo de tipo de encuesta ya existe: %s";
+  public static final String EVENT_NOT_FOUND = "Evento no encontrado con id: %s";
+  public static final String EVENT_CONFLICT = "El evento ya existe con el nombre: %s";
 
   // Roles
   public static final String ROLE_DIRECTOR = "ROLE_DIRECTOR";

@@ -12,21 +12,23 @@ import lombok.ToString;
 
 @Builder
 @Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@Setter
-public class JobOffersRequest implements Serializable {
+public class EventRequest implements Serializable {
+
   @Serial private static final long serialVersionUID = 1L;
 
-  @NotNull(message = "El título no puede estar vacio")
-  private String titulo;
+  @NotNull(message = "el nombre no puede estar vacio")
+  private String nombre;
 
-  @NotNull(message = "El link no puede estar vacio")
-  private String link;
+  @NotNull(message = "el contenido no puede estar vacio")
+  private String contenido;
 
-  @NotNull(message = "La descripcion no puede estar vacio")
-  private String descripcion;
+  @NotNull(message = "el directorId no puede estar vacio")
+  private Long directorId;
 
-  private Long employerId;
+  @NotNull(message = "el eventTypeId no puede estar vacio")
+  private Long eventTypeId;
 }

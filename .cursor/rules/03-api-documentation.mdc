@@ -10,6 +10,9 @@ alwaysApply: false
 La API está documentada usando una colección de Postman que se encuentra en:
 [GraduateApi.postman_collection.json](mdc:postman/GraduateApi.postman_collection.json)
 
+Swagger UI: http://localhost:8080/graduate-insights/v1/api/swagger-ui.html
+OpenAPI docs: http://localhost:8080/graduate-insights/v1/api/v3/api-docs
+
 ### Estructura de la Colección
 - Autenticación y Autorización
 - Gestión de Graduados

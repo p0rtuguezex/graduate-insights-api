@@ -8,6 +8,7 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pe.com.graduate.insights.api.domain.models.request.EventTypesRequest;
 import pe.com.graduate.insights.api.domain.models.response.EventTypesResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.EventTypesEntity;
 
 @Mapper(componentModel = "spring")
@@ -18,6 +19,11 @@ public interface EventTypesMapper {
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(source = "id", target = "eventTypeId")
   EventTypesResponse toDomain(EventTypesEntity eventTypesEntity);
+
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "id", target = "key")
+  @Mapping(source = "nombre", target = "value")
+  KeyValueResponse toKeyValueResponse(EventTypesEntity eventTypesEntity);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(target = "id", ignore = true)

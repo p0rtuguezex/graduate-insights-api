@@ -12,6 +12,7 @@ import pe.com.graduate.insights.api.domain.exception.EventTypesException;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.EventTypesRequest;
 import pe.com.graduate.insights.api.domain.models.response.EventTypesResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.EventTypesEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.EventTypesRepository;
@@ -52,9 +53,9 @@ public class EventTypesRepositoryAdapter implements EventTypesRepositoryPort {
   }
 
   @Override
-  public List<EventTypesResponse> getList() {
+  public List<KeyValueResponse> getList() {
     return eventTypesRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-        .map(eventTypesMapper::toDomain)
+        .map(eventTypesMapper::toKeyValueResponse)
         .toList();
   }
 

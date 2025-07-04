@@ -1,5 +1,12 @@
 package pe.com.graduate.insights.api.infrastructure.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +32,6 @@ import pe.com.graduate.insights.api.application.ports.input.JobOffersUseCase;
 import pe.com.graduate.insights.api.application.service.UserRoleService;
 import pe.com.graduate.insights.api.domain.models.enums.UserRole;
 import pe.com.graduate.insights.api.domain.models.request.JobOffersRequest;
-import pe.com.graduate.insights.api.domain.models.response.ApiResponse;
 import pe.com.graduate.insights.api.domain.models.response.JobOffersResponse;
 import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMapper;
@@ -35,6 +41,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @PreAuthorize("hasAnyRole('DIRECTOR', 'EMPLOYER')")
+@Tag(name = "Ofertas de Trabajo", description = "APIs para gestión de ofertas de trabajo")
 public class JobOffersController {
 
   private final JobOffersUseCase jobOffersUseCase;
@@ -60,8 +67,26 @@ public class JobOffersController {
     return user.getId();
   }
 
+  @Operation(
+      summary = "Obtener oferta de trabajo por ID",
+      description =
+          "Obtiene una oferta de trabajo específica por su ID. Los directores ven todas las ofertas, los empleadores solo ven las suyas.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Oferta de trabajo encontrada exitosamente",
+            content = @Content(schema = @Schema(implementation = JobOffersResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Oferta de trabajo no encontrada"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado")
+      })
   @GetMapping("/{id}")
-  public ResponseEntity<ApiResponse<JobOffersResponse>> getJobOffer(@PathVariable Long id) {
+  public ResponseEntity<
+          pe.com.graduate.insights.api.domain.models.response.ApiResponse<JobOffersResponse>>
+      getJobOffer(
+          @Parameter(description = "ID de la oferta de trabajo", required = true) @PathVariable
+              Long id) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
 
@@ -70,9 +95,25 @@ public class JobOffersController {
     return ResponseUtils.successResponse(jobOffersResponse);
   }
 
+  @Operation(
+      summary = "Crear nueva oferta de trabajo",
+      description =
+          "Crea una nueva oferta de trabajo. Los empleadores solo pueden crear ofertas para su empresa.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "201", description = "Oferta de trabajo creada exitosamente"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado"),
+        @ApiResponse(responseCode = "409", description = "Oferta de trabajo ya existe")
+      })
   @PostMapping
-  public ResponseEntity<ApiResponse<Void>> createJobOffer(
-      @Valid @RequestBody JobOffersRequest jobOffersRequest) {
+  public ResponseEntity<pe.com.graduate.insights.api.domain.models.response.ApiResponse<Void>>
+      createJobOffer(
+          @Parameter(description = "Datos de la oferta de trabajo", required = true)
+              @Valid
+              @RequestBody
+              JobOffersRequest jobOffersRequest) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
 
@@ -80,9 +121,27 @@ public class JobOffersController {
     return ResponseUtils.sucessCreateResponse();
   }
 
+  @Operation(
+      summary = "Actualizar oferta de trabajo",
+      description =
+          "Actualiza una oferta de trabajo existente. Los empleadores solo pueden actualizar sus propias ofertas.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Oferta de trabajo actualizada exitosamente"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado"),
+        @ApiResponse(responseCode = "404", description = "Oferta de trabajo no encontrada")
+      })
   @PutMapping("/{id}")
-  public ResponseEntity<ApiResponse<Void>> updateJobOffer(
-      @RequestBody JobOffersRequest jobOffersRequest, @PathVariable Long id) {
+  public ResponseEntity<pe.com.graduate.insights.api.domain.models.response.ApiResponse<Void>>
+      updateJobOffer(
+          @Parameter(description = "Datos de la oferta de trabajo", required = true) @RequestBody
+              JobOffersRequest jobOffersRequest,
+          @Parameter(description = "ID de la oferta de trabajo", required = true) @PathVariable
+              Long id) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
 
@@ -90,8 +149,24 @@ public class JobOffersController {
     return ResponseUtils.successUpdateResponse();
   }
 
+  @Operation(
+      summary = "Eliminar oferta de trabajo",
+      description =
+          "Elimina una oferta de trabajo específica por su ID. Los empleadores solo pueden eliminar sus propias ofertas.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Oferta de trabajo eliminada exitosamente"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado"),
+        @ApiResponse(responseCode = "404", description = "Oferta de trabajo no encontrada")
+      })
   @DeleteMapping("/{id}")
-  public ResponseEntity<ApiResponse<Void>> deleteJobOffer(@PathVariable Long id) {
+  public ResponseEntity<pe.com.graduate.insights.api.domain.models.response.ApiResponse<Void>>
+      deleteJobOffer(
+          @Parameter(description = "ID de la oferta de trabajo", required = true) @PathVariable
+              Long id) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
 
@@ -99,11 +174,32 @@ public class JobOffersController {
     return ResponseUtils.successDeleteResponse();
   }
 
+  @Operation(
+      summary = "Listar ofertas de trabajo paginadas",
+      description =
+          "Obtiene una lista paginada de ofertas de trabajo con búsqueda opcional. Los directores ven todas las ofertas, los empleadores solo ven las suyas.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Lista de ofertas de trabajo obtenida exitosamente",
+            content = @Content(schema = @Schema(implementation = JobOffersResponse.class))),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado")
+      })
   @GetMapping
-  ResponseEntity<ApiResponse<List<JobOffersResponse>>> getListJobOffersPaginate(
-      @RequestParam(value = "search", defaultValue = "") String search,
-      @RequestParam(value = "page", defaultValue = "1") String page,
-      @RequestParam(value = "size", defaultValue = "10") String size) {
+  ResponseEntity<
+          pe.com.graduate.insights.api.domain.models.response.ApiResponse<List<JobOffersResponse>>>
+      getListJobOffersPaginate(
+          @Parameter(description = "Término de búsqueda", example = "desarrollador")
+              @RequestParam(value = "search", defaultValue = "")
+              String search,
+          @Parameter(description = "Número de página", example = "1")
+              @RequestParam(value = "page", defaultValue = "1")
+              String page,
+          @Parameter(description = "Tamaño de página", example = "10")
+              @RequestParam(value = "size", defaultValue = "10")
+              String size) {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
 

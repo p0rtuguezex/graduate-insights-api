@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS director;
 DROP TABLE IF EXISTS employers;
 DROP TABLE IF EXISTS education_centers;
 DROP TABLE IF EXISTS event_types;
+DROP TABLE IF EXISTS event;
 DROP TABLE IF EXISTS users;
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -101,6 +102,23 @@ CREATE TABLE event_types(
     estado CHAR(1),
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE event(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    contenido TEXT,
+    estado CHAR(1),
+    director_id BIGINT,
+    event_type_id BIGINT,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (director_id) REFERENCES director(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (event_type_id) REFERENCES event_types(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 CREATE TABLE jobs_offers (

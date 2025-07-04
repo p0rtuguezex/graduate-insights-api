@@ -392,7 +392,9 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
 
   private List<QuestionStatistics> generateQuestionStatisticsFromDb(
       Long surveyId, List<QuestionEntity> questions) {
-    if (questions == null) return new ArrayList<>();
+    if (questions == null) {
+      return new ArrayList<>();
+    }
 
     return questions.stream()
         .map(
@@ -602,7 +604,9 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
   }
 
   private Map<String, Double> calculatePercentages(Map<String, Long> counts, Long total) {
-    if (total == 0) return new HashMap<>();
+    if (total == 0) {
+      return new HashMap<>();
+    }
 
     Map<String, Double> percentages = new HashMap<>();
     counts.forEach(

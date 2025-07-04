@@ -9,6 +9,7 @@ import pe.com.graduate.insights.api.application.ports.input.EventTypesUseCase;
 import pe.com.graduate.insights.api.application.ports.output.EventTypesRepositoryPort;
 import pe.com.graduate.insights.api.domain.models.request.EventTypesRequest;
 import pe.com.graduate.insights.api.domain.models.response.EventTypesResponse;
+import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 @Service
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class EventTypesService implements EventTypesUseCase {
   }
 
   @Override
-  public List<EventTypesResponse> getList() {
+  public List<KeyValueResponse> getList() {
     return eventTypesRepositoryPort.getList();
   }
 

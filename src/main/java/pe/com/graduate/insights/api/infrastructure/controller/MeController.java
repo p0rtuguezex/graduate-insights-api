@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +26,9 @@ import pe.com.graduate.insights.api.domain.models.response.UserDataResponse;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @PreAuthorize("hasAnyRole('DIRECTOR', 'EMPLOYER', 'GRADUATE', 'USER')")
+@Tag(
+    name = "Perfil de Usuario",
+    description = "APIs para gestión del perfil del usuario autenticado")
 public class MeController {
 
   private final AuthUseCase authUseCase;
