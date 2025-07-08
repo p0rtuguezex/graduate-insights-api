@@ -33,6 +33,9 @@ public class GraduateEntity extends Auditable {
   @Column(name = "cv")
   private String cv;
 
+  @Column(name = "cv_path")
+  private String cvPath;
+
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
   private UserEntity user;

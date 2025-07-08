@@ -12,4 +12,5 @@ public class GraduateResponse extends UserResponse {
   private String fechaInicio;
   private String fechaFin;
   private String cv;
+  private String cvPath;
 }

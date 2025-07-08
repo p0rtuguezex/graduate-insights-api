@@ -16,4 +16,13 @@ public interface GraduateRepositoryPort
         GenericList<KeyValueResponse>,
         GenericRead<GraduateResponse>,
         GenericPaginate<GraduateResponse>,
-        GenericDelete {}
+        GenericDelete {
+
+  /**
+   * Actualiza la ruta del CV de un graduado
+   *
+   * @param graduateId ID del graduado
+   * @param cvPath Nueva ruta del CV (puede ser null para eliminar)
+   */
+  void updateCvPath(Long graduateId, String cvPath);
+}

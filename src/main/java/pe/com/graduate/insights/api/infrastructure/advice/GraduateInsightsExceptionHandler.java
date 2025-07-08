@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -73,10 +74,23 @@ public class GraduateInsightsExceptionHandler {
   @ExceptionHandler({
     InvalidCredentialsException.class,
     AuthenticationCredentialsNotFoundException.class,
-    AuthorizationDeniedException.class
+    AuthorizationDeniedException.class,
+    AuthenticationException.class
   })
-  public ResponseEntity<ApiResponse<List<String>>> handleInvalidCredentialsException(Exception ex) {
-    List<String> errors = List.of(ex.getMessage());
+  public ResponseEntity<ApiResponse<List<String>>> handleAuthenticationException(Exception ex) {
+    String errorMessage;
+
+    if (ex instanceof AuthenticationCredentialsNotFoundException) {
+      errorMessage = "No se encontró información de autenticación. Por favor, inicie sesión.";
+    } else if (ex instanceof AuthorizationDeniedException) {
+      errorMessage = "No tiene permisos para acceder a este recurso.";
+    } else if (ex instanceof InvalidCredentialsException) {
+      errorMessage = "Credenciales inválidas. Verifique su usuario y contraseña.";
+    } else {
+      errorMessage = "Error de autenticación. Por favor, inicie sesión nuevamente.";
+    }
+
+    List<String> errors = List.of(errorMessage);
     return ResponseUtils.errorResponse(HttpStatus.UNAUTHORIZED, errors);
   }
 }

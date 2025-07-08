@@ -42,6 +42,7 @@ SET FOREIGN_KEY_CHECKS = 1;
      fecha_inicio DATE,
      fecha_fin DATE,
      cv TEXT,
+     cv_path VARCHAR(500),
      created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      FOREIGN KEY(user_id) REFERENCES users(id)

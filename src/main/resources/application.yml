@@ -49,6 +49,10 @@ springdoc:
   swagger-ui:
     enabled: true
 
+app:
+  file:
+    upload-dir: ./uploads/cv
+
 logging:
   level:
     root: INFO

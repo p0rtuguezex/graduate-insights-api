@@ -116,4 +116,19 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
               throw new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND, id));
             });
   }
+
+  @Override
+  public void updateCvPath(Long graduateId, String cvPath) {
+    graduateRepository
+        .findByIdAndUserEstado(graduateId, ConstantsUtils.STATUS_ACTIVE)
+        .ifPresentOrElse(
+            graduate -> {
+              graduate.setCvPath(cvPath);
+              graduateRepository.save(graduate);
+            },
+            () -> {
+              throw new NotFoundException(
+                  String.format(ConstantsUtils.GRADUATE_NOT_FOUND, graduateId));
+            });
+  }
 }
