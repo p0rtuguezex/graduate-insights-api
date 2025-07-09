@@ -33,24 +33,24 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     log.info("Configurando SecurityFilterChain");
 
-    http.securityMatcher("/api/v1/**")
+    http.securityMatcher("/graduate-insights/v1/api/**")
         .csrf(AbstractHttpConfigurer::disable)
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers(HttpMethod.OPTIONS, "/api/v1/**")
+                auth.requestMatchers(HttpMethod.OPTIONS, "/graduate-insights/v1/api/**")
                     .permitAll()
-                    .requestMatchers("/api/v1/auth/login")
+                    .requestMatchers("/graduate-insights/v1/api/auth/login")
                     .permitAll()
-                    .requestMatchers("/api/v1/graduate/register")
+                    .requestMatchers("/graduate-insights/v1/api/graduate/register")
                     .permitAll()
-                    .requestMatchers("/api/v1/employer/register")
+                    .requestMatchers("/graduate-insights/v1/api/employer/register")
                     .permitAll()
-                    .requestMatchers("/api/v1/director/register")
+                    .requestMatchers("/graduate-insights/v1/api/director/register")
                     .permitAll()
-                    .requestMatchers("/api/v1/auth/me")
+                    .requestMatchers("/graduate-insights/v1/api/auth/me")
                     .authenticated()
                     .requestMatchers(
                         "/v3/api-docs/**",
@@ -72,11 +72,12 @@ public class SecurityConfig {
     configuration.setAllowedOrigins(List.of("http://localhost:3000"));
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
     configuration.setAllowedHeaders(List.of("*"));
-    configuration.setExposedHeaders(List.of("Authorization"));
+    configuration.setExposedHeaders(List.of("Authorization", "Content-Type"));
     configuration.setAllowCredentials(true);
+    configuration.setMaxAge(3600L);
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
+    source.registerCorsConfiguration("/graduate-insights/v1/api/**", configuration);
     return source;
   }
 }

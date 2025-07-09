@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -170,9 +171,8 @@ public class EventTypesController {
         @ApiResponse(responseCode = "403", description = "Acceso denegado")
       })
   @GetMapping("/list")
-  public ResponseEntity<
-          pe.com.graduate.insights.api.domain.models.response.ApiResponse<List<KeyValueResponse>>>
+  public ResponseEntity<List<KeyValueResponse>>
       getListEducationCenterAll() {
-    return ResponseUtils.successResponse(eventTypesUseCase.getList());
+      return new ResponseEntity<>(eventTypesUseCase.getList(), HttpStatus.OK);
   }
 }
