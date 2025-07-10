@@ -38,10 +38,9 @@ public class FileService implements InitializingBean {
    * Guarda un archivo CV en el sistema de archivos
    *
    * @param file Archivo a guardar
-   * @param graduateId ID del graduado
    * @return Ruta relativa del archivo guardado
    */
-  public String storeCvFile(MultipartFile file, Long graduateId) {
+  public String storeCvFile(MultipartFile file) {
     // Validar que el archivo sea PDF
     String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
     if (!originalFilename.toLowerCase().endsWith(".pdf")) {
@@ -50,7 +49,7 @@ public class FileService implements InitializingBean {
 
     // Generar nombre único para el archivo
     String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-    String fileName = "cv_" + graduateId + "_" + UUID.randomUUID().toString() + fileExtension;
+    String fileName = "file_" + UUID.randomUUID() + fileExtension;
 
     try {
       // Verificar que el archivo no contenga caracteres maliciosos

@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+
 import pe.com.graduate.insights.api.application.ports.input.GraduateUseCase;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
 import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
@@ -92,11 +92,11 @@ public class GraduateController {
   @Operation(
       summary = "Actualizar graduado",
       description =
-          "Actualiza un graduado existente con la información proporcionada. Opcionalmente se puede incluir un archivo PDF como CV del graduado.")
+          "Actualiza un graduado existente con la información proporcionada incluyendo el path del CV.")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Graduado actualizado exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Datos inválidos o archivo no válido"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "404", description = "Graduado no encontrado")
@@ -106,18 +106,10 @@ public class GraduateController {
       updateGraduate(
           @Parameter(description = "Datos del graduado", required = true) @RequestBody
               GraduateRequest graduateRequest,
-          @Parameter(description = "ID del graduado", required = true) @PathVariable Long id,
-          @Parameter(description = "Archivo PDF del CV (opcional)")
-              @RequestParam(value = "cvFile", required = false)
-              MultipartFile cvFile) {
+          @Parameter(description = "ID del graduado", required = true) @PathVariable Long id) {
 
     // Actualizar datos del graduado
     graduateUseCase.update(graduateRequest, id);
-
-    // Si se proporcionó un archivo CV, procesarlo
-    if (cvFile != null && !cvFile.isEmpty()) {
-      graduateUseCase.uploadCv(cvFile, id);
-    }
 
     return ResponseUtils.successUpdateResponse();
   }

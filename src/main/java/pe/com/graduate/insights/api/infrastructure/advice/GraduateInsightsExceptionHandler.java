@@ -17,6 +17,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import pe.com.graduate.insights.api.domain.exception.DirectorException;
 import pe.com.graduate.insights.api.domain.exception.EducationCenterException;
 import pe.com.graduate.insights.api.domain.exception.EventTypesException;
@@ -31,6 +32,14 @@ import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 public class GraduateInsightsExceptionHandler {
+
+  @ExceptionHandler(MaxUploadSizeExceededException.class)
+  public ResponseEntity<ApiResponse<List<String>>> handleMaxUploadSizeExceededException(
+      MaxUploadSizeExceededException ex) {
+    String errorMessage = "El archivo excede el tamaño máximo permitido (10MB)";
+    List<String> errors = List.of(errorMessage);
+    return ResponseUtils.errorResponse(HttpStatus.BAD_REQUEST, errors);
+  }
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ApiResponse<List<String>>> notFoundException(NotFoundException ex) {

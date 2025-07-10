@@ -65,7 +65,7 @@ public class GraduateService implements GraduateUseCase {
     }
 
     // Guardar el nuevo archivo
-    String fileName = fileService.storeCvFile(file, graduateId);
+    String fileName = fileService.storeCvFile(file);
 
     // Actualizar la ruta del CV en la base de datos
     graduateRepositoryPort.updateCvPath(graduateId, fileName);

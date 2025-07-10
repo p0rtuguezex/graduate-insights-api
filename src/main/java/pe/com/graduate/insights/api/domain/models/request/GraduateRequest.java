@@ -29,5 +29,5 @@ public class GraduateRequest extends UserRequest implements Serializable {
   private LocalDate fechaFin;
 
   @NotNull(message = "el cv no puede estar vacio")
-  private String cv;
+  private String cvPath;
 }

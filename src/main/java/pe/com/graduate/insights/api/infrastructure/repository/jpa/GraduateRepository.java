@@ -31,7 +31,7 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
       "SELECT g FROM GraduateEntity g "
           + "WHERE g.user.estado = :status "
           + "AND ("
-          + " LOWER(g.cv) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(g.cvPath) LIKE LOWER(CONCAT('%', :search, '%')) OR "
           + " STR(g.fechaInicio) LIKE CONCAT('%', :search, '%') OR "
           + " STR(g.fechaFin) LIKE CONCAT('%', :search, '%') OR "
           + " LOWER(g.user.nombres) LIKE LOWER(CONCAT('%', :search, '%')) OR "
