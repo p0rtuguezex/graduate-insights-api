@@ -6,11 +6,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileService implements InitializingBean {
 
-  @Value("${app.file.upload-dir:./uploads/cv}")
+  private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList(".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png");
+  private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB en bytes
+
+  @Value("${app.file.upload-dir:./uploads}")
   private String uploadDir;
 
   private Path fileStorageLocation;
@@ -35,21 +41,27 @@ public class FileService implements InitializingBean {
   }
 
   /**
-   * Guarda un archivo CV en el sistema de archivos
+   * Guarda un archivo en el sistema de archivos
    *
    * @param file Archivo a guardar
+   * @param fileType Tipo de archivo (ej: "cv", "image", "document")
    * @return Ruta relativa del archivo guardado
    */
-  public String storeCvFile(MultipartFile file) {
-    // Validar que el archivo sea PDF
+  public String storeFile(MultipartFile file, String fileType) {
+    // Validar tamaño del archivo
+    if (file.getSize() > MAX_FILE_SIZE) {
+      throw new RuntimeException("El archivo excede el tamaño máximo permitido de 10MB");
+    }
+
+    // Validar extensión del archivo
     String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
-    if (!originalFilename.toLowerCase().endsWith(".pdf")) {
-      throw new RuntimeException("Solo se permiten archivos PDF");
+    String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
+    if (!ALLOWED_EXTENSIONS.contains(fileExtension)) {
+      throw new RuntimeException("Tipo de archivo no permitido. Extensiones permitidas: " + String.join(", ", ALLOWED_EXTENSIONS));
     }
 
     // Generar nombre único para el archivo
-    String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-    String fileName = "file_" + UUID.randomUUID() + fileExtension;
+    String fileName = fileType + "_" + UUID.randomUUID() + fileExtension;
 
     try {
       // Verificar que el archivo no contenga caracteres maliciosos
@@ -69,12 +81,12 @@ public class FileService implements InitializingBean {
   }
 
   /**
-   * Carga un archivo CV desde el sistema de archivos
+   * Carga un archivo desde el sistema de archivos
    *
    * @param fileName Nombre del archivo
    * @return Recurso del archivo
    */
-  public Resource loadCvFileAsResource(String fileName) {
+  public Resource loadFileAsResource(String fileName) {
     try {
       Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
       Resource resource = new UrlResource(filePath.toUri());
@@ -90,20 +102,21 @@ public class FileService implements InitializingBean {
   }
 
   /**
-   * Elimina un archivo CV del sistema de archivos
+   * Elimina un archivo del sistema de archivos
    *
    * @param fileName Nombre del archivo a eliminar
+   * @return true si el archivo fue eliminado, false si no existía
    */
-  public void deleteCvFile(String fileName) {
+  public boolean deleteFile(String fileName) {
     if (fileName != null && !fileName.trim().isEmpty()) {
       try {
         Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-        Files.deleteIfExists(filePath);
+        return Files.deleteIfExists(filePath);
       } catch (IOException ex) {
-        // El AOP se encargará del logging de excepciones
         throw new RuntimeException("Error al eliminar el archivo: " + fileName, ex);
       }
     }
+    return false;
   }
 
   /**
@@ -118,5 +131,22 @@ public class FileService implements InitializingBean {
     }
     Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
     return Files.exists(filePath);
+  }
+
+  /**
+   * Obtiene el tipo de contenido del archivo
+   *
+   * @param fileName Nombre del archivo
+   * @return MediaType correspondiente al archivo
+   */
+  public MediaType getFileMediaType(String fileName) {
+    String extension = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
+    return switch (extension) {
+      case ".pdf" -> MediaType.APPLICATION_PDF;
+      case ".doc", ".docx" -> MediaType.parseMediaType("application/msword");
+      case ".jpg", ".jpeg" -> MediaType.IMAGE_JPEG;
+      case ".png" -> MediaType.IMAGE_PNG;
+      default -> MediaType.APPLICATION_OCTET_STREAM;
+    };
   }
 }

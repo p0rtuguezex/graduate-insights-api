@@ -179,30 +179,4 @@ public class GraduateController {
   public ResponseEntity<List<KeyValueResponse>> getListGraduateAll() {
     return new ResponseEntity<>(graduateUseCase.getList(), HttpStatus.OK);
   }
-
-  @Operation(
-      summary = "Descargar CV del graduado",
-      description = "Descarga el CV del graduado en formato PDF")
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "CV descargado exitosamente",
-            content = @Content(mediaType = "application/pdf")),
-        @ApiResponse(responseCode = "401", description = "No autorizado"),
-        @ApiResponse(responseCode = "403", description = "Acceso denegado"),
-        @ApiResponse(responseCode = "404", description = "Graduado o CV no encontrado")
-      })
-  @GetMapping("/{id}/cv/download")
-  public ResponseEntity<Resource> downloadCv(
-      @Parameter(description = "ID del graduado", example = "1") @PathVariable Long id) {
-
-    Resource resource = graduateUseCase.downloadCv(id);
-
-    return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_PDF)
-        .header(
-            HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"cv_graduado_" + id + ".pdf\"")
-        .body(resource);
-  }
 }

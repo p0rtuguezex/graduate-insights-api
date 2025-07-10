@@ -19,20 +19,4 @@ public interface GraduateUseCase
         GenericRead<GraduateResponse>,
         GenericPaginate<GraduateResponse>,
         GenericDelete {
-
-  /**
-   * Sube un archivo CV para un graduado
-   *
-   * @param file Archivo PDF a subir
-   * @param graduateId ID del graduado
-   */
-  void uploadCv(MultipartFile file, Long graduateId);
-
-  /**
-   * Descarga el CV de un graduado
-   *
-   * @param graduateId ID del graduado
-   * @return Recurso del archivo CV
-   */
-  Resource downloadCv(Long graduateId);
 }

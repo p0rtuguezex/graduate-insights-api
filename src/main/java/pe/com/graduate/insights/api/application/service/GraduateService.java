@@ -43,52 +43,37 @@ public class GraduateService implements GraduateUseCase {
 
   @Override
   public void update(GraduateRequest request, Long id) {
+    // Obtener el graduado actual para verificar el cvPath
+    GraduateResponse currentGraduate = graduateRepositoryPort.getDomain(id);
+    if (currentGraduate == null) {
+      throw new NotFoundException("Graduado no encontrado con ID: " + id);
+    }
+
+    String currentCvPath = currentGraduate.getCvPath();
+    String newCvPath = request.getCvPath();
+
+    // Caso 1: Si el nuevo cvPath es null y había un archivo previo, eliminar el archivo
+    if (newCvPath == null && currentCvPath != null && !currentCvPath.trim().isEmpty()) {
+      fileService.deleteFile(currentCvPath);
+    }
+    // Caso 2: Si el nuevo cvPath es diferente al actual y había un archivo previo, eliminar el archivo antiguo
+    else if (newCvPath != null && currentCvPath != null && !currentCvPath.equals(newCvPath)) {
+      fileService.deleteFile(currentCvPath);
+    }
+
+    // Actualizar los datos del graduado
     graduateRepositoryPort.update(request, id);
   }
 
   @Override
   public void delete(Long id) {
+    // Obtener el graduado para eliminar su CV si existe
+    GraduateResponse graduate = graduateRepositoryPort.getDomain(id);
+    if (graduate != null && graduate.getCvPath() != null && !graduate.getCvPath().trim().isEmpty()) {
+      fileService.deleteFile(graduate.getCvPath());
+    }
+    
     graduateRepositoryPort.delete(id);
   }
 
-  @Override
-  public void uploadCv(MultipartFile file, Long graduateId) {
-    // Verificar que el graduado existe
-    GraduateResponse graduate = graduateRepositoryPort.getDomain(graduateId);
-    if (graduate == null) {
-      throw new NotFoundException("Graduado no encontrado con ID: " + graduateId);
-    }
-
-    // Si ya existe un CV, eliminarlo primero
-    if (graduate.getCvPath() != null && !graduate.getCvPath().trim().isEmpty()) {
-      fileService.deleteCvFile(graduate.getCvPath());
-    }
-
-    // Guardar el nuevo archivo
-    String fileName = fileService.storeCvFile(file);
-
-    // Actualizar la ruta del CV en la base de datos
-    graduateRepositoryPort.updateCvPath(graduateId, fileName);
-  }
-
-  @Override
-  public Resource downloadCv(Long graduateId) {
-    // Verificar que el graduado existe
-    GraduateResponse graduate = graduateRepositoryPort.getDomain(graduateId);
-    if (graduate == null) {
-      throw new NotFoundException("Graduado no encontrado con ID: " + graduateId);
-    }
-
-    // Verificar que tiene un CV
-    if (graduate.getCvPath() == null || graduate.getCvPath().trim().isEmpty()) {
-      throw new NotFoundException("El graduado no tiene un CV cargado");
-    }
-
-    // Verificar que el archivo existe
-    if (!fileService.fileExists(graduate.getCvPath())) {
-      throw new NotFoundException("El archivo CV no existe en el sistema");
-    }
-
-    return fileService.loadCvFileAsResource(graduate.getCvPath());
-  }
 }
