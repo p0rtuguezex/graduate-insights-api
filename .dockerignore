@@ -1,0 +1,40 @@
+# Build artifacts
+build/
+.gradle/
+bin/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Version control
+.git/
+.gitignore
+
+# Documentation and examples
+README.md
+*.md
+postman/
+
+# Logs
+*.log
+
+# Test files
+src/test/
+
+# Uploads (if any exist)
+uploads/
+
+# Docker files (avoid recursion)
+Dockerfile*
+docker-compose*.yml
+
+# Gradle wrapper jar (we copy it explicitly)
+!gradle/wrapper/gradle-wrapper.jar

@@ -87,7 +87,7 @@ public interface SurveyMapper {
       return;
     }
 
-    // Si no hay preguntas existentes, crear nuevas
+    // Si no hay preguntas existentes, crear nueva lista
     if (entity.getQuestions() == null) {
       entity.setQuestions(new ArrayList<>());
     }
@@ -98,23 +98,8 @@ public interface SurveyMapper {
             .filter(q -> q.getId() != null)
             .collect(Collectors.toMap(QuestionEntity::getId, q -> q));
 
-    // Crear un set con los IDs de preguntas en el request
-    Set<Long> requestQuestionIds =
-        request.getQuestions().stream()
-            .map(QuestionRequest::getId)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toSet());
-
-    // Eliminar preguntas que no están en el request (pero solo si no tienen respuestas)
-    Iterator<QuestionEntity> iterator = entity.getQuestions().iterator();
-    while (iterator.hasNext()) {
-      QuestionEntity question = iterator.next();
-      if (question.getId() != null && !requestQuestionIds.contains(question.getId())) {
-        // Solo eliminar si la pregunta no tiene respuestas asociadas
-        // Para mayor seguridad, por ahora no eliminamos preguntas existentes
-        // iterator.remove();
-      }
-    }
+    // Crear una nueva lista para las preguntas actualizadas
+    List<QuestionEntity> updatedQuestions = new ArrayList<>();
 
     // Procesar preguntas del request
     for (QuestionRequest questionRequest : request.getQuestions()) {
@@ -130,9 +115,13 @@ public interface SurveyMapper {
         // Crear nueva pregunta
         questionEntity = toEntity(questionRequest);
         questionEntity.setSurvey(entity);
-        entity.getQuestions().add(questionEntity);
       }
+      updatedQuestions.add(questionEntity);
     }
+
+    // Reemplazar la lista de preguntas con la lista actualizada
+    entity.getQuestions().clear();
+    entity.getQuestions().addAll(updatedQuestions);
 
     // Establecer las relaciones
     linkSurveyRelations(entity);

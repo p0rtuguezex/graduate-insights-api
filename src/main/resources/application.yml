@@ -62,3 +62,12 @@ logging:
     root: INFO
     pe.com.graduate.insights.api: DEBUG
     org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: error
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
