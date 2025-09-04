@@ -1,3 +1,5 @@
+# Docker Compose para desarrollo local
+# Buildea la imagen localmente y levanta MySQL
 version: '3.8'
 
 services:

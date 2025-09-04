@@ -1,3 +1,5 @@
+# Docker Compose para producción
+# Usa la imagen pre-construida de Docker Hub
 version: '3.8'
 
 services:
