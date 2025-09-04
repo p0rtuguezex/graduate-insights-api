@@ -26,7 +26,7 @@ FROM eclipse-temurin:17-jre-alpine
 # Crear usuario no root para seguridad
 RUN addgroup -g 1001 -S appuser && \
     adduser -u 1001 -S appuser -G appuser && \
-    apk add --no-cache wget
+    apk add --no-cache wget netcat-openbsd openssl bind-tools
 
 USER appuser
 WORKDIR /app

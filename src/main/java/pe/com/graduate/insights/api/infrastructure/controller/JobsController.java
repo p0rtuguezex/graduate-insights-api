@@ -18,16 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pe.com.graduate.insights.api.application.ports.input.AuthUseCase;
 import pe.com.graduate.insights.api.application.ports.input.JobUseCase;
 import pe.com.graduate.insights.api.application.service.UserRoleService;
@@ -41,8 +32,8 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RestController
 @RequestMapping("/jobs")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @PreAuthorize("hasAnyRole('DIRECTOR', 'GRADUATE')")
+@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
 @Tag(name = "Trabajos", description = "APIs para gestión de trabajos de graduados")
 public class JobsController {
 

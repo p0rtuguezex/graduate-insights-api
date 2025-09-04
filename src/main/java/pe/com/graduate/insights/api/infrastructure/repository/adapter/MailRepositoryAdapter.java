@@ -2,6 +2,7 @@ package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -18,6 +19,7 @@ import pe.com.graduate.insights.api.domain.utils.GraduateUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.UserRepository;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MailRepositoryAdapter implements MailRepositoryPort {
@@ -57,15 +59,22 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
 
       templateEmail =
           GraduateUtils.templateWithVariables(templateSend, userEntity.getNombres(), code);
+      
+      log.info("Intentando enviar correo a: {} con asunto: {}", mailRequest.getEmail(), subject);
+      log.debug("Configuración de correo - Usuario remitente: {}", sender);
+      
       MimeMessage mimeMessage = javaMailSender.createMimeMessage();
       mimeMessage.setSubject(subject);
       MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, Boolean.TRUE);
       mimeMessageHelper.setTo(mailRequest.getEmail());
       mimeMessageHelper.setText(templateEmail, Boolean.TRUE);
       mimeMessageHelper.setFrom(sender, ConstantsUtils.SISEG);
+      
       javaMailSender.send(mimeMessage);
+      log.info("Correo enviado exitosamente a: {}", mailRequest.getEmail());
 
     } catch (Exception e) {
+      log.error("Error detallado al enviar correo a {}: {}", mailRequest.getEmail(), e.getMessage(), e);
       throw new MailException("Error al enviar correo: " + e.getMessage());
     }
   }

@@ -3,11 +3,7 @@ package pe.com.graduate.insights.api.infrastructure.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pe.com.graduate.insights.api.application.ports.input.MailUseCase;
 import pe.com.graduate.insights.api.domain.models.request.ChangePasswordRequest;
 import pe.com.graduate.insights.api.domain.models.request.MailRequest;
@@ -17,8 +13,8 @@ import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/mail")
+@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class MailController {
 
   private final MailUseCase mailUseCase;

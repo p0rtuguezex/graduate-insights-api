@@ -29,19 +29,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     String path = request.getRequestURI();
     String method = request.getMethod();
 
-    // No filtrar solicitudes OPTIONS
-    log.info("Ruta: {}, Método: {}", path, method);
+    // No filtrar solicitudes OPTIONS - CORS preflight
     if ("OPTIONS".equals(method)) {
+      log.debug("Saltando filtro JWT para petición OPTIONS en ruta: {}", path);
       return true;
     }
 
-    // No filtrar rutas públicas - asegúrate de que /auth/login esté aquí pero NO /auth/me
-    return path.equals("/api/v1/auth/login")
-        || path.startsWith("/api/v1/api-docs")
-        || path.startsWith("/api/v1/swagger-ui")
-        || path.startsWith("/api/v1/swagger-resources")
-        || path.startsWith("/api/v1/webjars")
-        || path.startsWith("/api/v1/v3/api-docs");
+    // Verificar rutas públicas específicas
+    boolean isPublicRoute = path.equals("/graduate-insights/v1/api/auth/login")
+        || path.startsWith("/graduate-insights/v1/api/graduate/register")
+        || path.startsWith("/graduate-insights/v1/api/employer/register") 
+        || path.startsWith("/graduate-insights/v1/api/director/register")
+        || path.startsWith("/graduate-insights/v1/api/mail/")
+        || path.startsWith("/graduate-insights/v1/api/v3/api-docs")
+        || path.startsWith("/graduate-insights/v1/api/swagger-ui")
+        || path.startsWith("/graduate-insights/v1/api/swagger-resources")
+        || path.startsWith("/v3/api-docs")
+        || path.startsWith("/swagger-ui")
+        || path.startsWith("/swagger-resources");
+
+    if (isPublicRoute) {
+      log.info("SALTANDO filtro JWT para ruta pública: {} [{}]", path, method);
+      return true;
+    }
+
+    // Log para rutas que SÍ necesitan autenticación
+    log.info("APLICANDO filtro JWT para ruta protegida: {} [{}]", path, method);
+    return false;
   }
 
   @Override

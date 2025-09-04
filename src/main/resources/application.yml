@@ -27,17 +27,19 @@ spring:
       schema-locations: classpath:tables.sql
       data-locations: classpath:inserts.sql
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: garlee016@gmail.com
-    password: azejzfwfshvwdiok
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:garlee016@gmail.com}
+    password: ${MAIL_PASSWORD:azejzfwfshvwdiok}
     properties:
       mail:
         smtp:
-          auth: true
-          timeout: 2000
+          auth: ${MAIL_SMTP_AUTH:true}
+          timeout: ${MAIL_TIMEOUT:5000}
           starttls:
-            enable: true
+            enable: ${MAIL_STARTTLS_ENABLE:true}
+          ssl:
+            trust: ${MAIL_SSL_TRUST:smtp.gmail.com}
 
 application:
   security:
@@ -60,8 +62,11 @@ app:
 logging:
   level:
     root: INFO
-    pe.com.graduate.insights.api: DEBUG
-    org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: error
+    '[pe.com.graduate.insights.api]': DEBUG
+    '[org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer]': error
+    '[org.springframework.mail]': DEBUG
+    '[org.springframework.mail.javamail]': DEBUG
+    '[jakarta.mail]': DEBUG
 
 management:
   endpoints:
@@ -71,3 +76,12 @@ management:
   endpoint:
     health:
       show-details: when-authorized
+
+# Configuración de CORS
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+  allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS,PATCH}
+  allowed-headers: ${CORS_ALLOWED_HEADERS:*}
+  exposed-headers: ${CORS_EXPOSED_HEADERS:Authorization,Content-Type,X-Total-Count}
+  allow-credentials: ${CORS_ALLOW_CREDENTIALS:true}
+  max-age: ${CORS_MAX_AGE:3600}

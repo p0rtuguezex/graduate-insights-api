@@ -16,16 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pe.com.graduate.insights.api.application.ports.input.EventTypesUseCase;
 import pe.com.graduate.insights.api.domain.models.request.EventTypesRequest;
 import pe.com.graduate.insights.api.domain.models.response.EventTypesResponse;
@@ -36,8 +27,8 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RestController
 @RequestMapping("/event_types")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @PreAuthorize("hasRole('DIRECTOR')")
+@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
 @Tag(name = "Tipos de Eventos", description = "APIs para gestión de tipos de eventos")
 public class EventTypesController {
 

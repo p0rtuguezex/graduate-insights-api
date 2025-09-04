@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,10 +22,10 @@ import pe.com.graduate.insights.api.domain.models.request.LoginRequest;
 import pe.com.graduate.insights.api.domain.models.response.ApiResponseWrapper;
 import pe.com.graduate.insights.api.infrastructure.security.JwtService;
 
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
 @Tag(name = "Autenticación", description = "APIs para autenticación y registro de usuarios")
 public class AuthController {
 
@@ -52,8 +53,20 @@ public class AuthController {
   public ResponseEntity<ApiResponseWrapper<String>> login(
       @Parameter(description = "Credenciales de acceso", required = true) @Valid @RequestBody
           LoginRequest request) {
-    var user = authUseCase.login(request.getEmail(), request.getPassword());
-    var token = jwtService.generateToken(user);
-    return ResponseEntity.ok(ApiResponseWrapper.success("Login exitoso", token));
+    try {
+      var user = authUseCase.login(request.getEmail(), request.getPassword());
+      var token = jwtService.generateToken(user);
+      var response = ApiResponseWrapper.success("Login exitoso", token);
+      
+      // Log para debugging
+      System.out.println("LOGIN EXITOSO - Usuario: " + user.getUsername() + ", Token generado: " + (token != null ? "SÍ" : "NO"));
+      System.out.println("Respuesta: " + response);
+      
+      return ResponseEntity.ok(response);
+    } catch (Exception e) {
+      System.out.println("ERROR EN LOGIN: " + e.getMessage());
+      e.printStackTrace();
+      throw e;
+    }
   }
 }
