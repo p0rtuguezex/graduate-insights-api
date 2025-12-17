@@ -21,7 +21,7 @@ import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 @RestController
 @RequestMapping("/files")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 @Tag(name = "Archivos", description = "APIs para gestión de archivos")
 public class FileController {
 

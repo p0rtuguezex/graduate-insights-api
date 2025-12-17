@@ -25,6 +25,8 @@ services:
     container_name: graduate-insights-api
     ports:
       - "8080:8080"
+    volumes:
+      - ./uploads:/app/uploads
     environment:
       # Configuración de base de datos
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/graduate_insights
@@ -49,6 +51,9 @@ services:
       CORS_ALLOW_CREDENTIALS: 'true'
       CORS_MAX_AGE: 3600
       
+      # Configuración de archivos
+      APP_FILE_UPLOAD_DIR: '/app/uploads/cv'
+      
       # Configuración JVM
       JAVA_OPTS: "-Xms128m -Xmx256m -XX:+UseG1GC"
       
@@ -60,8 +65,6 @@ services:
         condition: service_healthy
     networks:
       - graduate-network
-    volumes:
-      - ./uploads:/app/uploads
 
 volumes:
   mysql_data:

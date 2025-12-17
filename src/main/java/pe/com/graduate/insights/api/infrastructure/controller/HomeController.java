@@ -24,7 +24,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RequestMapping("/home")
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('DIRECTOR', 'GRADUATE')")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 @Tag(
     name = "Home Feed",
     description = "APIs para el feed principal con eventos y ofertas laborales")

@@ -13,7 +13,7 @@ import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/mail")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 @RequiredArgsConstructor
 public class MailController {
 

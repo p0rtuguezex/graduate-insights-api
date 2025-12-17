@@ -16,7 +16,7 @@ import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 @RequestMapping("/survey-statistics")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('DIRECTOR')")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 public class SurveyStatisticsController {
 
   private final SurveyStatisticsUseCase surveyStatisticsUseCase;

@@ -12,7 +12,7 @@ import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 @RestController
 @RequestMapping("/employer")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 public class RegisterEmployerController {
 
   private final EmployerUseCase employerUseCase;

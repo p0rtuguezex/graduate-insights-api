@@ -33,7 +33,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RequestMapping("/jobs")
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('DIRECTOR', 'GRADUATE')")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 @Tag(name = "Trabajos", description = "APIs para gestión de trabajos de graduados")
 public class JobsController {
 

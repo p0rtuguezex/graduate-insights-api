@@ -12,7 +12,7 @@ import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 @RestController
 @RequestMapping("/director")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 public class RegisterDirectorController {
 
   private final DirectorUseCase directorUseCase;

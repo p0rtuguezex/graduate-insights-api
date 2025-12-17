@@ -23,7 +23,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.jpa.GraduateReposi
 @RequestMapping("/survey-responses")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('GRADUATE')")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 public class GraduateSurveyResponseController {
 
   private final GraduateSurveyResponseUseCase graduateSurveyResponseUseCase;

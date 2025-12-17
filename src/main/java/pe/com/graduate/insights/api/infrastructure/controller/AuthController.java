@@ -25,7 +25,7 @@ import pe.com.graduate.insights.api.infrastructure.security.JwtService;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 @Tag(name = "Autenticación", description = "APIs para autenticación y registro de usuarios")
 public class AuthController {
 

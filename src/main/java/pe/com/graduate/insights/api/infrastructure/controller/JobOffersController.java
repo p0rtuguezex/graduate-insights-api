@@ -31,7 +31,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RequestMapping("/job-offers")
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('DIRECTOR', 'EMPLOYER')")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 @Tag(name = "Ofertas de Trabajo", description = "APIs para gestión de ofertas de trabajo")
 public class JobOffersController {
 

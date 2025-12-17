@@ -28,7 +28,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RequestMapping("/director")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('DIRECTOR')")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 @Tag(name = "Directores", description = "APIs para gestión de directores")
 public class DirectorController {
 

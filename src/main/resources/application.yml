@@ -57,7 +57,7 @@ springdoc:
 
 app:
   file:
-    upload-dir: ./uploads/cv
+    upload-dir: ${APP_FILE_UPLOAD_DIR:./uploads/cv}
 
 logging:
   level:

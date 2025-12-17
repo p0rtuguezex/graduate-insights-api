@@ -27,7 +27,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('DIRECTOR')")
 @Tag(name = "Usuarios", description = "APIs para gestión de usuarios del sistema")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 public class UserController {
 
   private final UserUseCase userUseCase;

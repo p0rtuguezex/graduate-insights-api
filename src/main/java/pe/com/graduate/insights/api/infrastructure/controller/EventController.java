@@ -27,7 +27,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RequestMapping("/event")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('DIRECTOR')")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 @Tag(name = "Eventos", description = "APIs para gestión de eventos")
 public class EventController {
 

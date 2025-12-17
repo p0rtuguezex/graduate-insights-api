@@ -26,7 +26,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RequestMapping("/education_center")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('DIRECTOR')")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 @Tag(name = "Centros Educativos", description = "APIs para gestión de centros educativos")
 public class EducationCenterController {
 

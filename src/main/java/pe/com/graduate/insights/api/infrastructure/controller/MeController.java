@@ -25,7 +25,7 @@ import pe.com.graduate.insights.api.domain.models.response.UserDataResponse;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('DIRECTOR', 'EMPLOYER', 'GRADUATE', 'USER')")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 @Tag(
     name = "Perfil de Usuario",
     description = "APIs para gestión del perfil del usuario autenticado")

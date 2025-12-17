@@ -28,7 +28,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('DIRECTOR')")
 @Tag(name = "Tipos de Encuesta", description = "APIs para gestión de tipos de encuesta")
-@CrossOrigin(origins = "${cors.allowed-origins:http://localhost:3000}")
+@CrossOrigin(origins = "${cors.allowed-origins}")
 public class SurveyTypeController {
 
   private final SurveyTypeUseCase surveyTypeUseCase;
