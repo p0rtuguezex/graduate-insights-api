@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -108,6 +109,8 @@ public class JobOffersRepositoryAdapter implements JobOffersRepositoryPort {
         .findAllByEstadoAndEmployer_User_Estado(
             ConstantsUtils.STATUS_ACTIVE, ConstantsUtils.STATUS_ACTIVE)
         .stream()
+      .sorted(
+        Comparator.comparing(JobOffersEntity::getCreatedDate).reversed())
         .map(jobOffersMapper::toKeyValueResponse)
         .toList();
   }

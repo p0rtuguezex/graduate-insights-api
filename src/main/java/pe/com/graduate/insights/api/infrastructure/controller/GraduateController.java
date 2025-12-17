@@ -14,6 +14,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -148,7 +149,9 @@ public class GraduateController {
           @Parameter(description = "Tamaño de página", example = "10")
               @RequestParam(value = "size", defaultValue = "10")
               String size) {
-    Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size));
+    Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
+    Pageable pageable =
+        PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size), sort);
     Page<GraduateResponse> graduatePage = graduateUseCase.getPagination(search, pageable);
     return ResponseUtils.successResponsePaginate(
         graduatePage.getContent(), paginateMapper.toDomain(graduatePage));

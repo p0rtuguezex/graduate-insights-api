@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -100,12 +101,19 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
 
   @Override
   public List<KeyValueResponse> getList() {
+    Comparator<JobEntity> comparator =
+      Comparator.comparing(
+          JobEntity::getCreatedDate,
+          Comparator.nullsLast(Comparator.naturalOrder()))
+        .reversed();
+
     return jobRepository
-        .findAllByEstadoAndGraduate_User_Estado(
-            ConstantsUtils.STATUS_ACTIVE, ConstantsUtils.STATUS_ACTIVE)
-        .stream()
-        .map(jobMapper::toKeyValueResponse)
-        .toList();
+      .findAllByEstadoAndGraduate_User_Estado(
+        ConstantsUtils.STATUS_ACTIVE, ConstantsUtils.STATUS_ACTIVE)
+      .stream()
+      .sorted(comparator)
+      .map(jobMapper::toKeyValueResponse)
+      .toList();
   }
 
   // Implementación de métodos con lógica de roles

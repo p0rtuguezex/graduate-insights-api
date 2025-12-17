@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -54,9 +55,16 @@ public class EventTypesRepositoryAdapter implements EventTypesRepositoryPort {
 
   @Override
   public List<KeyValueResponse> getList() {
+    Comparator<EventTypesEntity> comparator =
+      Comparator.comparing(
+          EventTypesEntity::getCreatedDate,
+          Comparator.nullsLast(Comparator.naturalOrder()))
+        .reversed();
+
     return eventTypesRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-        .map(eventTypesMapper::toKeyValueResponse)
-        .toList();
+      .sorted(comparator)
+      .map(eventTypesMapper::toKeyValueResponse)
+      .toList();
   }
 
   @Override

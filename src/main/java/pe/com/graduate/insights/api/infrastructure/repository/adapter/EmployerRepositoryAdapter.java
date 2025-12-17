@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -73,9 +74,16 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
 
   @Override
   public List<KeyValueResponse> getList() {
+    Comparator<EmployerEntity> comparator =
+      Comparator.comparing(
+          EmployerEntity::getCreatedDate,
+          Comparator.nullsLast(Comparator.naturalOrder()))
+        .reversed();
+
     return employerRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-        .map(employerMapper::toKeyValueResponse)
-        .toList();
+      .sorted(comparator)
+      .map(employerMapper::toKeyValueResponse)
+      .toList();
   }
 
   @Override

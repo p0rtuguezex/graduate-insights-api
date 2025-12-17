@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -146,7 +147,9 @@ public class EducationCenterController {
           @Parameter(description = "Tamaño de página", example = "10")
               @RequestParam(value = "size", defaultValue = "10")
               String size) {
-    Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size));
+    Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
+    Pageable pageable =
+        PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size), sort);
     Page<EducationCenterResponse> educationCenterPage =
         educationCenterUseCase.getPagination(search, pageable);
     return ResponseUtils.successResponsePaginate(

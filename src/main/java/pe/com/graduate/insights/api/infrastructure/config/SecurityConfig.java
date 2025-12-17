@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 import pe.com.graduate.insights.api.infrastructure.security.JwtAuthenticationFilter;
 
 @Slf4j
@@ -24,6 +25,7 @@ public class SecurityConfig {
 
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final AuthenticationProvider authenticationProvider;
+    private final CorsConfigurationSource corsConfigurationSource;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,6 +34,7 @@ public class SecurityConfig {
     return http
         .securityMatcher("/graduate-insights/v1/api/**")
         .csrf(AbstractHttpConfigurer::disable)
+        .cors(cors -> cors.configurationSource(corsConfigurationSource))
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(

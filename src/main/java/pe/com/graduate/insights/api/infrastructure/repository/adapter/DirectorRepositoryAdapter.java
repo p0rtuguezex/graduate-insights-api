@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -62,9 +63,16 @@ public class DirectorRepositoryAdapter implements DirectorRepositoryPort {
 
   @Override
   public List<KeyValueResponse> getList() {
+    Comparator<DirectorEntity> comparator =
+      Comparator.comparing(
+          DirectorEntity::getCreatedDate,
+          Comparator.nullsLast(Comparator.naturalOrder()))
+        .reversed();
+
     return directorRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-        .map(directorMapper::toKeyValueResponse)
-        .toList();
+      .sorted(comparator)
+      .map(directorMapper::toKeyValueResponse)
+      .toList();
   }
 
   @Override

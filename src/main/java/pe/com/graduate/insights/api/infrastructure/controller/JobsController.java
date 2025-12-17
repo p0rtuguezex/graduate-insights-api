@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -183,7 +184,9 @@ public class JobsController {
     boolean isDirector = isUserDirector();
     Long currentUserId = getCurrentUserId();
 
-    Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size));
+    Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
+    Pageable pageable =
+      PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size), sort);
     Page<JobResponse> jobPage =
         jobUseCase.getPaginationByRole(search, pageable, isDirector, currentUserId);
     return ResponseUtils.successResponsePaginate(

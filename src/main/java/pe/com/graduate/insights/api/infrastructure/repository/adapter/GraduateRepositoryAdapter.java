@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -62,9 +63,16 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
 
   @Override
   public List<KeyValueResponse> getList() {
+    Comparator<GraduateEntity> comparator =
+      Comparator.comparing(
+          GraduateEntity::getCreatedDate,
+          Comparator.nullsLast(Comparator.naturalOrder()))
+        .reversed();
+
     return graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-        .map(graduateMapper::toKeyValueResponse)
-        .toList();
+      .sorted(comparator)
+      .map(graduateMapper::toKeyValueResponse)
+      .toList();
   }
 
   @Override
