@@ -63,4 +63,12 @@ public interface JobOffersRepository extends JpaRepository<JobOffersEntity, Long
           + " LOWER(j.employer.user.apellidos) LIKE LOWER(CONCAT('%', :search, '%')) "
           + ")")
   Page<JobOffersEntity> findAllByEstadoAndSearch(String search, String status, Pageable pageable);
+
+  @Query(
+      "SELECT j FROM JobOffersEntity j "
+          + "WHERE j.estado = :estado "
+          + "AND j.employer.user.estado = :userEstado "
+          + "ORDER BY j.createdDate DESC")
+  List<JobOffersEntity> findRecentActiveOffers(
+      @Param("estado") String estado, @Param("userEstado") String userEstado, Pageable pageable);
 }

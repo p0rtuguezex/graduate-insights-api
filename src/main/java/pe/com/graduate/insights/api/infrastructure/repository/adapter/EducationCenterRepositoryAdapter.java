@@ -55,15 +55,15 @@ public class EducationCenterRepositoryAdapter implements EducationCenterReposito
   @Override
   public List<EducationCenterResponse> getList() {
     Comparator<EducationCenterEntity> comparator =
-      Comparator.comparing(
-          EducationCenterEntity::getCreatedDate,
-          Comparator.nullsLast(Comparator.naturalOrder()))
-        .reversed();
+        Comparator.comparing(
+                EducationCenterEntity::getCreatedDate,
+                Comparator.nullsLast(Comparator.naturalOrder()))
+            .reversed();
 
     return educationCenterRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-      .sorted(comparator)
-      .map(educationCenterMapper::toDomain)
-      .toList();
+        .sorted(comparator)
+        .map(educationCenterMapper::toDomain)
+        .toList();
   }
 
   @Override

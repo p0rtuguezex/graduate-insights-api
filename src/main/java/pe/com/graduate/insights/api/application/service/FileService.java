@@ -21,7 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileService implements InitializingBean {
 
-  private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList(".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png");
+  private static final List<String> ALLOWED_EXTENSIONS =
+      Arrays.asList(".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png");
   private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB en bytes
 
   @Value("${app.file.upload-dir:./uploads}")
@@ -55,9 +56,12 @@ public class FileService implements InitializingBean {
 
     // Validar extensión del archivo
     String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
-    String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
+    String fileExtension =
+        originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
     if (!ALLOWED_EXTENSIONS.contains(fileExtension)) {
-      throw new RuntimeException("Tipo de archivo no permitido. Extensiones permitidas: " + String.join(", ", ALLOWED_EXTENSIONS));
+      throw new RuntimeException(
+          "Tipo de archivo no permitido. Extensiones permitidas: "
+              + String.join(", ", ALLOWED_EXTENSIONS));
     }
 
     // Generar nombre único para el archivo

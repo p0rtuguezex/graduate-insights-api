@@ -31,4 +31,6 @@ public interface JobOffersRepositoryPort {
 
   Page<JobOffersResponse> getPaginationByRole(
       String search, Pageable pageable, boolean isDirector, Long currentUserId);
+
+  List<JobOffersResponse> getRecentActiveOffers(int limit);
 }

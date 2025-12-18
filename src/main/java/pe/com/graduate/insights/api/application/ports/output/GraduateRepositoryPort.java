@@ -25,4 +25,6 @@ public interface GraduateRepositoryPort
    * @param cvPath Nueva ruta del CV (puede ser null para eliminar)
    */
   void updateCvPath(Long graduateId, String cvPath);
+
+  Long getActiveGraduateIdByUserId(Long userId);
 }

@@ -4,7 +4,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.application.ports.input.SurveyStatisticsUseCase;
 import pe.com.graduate.insights.api.domain.models.response.ApiResponse;
 import pe.com.graduate.insights.api.domain.models.response.ChartDataResponse;
@@ -16,7 +20,6 @@ import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 @RequestMapping("/survey-statistics")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('DIRECTOR')")
-@CrossOrigin(origins = "${cors.allowed-origins}")
 public class SurveyStatisticsController {
 
   private final SurveyStatisticsUseCase surveyStatisticsUseCase;

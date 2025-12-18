@@ -56,15 +56,14 @@ public class EventTypesRepositoryAdapter implements EventTypesRepositoryPort {
   @Override
   public List<KeyValueResponse> getList() {
     Comparator<EventTypesEntity> comparator =
-      Comparator.comparing(
-          EventTypesEntity::getCreatedDate,
-          Comparator.nullsLast(Comparator.naturalOrder()))
-        .reversed();
+        Comparator.comparing(
+                EventTypesEntity::getCreatedDate, Comparator.nullsLast(Comparator.naturalOrder()))
+            .reversed();
 
     return eventTypesRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-      .sorted(comparator)
-      .map(eventTypesMapper::toKeyValueResponse)
-      .toList();
+        .sorted(comparator)
+        .map(eventTypesMapper::toKeyValueResponse)
+        .toList();
   }
 
   @Override

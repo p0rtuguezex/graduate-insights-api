@@ -25,31 +25,37 @@ public class SecurityConfig {
 
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final AuthenticationProvider authenticationProvider;
-    private final CorsConfigurationSource corsConfigurationSource;
+  private final CorsConfigurationSource corsConfigurationSource;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     log.info("Configurando SecurityFilterChain");
 
-    return http
-        .securityMatcher("/graduate-insights/v1/api/**")
-        .csrf(AbstractHttpConfigurer::disable)
+    return http.csrf(AbstractHttpConfigurer::disable)
         .cors(cors -> cors.configurationSource(corsConfigurationSource))
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth ->
                 auth
-                    // IMPORTANTE: Permitir TODAS las peticiones OPTIONS primero (para CORS preflight)
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    // IMPORTANTE: Permitir TODAS las peticiones OPTIONS primero (para CORS
+                    // preflight)
+                    .requestMatchers(HttpMethod.OPTIONS, "/**")
+                    .permitAll()
                     // Luego las rutas específicas de autenticación
-                    .requestMatchers("/graduate-insights/v1/api/auth/login").permitAll()
-                    .requestMatchers("/graduate-insights/v1/api/graduate/register").permitAll()
-                    .requestMatchers("/graduate-insights/v1/api/employer/register").permitAll()
-                    .requestMatchers("/graduate-insights/v1/api/director/register").permitAll()
-                    .requestMatchers("/graduate-insights/v1/api/mail/**").permitAll()
+                    .requestMatchers("/auth/login")
+                    .permitAll()
+                    .requestMatchers("/graduate/register")
+                    .permitAll()
+                    .requestMatchers("/employer/register")
+                    .permitAll()
+                    .requestMatchers("/director/register")
+                    .permitAll()
+                    .requestMatchers("/mail/**")
+                    .permitAll()
                     // Rutas protegidas
-                    .requestMatchers("/graduate-insights/v1/api/auth/me").authenticated()
+                    .requestMatchers("/auth/me")
+                    .authenticated()
                     // Documentación API
                     .requestMatchers(
                         "/v3/api-docs/**",
@@ -57,7 +63,8 @@ public class SecurityConfig {
                         "/swagger-ui.html",
                         "/swagger-resources/**")
                     .permitAll()
-                    .anyRequest().authenticated())
+                    .anyRequest()
+                    .authenticated())
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
         .build();

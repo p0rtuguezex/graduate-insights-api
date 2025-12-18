@@ -8,7 +8,10 @@ import pe.com.graduate.insights.api.domain.models.response.JobResponse;
 import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 public interface JobRepositoryPort {
+
   JobResponse getDomain(Long id);
+
+  JobResponse getDomainByGraduate(Long id, Long graduateId);
 
   void save(JobRequest jobRequest);
 
@@ -16,20 +19,13 @@ public interface JobRepositoryPort {
 
   void delete(Long id);
 
+  void deleteByGraduate(Long id, Long graduateId);
+
   Page<JobResponse> getPagination(String search, Pageable pageable);
+
+  Page<JobResponse> getPaginationByGraduate(String search, Pageable pageable, Long graduateId);
 
   List<KeyValueResponse> getList();
 
-  JobResponse getDomainByRole(Long id, boolean isDirector, Long currentUserId);
-
-  void saveByRole(JobRequest jobRequest, boolean isDirector, Long currentUserId);
-
-  void updateByRole(JobRequest jobRequest, Long id, boolean isDirector, Long currentUserId);
-
-  void deleteByRole(Long id, boolean isDirector, Long currentUserId);
-
-  Page<JobResponse> getPaginationByRole(
-      String search, Pageable pageable, boolean isDirector, Long currentUserId);
-
-  List<KeyValueResponse> getListByRole(boolean isDirector, Long currentUserId);
+  List<KeyValueResponse> getListByGraduate(Long graduateId);
 }

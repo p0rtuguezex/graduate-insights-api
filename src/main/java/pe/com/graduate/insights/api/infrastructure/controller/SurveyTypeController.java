@@ -16,7 +16,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.application.ports.input.SurveyTypeUseCase;
 import pe.com.graduate.insights.api.domain.models.request.SurveyTypeRequest;
 import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
@@ -29,7 +37,6 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMap
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('DIRECTOR')")
 @Tag(name = "Tipos de Encuesta", description = "APIs para gestión de tipos de encuesta")
-@CrossOrigin(origins = "${cors.allowed-origins}")
 public class SurveyTypeController {
 
   private final SurveyTypeUseCase surveyTypeUseCase;
@@ -148,8 +155,7 @@ public class SurveyTypeController {
               @RequestParam(value = "size", defaultValue = "10")
               String size) {
     Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
-    Pageable pageable =
-        PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size), sort);
+    Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size), sort);
     Page<SurveyTypeResponse> surveyTypePage = surveyTypeUseCase.getPagination(search, pageable);
     return ResponseUtils.successResponsePaginate(
         surveyTypePage.getContent(), paginateMapper.toDomain(surveyTypePage));

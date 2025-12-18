@@ -17,49 +17,33 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-import pe.com.graduate.insights.api.application.ports.input.AuthUseCase;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.application.ports.input.JobUseCase;
-import pe.com.graduate.insights.api.application.service.UserRoleService;
-import pe.com.graduate.insights.api.domain.models.enums.UserRole;
 import pe.com.graduate.insights.api.domain.models.request.JobRequest;
 import pe.com.graduate.insights.api.domain.models.response.JobResponse;
 import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.domain.utils.ResponseUtils;
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.infrastructure.security.CurrentUserProvider;
 
 @RestController
 @RequestMapping("/jobs")
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('DIRECTOR', 'GRADUATE')")
-@CrossOrigin(origins = "${cors.allowed-origins}")
 @Tag(name = "Trabajos", description = "APIs para gestión de trabajos de graduados")
 public class JobsController {
 
   private final JobUseCase jobUseCase;
   private final PaginateMapper paginateMapper;
-  private final AuthUseCase authUseCase;
-  private final UserRoleService userRoleService;
-
-  /**
-   * Función para identificar el rol del usuario autenticado. - DIRECTOR: Ve todos los trabajos con
-   * todos los atributos (incluye graduate_id) - GRADUATE: Ve solo sus trabajos sin el atributo
-   * graduate_id
-   */
-  private boolean isUserDirector() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    var user = authUseCase.getCurrentUser(authentication);
-    UserRole userRole = userRoleService.getUserRole(user.getId());
-    return userRole == UserRole.DIRECTOR;
-  }
-
-  private Long getCurrentUserId() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    var user = authUseCase.getCurrentUser(authentication);
-    return user.getId();
-  }
+  private final CurrentUserProvider currentUserProvider;
 
   @Operation(
       summary = "Obtener trabajo por ID",
@@ -79,10 +63,8 @@ public class JobsController {
   public ResponseEntity<
           pe.com.graduate.insights.api.domain.models.response.ApiResponse<JobResponse>>
       getJob(@Parameter(description = "ID del trabajo", required = true) @PathVariable Long id) {
-    boolean isDirector = isUserDirector();
-    Long currentUserId = getCurrentUserId();
-
-    JobResponse jobResponse = jobUseCase.getDomainByRole(id, isDirector, currentUserId);
+    var userContext = currentUserProvider.getCurrentUser();
+    JobResponse jobResponse = jobUseCase.getJob(id, userContext);
     return ResponseUtils.successResponse(jobResponse);
   }
 
@@ -103,10 +85,8 @@ public class JobsController {
       saveJob(
           @Parameter(description = "Datos del trabajo", required = true) @Valid @RequestBody
               JobRequest jobRequest) {
-    boolean isDirector = isUserDirector();
-    Long currentUserId = getCurrentUserId();
-
-    jobUseCase.saveByRole(jobRequest, isDirector, currentUserId);
+    var userContext = currentUserProvider.getCurrentUser();
+    jobUseCase.createJob(jobRequest, userContext);
     return ResponseUtils.sucessCreateResponse();
   }
 
@@ -128,10 +108,8 @@ public class JobsController {
           @Parameter(description = "Datos del trabajo", required = true) @RequestBody
               JobRequest jobRequest,
           @Parameter(description = "ID del trabajo", required = true) @PathVariable Long id) {
-    boolean isDirector = isUserDirector();
-    Long currentUserId = getCurrentUserId();
-
-    jobUseCase.updateByRole(jobRequest, id, isDirector, currentUserId);
+    var userContext = currentUserProvider.getCurrentUser();
+    jobUseCase.updateJob(id, jobRequest, userContext);
     return ResponseUtils.successUpdateResponse();
   }
 
@@ -149,10 +127,8 @@ public class JobsController {
   @DeleteMapping("/{id}")
   public ResponseEntity<pe.com.graduate.insights.api.domain.models.response.ApiResponse<Void>>
       deleteJob(@Parameter(description = "ID del trabajo", required = true) @PathVariable Long id) {
-    boolean isDirector = isUserDirector();
-    Long currentUserId = getCurrentUserId();
-
-    jobUseCase.deleteByRole(id, isDirector, currentUserId);
+    var userContext = currentUserProvider.getCurrentUser();
+    jobUseCase.deleteJob(id, userContext);
     return ResponseUtils.successDeleteResponse();
   }
 
@@ -181,14 +157,10 @@ public class JobsController {
           @Parameter(description = "Tamaño de página", example = "10")
               @RequestParam(value = "size", defaultValue = "10")
               String size) {
-    boolean isDirector = isUserDirector();
-    Long currentUserId = getCurrentUserId();
-
     Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
-    Pageable pageable =
-      PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size), sort);
-    Page<JobResponse> jobPage =
-        jobUseCase.getPaginationByRole(search, pageable, isDirector, currentUserId);
+    Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size), sort);
+    var userContext = currentUserProvider.getCurrentUser();
+    Page<JobResponse> jobPage = jobUseCase.getJobs(search, pageable, userContext);
     return ResponseUtils.successResponsePaginate(
         jobPage.getContent(), paginateMapper.toDomain(jobPage));
   }
@@ -208,10 +180,8 @@ public class JobsController {
       })
   @GetMapping("/list")
   public ResponseEntity<List<KeyValueResponse>> getListJobsAll() {
-    boolean isDirector = isUserDirector();
-    Long currentUserId = getCurrentUserId();
-
-    List<KeyValueResponse> jobList = jobUseCase.getListByRole(isDirector, currentUserId);
+    var userContext = currentUserProvider.getCurrentUser();
+    List<KeyValueResponse> jobList = jobUseCase.getJobOptions(userContext);
     return new ResponseEntity<>(jobList, HttpStatus.OK);
   }
 }

@@ -1,3 +1,4 @@
+SET NAMES utf8mb4;
 -- ============================================
 -- SCRIPT DE DATOS INICIAL PARA GRADUATE INSIGHTS API
 -- ============================================

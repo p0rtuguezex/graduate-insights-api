@@ -60,8 +60,9 @@ public class CorsProperties {
   }
 
   private List<String> normalizeList(List<String> values) {
-    if (values == null)
+    if (values == null) {
       return new ArrayList<>();
+    }
     return values.stream()
         .filter(Objects::nonNull)
         .map(String::trim)
@@ -70,8 +71,9 @@ public class CorsProperties {
   }
 
   private List<String> parseCommaSeparated(String value) {
-    if (!StringUtils.hasText(value))
+    if (!StringUtils.hasText(value)) {
       return new ArrayList<>();
+    }
     return Arrays.stream(value.split(","))
         .map(String::trim)
         .filter(StringUtils::hasText)

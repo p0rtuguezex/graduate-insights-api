@@ -36,17 +36,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     // Verificar rutas públicas específicas
-    boolean isPublicRoute = path.equals("/graduate-insights/v1/api/auth/login")
-        || path.startsWith("/graduate-insights/v1/api/graduate/register")
-        || path.startsWith("/graduate-insights/v1/api/employer/register") 
-        || path.startsWith("/graduate-insights/v1/api/director/register")
-        || path.startsWith("/graduate-insights/v1/api/mail/")
-        || path.startsWith("/graduate-insights/v1/api/v3/api-docs")
-        || path.startsWith("/graduate-insights/v1/api/swagger-ui")
-        || path.startsWith("/graduate-insights/v1/api/swagger-resources")
-        || path.startsWith("/v3/api-docs")
-        || path.startsWith("/swagger-ui")
-        || path.startsWith("/swagger-resources");
+    boolean isPublicRoute =
+        path.equals("/graduate-insights/v1/api/auth/login")
+            || path.startsWith("/graduate-insights/v1/api/graduate/register")
+            || path.startsWith("/graduate-insights/v1/api/employer/register")
+            || path.startsWith("/graduate-insights/v1/api/director/register")
+            || path.startsWith("/graduate-insights/v1/api/mail/")
+            || path.startsWith("/graduate-insights/v1/api/v3/api-docs")
+            || path.startsWith("/graduate-insights/v1/api/swagger-ui")
+            || path.startsWith("/graduate-insights/v1/api/swagger-resources")
+            || path.startsWith("/v3/api-docs")
+            || path.startsWith("/swagger-ui")
+            || path.startsWith("/swagger-resources");
 
     if (isPublicRoute) {
       log.info("SALTANDO filtro JWT para ruta pública: {} [{}]", path, method);

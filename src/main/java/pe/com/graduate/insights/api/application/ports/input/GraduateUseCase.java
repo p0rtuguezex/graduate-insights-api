@@ -1,7 +1,5 @@
 package pe.com.graduate.insights.api.application.ports.input;
 
-import org.springframework.core.io.Resource;
-import org.springframework.web.multipart.MultipartFile;
 import pe.com.graduate.insights.api.application.ports.generic.GenericCreate;
 import pe.com.graduate.insights.api.application.ports.generic.GenericDelete;
 import pe.com.graduate.insights.api.application.ports.generic.GenericList;
@@ -18,5 +16,4 @@ public interface GraduateUseCase
         GenericList<KeyValueResponse>,
         GenericRead<GraduateResponse>,
         GenericPaginate<GraduateResponse>,
-        GenericDelete {
-}
+        GenericDelete {}

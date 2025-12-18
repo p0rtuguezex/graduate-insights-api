@@ -14,6 +14,8 @@ public class ConstantsUtils {
   public static final String JOB_OFFERS_NOT_FOUND = "Oferta laboral no encontrada con id: %s";
   public static final String JOB_NOT_FOUND_BY_GRADUATE =
       "EL graduado con id: %s, no tiene empleos registrados.";
+  public static final String JOB_GRADUATE_REQUIRED =
+      "Debe especificar un graduado para registrar el trabajo";
   public static final String RESET_PASSWORD = "1";
   public static final String SENT_CODE_VALIDATED = "2";
   public static final String JOB_OFFERS_NOT_FOUND_BY_EMPLOYER =

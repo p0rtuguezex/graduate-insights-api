@@ -59,22 +59,23 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
 
       templateEmail =
           GraduateUtils.templateWithVariables(templateSend, userEntity.getNombres(), code);
-      
+
       log.info("Intentando enviar correo a: {} con asunto: {}", mailRequest.getEmail(), subject);
       log.debug("Configuración de correo - Usuario remitente: {}", sender);
-      
+
       MimeMessage mimeMessage = javaMailSender.createMimeMessage();
       mimeMessage.setSubject(subject);
       MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, Boolean.TRUE);
       mimeMessageHelper.setTo(mailRequest.getEmail());
       mimeMessageHelper.setText(templateEmail, Boolean.TRUE);
       mimeMessageHelper.setFrom(sender, ConstantsUtils.SISEG);
-      
+
       javaMailSender.send(mimeMessage);
       log.info("Correo enviado exitosamente a: {}", mailRequest.getEmail());
 
     } catch (Exception e) {
-      log.error("Error detallado al enviar correo a {}: {}", mailRequest.getEmail(), e.getMessage(), e);
+      log.error(
+          "Error detallado al enviar correo a {}: {}", mailRequest.getEmail(), e.getMessage(), e);
       throw new MailException("Error al enviar correo: " + e.getMessage());
     }
   }

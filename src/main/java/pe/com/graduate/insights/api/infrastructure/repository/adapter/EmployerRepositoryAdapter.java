@@ -75,15 +75,14 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
   @Override
   public List<KeyValueResponse> getList() {
     Comparator<EmployerEntity> comparator =
-      Comparator.comparing(
-          EmployerEntity::getCreatedDate,
-          Comparator.nullsLast(Comparator.naturalOrder()))
-        .reversed();
+        Comparator.comparing(
+                EmployerEntity::getCreatedDate, Comparator.nullsLast(Comparator.naturalOrder()))
+            .reversed();
 
     return employerRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-      .sorted(comparator)
-      .map(employerMapper::toKeyValueResponse)
-      .toList();
+        .sorted(comparator)
+        .map(employerMapper::toKeyValueResponse)
+        .toList();
   }
 
   @Override

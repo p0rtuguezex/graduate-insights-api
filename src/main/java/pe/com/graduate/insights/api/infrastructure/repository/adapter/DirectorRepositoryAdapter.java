@@ -64,15 +64,14 @@ public class DirectorRepositoryAdapter implements DirectorRepositoryPort {
   @Override
   public List<KeyValueResponse> getList() {
     Comparator<DirectorEntity> comparator =
-      Comparator.comparing(
-          DirectorEntity::getCreatedDate,
-          Comparator.nullsLast(Comparator.naturalOrder()))
-        .reversed();
+        Comparator.comparing(
+                DirectorEntity::getCreatedDate, Comparator.nullsLast(Comparator.naturalOrder()))
+            .reversed();
 
     return directorRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-      .sorted(comparator)
-      .map(directorMapper::toKeyValueResponse)
-      .toList();
+        .sorted(comparator)
+        .map(directorMapper::toKeyValueResponse)
+        .toList();
   }
 
   @Override

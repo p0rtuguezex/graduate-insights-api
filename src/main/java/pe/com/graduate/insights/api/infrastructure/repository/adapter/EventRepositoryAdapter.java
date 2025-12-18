@@ -90,8 +90,7 @@ public class EventRepositoryAdapter implements EventRepositoryPort {
   public List<KeyValueResponse> getList() {
     Comparator<EventEntity> comparator =
         Comparator.comparing(
-                EventEntity::getCreatedDate,
-                Comparator.nullsLast(Comparator.naturalOrder()))
+                EventEntity::getCreatedDate, Comparator.nullsLast(Comparator.naturalOrder()))
             .reversed();
 
     return eventRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE).stream()

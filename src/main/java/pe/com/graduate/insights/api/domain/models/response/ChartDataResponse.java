@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.domain.models.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -60,8 +61,11 @@ public class ChartDataResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ChartAxes {
-      private ChartAxis xAxis;
-      private ChartAxis yAxis;
+      @JsonProperty("xAxis")
+      private ChartAxis horizontalAxis;
+
+      @JsonProperty("yAxis")
+      private ChartAxis verticalAxis;
 
       @Data
       @Builder

@@ -16,9 +16,9 @@ public interface UserRepositoryPort
         GenericUpdate<UserRequest>,
         GenericDelete,
         GenericPaginate<UserResponse>,
-                GenericList<UserResponse> {
+        GenericList<UserResponse> {
 
-    void updateProfile(ProfileUpdateRequest request, Long id);
+  void updateProfile(ProfileUpdateRequest request, Long id);
 
-    void updatePassword(Long id, String newPassword);
+  void updatePassword(Long id, String newPassword);
 }

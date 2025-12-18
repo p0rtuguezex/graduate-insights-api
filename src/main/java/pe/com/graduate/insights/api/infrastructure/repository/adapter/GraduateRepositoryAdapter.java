@@ -64,15 +64,14 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
   @Override
   public List<KeyValueResponse> getList() {
     Comparator<GraduateEntity> comparator =
-      Comparator.comparing(
-          GraduateEntity::getCreatedDate,
-          Comparator.nullsLast(Comparator.naturalOrder()))
-        .reversed();
+        Comparator.comparing(
+                GraduateEntity::getCreatedDate, Comparator.nullsLast(Comparator.naturalOrder()))
+            .reversed();
 
     return graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).stream()
-      .sorted(comparator)
-      .map(graduateMapper::toKeyValueResponse)
-      .toList();
+        .sorted(comparator)
+        .map(graduateMapper::toKeyValueResponse)
+        .toList();
   }
 
   @Override
@@ -138,5 +137,14 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
               throw new NotFoundException(
                   String.format(ConstantsUtils.GRADUATE_NOT_FOUND, graduateId));
             });
+  }
+
+  @Override
+  public Long getActiveGraduateIdByUserId(Long userId) {
+    return graduateRepository
+        .findByUserIdAndUserEstado(userId, ConstantsUtils.STATUS_ACTIVE)
+        .map(GraduateEntity::getId)
+        .orElseThrow(
+            () -> new NotFoundException(String.format(ConstantsUtils.USER_NOT_FOUND, userId)));
   }
 }

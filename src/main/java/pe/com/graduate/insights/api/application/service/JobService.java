@@ -1,81 +1,98 @@
 package pe.com.graduate.insights.api.application.service;
 
 import java.util.List;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pe.com.graduate.insights.api.application.ports.input.JobUseCase;
+import pe.com.graduate.insights.api.application.ports.output.GraduateRepositoryPort;
 import pe.com.graduate.insights.api.application.ports.output.JobRepositoryPort;
+import pe.com.graduate.insights.api.domain.exception.JobException;
+import pe.com.graduate.insights.api.domain.models.context.UserContext;
 import pe.com.graduate.insights.api.domain.models.request.JobRequest;
 import pe.com.graduate.insights.api.domain.models.response.JobResponse;
 import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
+import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class JobService implements JobUseCase {
 
   private final JobRepositoryPort jobRepositoryPort;
+  private final GraduateRepositoryPort graduateRepositoryPort;
 
   @Override
-  public JobResponse getDomain(Long id) {
-    return jobRepositoryPort.getDomain(id);
+  public JobResponse getJob(Long id, UserContext userContext) {
+    return userContext.isDirector()
+        ? jobRepositoryPort.getDomain(id)
+        : jobRepositoryPort.getDomainByGraduate(id, resolveGraduateId(userContext));
   }
 
   @Override
-  public void save(JobRequest request) {
-    jobRepositoryPort.save(request);
+  @Transactional
+  public void createJob(JobRequest jobRequest, UserContext userContext) {
+    Long graduateId = resolveGraduateId(jobRequest, userContext);
+    jobRequest.setGraduateId(graduateId);
+    jobRepositoryPort.save(jobRequest);
   }
 
   @Override
-  public void update(JobRequest request, Long id) {
-    jobRepositoryPort.update(request, id);
+  @Transactional
+  public void updateJob(Long id, JobRequest jobRequest, UserContext userContext) {
+    if (userContext.isDirector()) {
+      requireGraduate(jobRequest);
+    } else {
+      Long graduateId = resolveGraduateId(userContext);
+      jobRepositoryPort.getDomainByGraduate(id, graduateId);
+      jobRequest.setGraduateId(graduateId);
+    }
+    jobRepositoryPort.update(jobRequest, id);
   }
 
   @Override
-  public void delete(Long id) {
-    jobRepositoryPort.delete(id);
+  @Transactional
+  public void deleteJob(Long id, UserContext userContext) {
+    if (userContext.isDirector()) {
+      jobRepositoryPort.delete(id);
+    } else {
+      Long graduateId = resolveGraduateId(userContext);
+      jobRepositoryPort.deleteByGraduate(id, graduateId);
+    }
   }
 
   @Override
-  public Page<JobResponse> getPagination(String search, Pageable pageable) {
-    return jobRepositoryPort.getPagination(search, pageable);
+  public Page<JobResponse> getJobs(String search, Pageable pageable, UserContext userContext) {
+    return userContext.isDirector()
+        ? jobRepositoryPort.getPagination(search, pageable)
+        : jobRepositoryPort.getPaginationByGraduate(
+            search, pageable, resolveGraduateId(userContext));
   }
 
   @Override
-  public List<KeyValueResponse> getList() {
-    return jobRepositoryPort.getList();
+  public List<KeyValueResponse> getJobOptions(UserContext userContext) {
+    return userContext.isDirector()
+        ? jobRepositoryPort.getList()
+        : jobRepositoryPort.getListByGraduate(resolveGraduateId(userContext));
   }
 
-  // Implementación de métodos con lógica de roles
-  @Override
-  public JobResponse getDomainByRole(Long id, boolean isDirector, Long currentUserId) {
-    return jobRepositoryPort.getDomainByRole(id, isDirector, currentUserId);
+  private Long resolveGraduateId(JobRequest jobRequest, UserContext userContext) {
+    if (userContext.isDirector()) {
+      requireGraduate(jobRequest);
+      return jobRequest.getGraduateId();
+    }
+    return resolveGraduateId(userContext);
   }
 
-  @Override
-  public void saveByRole(JobRequest jobRequest, boolean isDirector, Long currentUserId) {
-    jobRepositoryPort.saveByRole(jobRequest, isDirector, currentUserId);
+  private Long resolveGraduateId(UserContext userContext) {
+    return graduateRepositoryPort.getActiveGraduateIdByUserId(userContext.userId());
   }
 
-  @Override
-  public void updateByRole(JobRequest jobRequest, Long id, boolean isDirector, Long currentUserId) {
-    jobRepositoryPort.updateByRole(jobRequest, id, isDirector, currentUserId);
-  }
-
-  @Override
-  public void deleteByRole(Long id, boolean isDirector, Long currentUserId) {
-    jobRepositoryPort.deleteByRole(id, isDirector, currentUserId);
-  }
-
-  @Override
-  public Page<JobResponse> getPaginationByRole(
-      String search, Pageable pageable, boolean isDirector, Long currentUserId) {
-    return jobRepositoryPort.getPaginationByRole(search, pageable, isDirector, currentUserId);
-  }
-
-  @Override
-  public List<KeyValueResponse> getListByRole(boolean isDirector, Long currentUserId) {
-    return jobRepositoryPort.getListByRole(isDirector, currentUserId);
+  private void requireGraduate(JobRequest jobRequest) {
+    if (jobRequest.getGraduateId() == null) {
+      throw new JobException(ConstantsUtils.JOB_GRADUATE_REQUIRED);
+    }
   }
 }

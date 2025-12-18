@@ -1,6 +1,5 @@
 package pe.com.graduate.insights.api.infrastructure.config;
 
-import java.util.List;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,9 +24,17 @@ public class CorsConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
 
-    apply(configuration::setAllowedOrigins, defaultIfEmpty(properties.getAllowedOrigins(), List.of("http://localhost:3000")));
-    apply(configuration::setAllowedMethods, defaultIfEmpty(properties.getAllowedMethods(), Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")));
-    apply(configuration::setAllowedHeaders, defaultIfEmpty(properties.getAllowedHeaders(), List.of("*")));
+    apply(
+        configuration::setAllowedOrigins,
+        defaultIfEmpty(properties.getAllowedOrigins(), List.of("http://localhost:3000")));
+    apply(
+        configuration::setAllowedMethods,
+        defaultIfEmpty(
+            properties.getAllowedMethods(),
+            Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")));
+    apply(
+        configuration::setAllowedHeaders,
+        defaultIfEmpty(properties.getAllowedHeaders(), List.of("*")));
     apply(configuration::setExposedHeaders, properties.getExposedHeaders());
 
     configuration.setAllowCredentials(Boolean.TRUE.equals(properties.getAllowCredentials()));
@@ -47,8 +54,9 @@ public class CorsConfig {
   }
 
   private List<String> defaultIfEmpty(List<String> values, List<String> fallback) {
-    if (CollectionUtils.isEmpty(values))
+    if (CollectionUtils.isEmpty(values)) {
       return fallback;
+    }
     return values;
   }
 }

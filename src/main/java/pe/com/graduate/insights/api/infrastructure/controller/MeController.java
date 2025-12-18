@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,7 +32,6 @@ import pe.com.graduate.insights.api.domain.models.response.UserResponse;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('DIRECTOR', 'EMPLOYER', 'GRADUATE', 'USER')")
-@CrossOrigin(origins = "${cors.allowed-origins}")
 @Tag(
     name = "Perfil de Usuario",
     description = "APIs para gestión del perfil del usuario autenticado")
@@ -84,8 +82,7 @@ public class MeController {
   public ResponseEntity<ApiResponseWrapper<UserResponse>> getProfileDetails() {
     var user = getAuthenticatedUser();
     var profile = userUseCase.getDomain(user.getId());
-    return ResponseEntity.ok(
-        ApiResponseWrapper.success("Perfil obtenido exitosamente", profile));
+    return ResponseEntity.ok(ApiResponseWrapper.success("Perfil obtenido exitosamente", profile));
   }
 
   @Operation(summary = "Actualizar el perfil propio")

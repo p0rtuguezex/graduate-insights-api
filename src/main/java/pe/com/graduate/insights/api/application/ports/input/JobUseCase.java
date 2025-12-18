@@ -3,34 +3,22 @@ package pe.com.graduate.insights.api.application.ports.input;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import pe.com.graduate.insights.api.domain.models.context.UserContext;
 import pe.com.graduate.insights.api.domain.models.request.JobRequest;
 import pe.com.graduate.insights.api.domain.models.response.JobResponse;
 import pe.com.graduate.insights.api.domain.models.response.KeyValueResponse;
 
 public interface JobUseCase {
 
-  JobResponse getDomain(Long id);
+  JobResponse getJob(Long id, UserContext userContext);
 
-  void save(JobRequest jobRequest);
+  void createJob(JobRequest jobRequest, UserContext userContext);
 
-  void update(JobRequest jobRequest, Long id);
+  void updateJob(Long id, JobRequest jobRequest, UserContext userContext);
 
-  void delete(Long id);
+  void deleteJob(Long id, UserContext userContext);
 
-  Page<JobResponse> getPagination(String search, Pageable pageable);
+  Page<JobResponse> getJobs(String search, Pageable pageable, UserContext userContext);
 
-  List<KeyValueResponse> getList();
-
-  JobResponse getDomainByRole(Long id, boolean isDirector, Long currentUserId);
-
-  void saveByRole(JobRequest jobRequest, boolean isDirector, Long currentUserId);
-
-  void updateByRole(JobRequest jobRequest, Long id, boolean isDirector, Long currentUserId);
-
-  void deleteByRole(Long id, boolean isDirector, Long currentUserId);
-
-  Page<JobResponse> getPaginationByRole(
-      String search, Pageable pageable, boolean isDirector, Long currentUserId);
-
-  List<KeyValueResponse> getListByRole(boolean isDirector, Long currentUserId);
+  List<KeyValueResponse> getJobOptions(UserContext userContext);
 }

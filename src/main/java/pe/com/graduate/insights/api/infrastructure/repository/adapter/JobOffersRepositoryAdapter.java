@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.JobOffersRepositoryPort;
@@ -109,8 +110,7 @@ public class JobOffersRepositoryAdapter implements JobOffersRepositoryPort {
         .findAllByEstadoAndEmployer_User_Estado(
             ConstantsUtils.STATUS_ACTIVE, ConstantsUtils.STATUS_ACTIVE)
         .stream()
-      .sorted(
-        Comparator.comparing(JobOffersEntity::getCreatedDate).reversed())
+        .sorted(Comparator.comparing(JobOffersEntity::getCreatedDate).reversed())
         .map(jobOffersMapper::toKeyValueResponse)
         .toList();
   }
@@ -289,5 +289,18 @@ public class JobOffersRepositoryAdapter implements JobOffersRepositoryPort {
             () ->
                 new NotFoundException(
                     "El usuario autenticado no es un empleador o no está activo"));
+  }
+
+  @Override
+  public List<JobOffersResponse> getRecentActiveOffers(int limit) {
+    int pageSize = Math.max(limit, 1);
+    Pageable pageable = PageRequest.of(0, pageSize);
+
+    return jobOffersRepository
+        .findRecentActiveOffers(
+            ConstantsUtils.STATUS_ACTIVE, ConstantsUtils.STATUS_ACTIVE, pageable)
+        .stream()
+        .map(jobOffersMapper::toJobOffersResponse)
+        .toList();
   }
 }

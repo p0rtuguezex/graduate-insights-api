@@ -221,6 +221,10 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
                         .backgroundColor("#4CAF50")
                         .build()));
         break;
+
+      default:
+        throw new IllegalArgumentException(
+            "Tipo de pregunta no soportado: " + question.getQuestionType());
     }
 
     builder.configuration(createDefaultChartConfiguration(chartType));
@@ -582,6 +586,10 @@ public class SurveyStatisticsService implements SurveyStatisticsUseCase {
                         .recommendedChartType("word_cloud");
                   }
                   break;
+
+                default:
+                  throw new IllegalArgumentException(
+                      "Tipo de pregunta no soportado: " + question.getQuestionType());
               }
 
               return builder.build();
