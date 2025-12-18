@@ -6,19 +6,27 @@ services:
   mysql:
     image: mysql:8.0
     container_name: graduate-insights-mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: graduate_insights
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-graduate_insights}
+      MYSQL_USER: ${MYSQL_USER:-app_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-app_secret}
+      TZ: ${TZ:-America/Lima}
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./local/init-mysql.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
     networks:
       - graduate-network
+    restart: unless-stopped
+    mem_limit: 1g
+    cpus: 1.0
 
   app:
     build: .
@@ -28,43 +36,46 @@ services:
     volumes:
       - ./uploads:/app/uploads
     environment:
-      # Configuración de base de datos
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/graduate_insights
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      
-      # Configuración de correo electrónico
-      MAIL_HOST: smtp.gmail.com
-      MAIL_PORT: 587
-      MAIL_USERNAME: garlee016@gmail.com
-      MAIL_PASSWORD: azejzfwfshvwdiok
-      MAIL_SMTP_AUTH: 'true'
-      MAIL_STARTTLS_ENABLE: 'true'
-      MAIL_TIMEOUT: 10000
-      MAIL_SSL_TRUST: smtp.gmail.com
-      
-      # Configuración de CORS
-      CORS_ALLOWED_ORIGINS: 'http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000'
-      CORS_ALLOWED_METHODS: 'GET,POST,PUT,DELETE,OPTIONS,PATCH'
-      CORS_ALLOWED_HEADERS: '*'
-      CORS_EXPOSED_HEADERS: 'Authorization,Content-Type,X-Total-Count'
-      CORS_ALLOW_CREDENTIALS: 'true'
-      CORS_MAX_AGE: 3600
-      
-      # Configuración de archivos
-      APP_FILE_UPLOAD_DIR: '/app/uploads/cv'
-      
-      # Configuración JVM
-      JAVA_OPTS: "-Xms128m -Xmx256m -XX:+UseG1GC"
-      
-      # Logging para debugging
-      LOGGING_LEVEL_ROOT: INFO
-      LOGGING_LEVEL_MAIL: DEBUG
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:mysql://mysql:3306/graduate_insights}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-app_user}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-app_secret}
+
+      MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME:-your_account@example.com}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-changeme}
+      MAIL_SMTP_AUTH: ${MAIL_SMTP_AUTH:-true}
+      MAIL_STARTTLS_ENABLE: ${MAIL_STARTTLS_ENABLE:-true}
+      MAIL_TIMEOUT: ${MAIL_TIMEOUT:-10000}
+      MAIL_SSL_TRUST: ${MAIL_SSL_TRUST:-smtp.gmail.com}
+
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000}
+      CORS_ALLOWED_METHODS: ${CORS_ALLOWED_METHODS:-GET,POST,PUT,DELETE,OPTIONS,PATCH}
+      CORS_ALLOWED_HEADERS: "${CORS_ALLOWED_HEADERS:-*}"
+      CORS_EXPOSED_HEADERS: ${CORS_EXPOSED_HEADERS:-Authorization,Content-Type,X-Total-Count}
+      CORS_ALLOW_CREDENTIALS: ${CORS_ALLOW_CREDENTIALS:-true}
+      CORS_MAX_AGE: ${CORS_MAX_AGE:-3600}
+
+      APP_FILE_UPLOAD_DIR: ${APP_FILE_UPLOAD_DIR:-/app/uploads/cv}
+      JAVA_OPTS: "${JAVA_OPTS:--Xms128m -Xmx256m -XX:+UseG1GC}"
+      LOGGING_LEVEL_ROOT: ${LOGGING_LEVEL_ROOT:-INFO}
+      LOGGING_LEVEL_MAIL: ${LOGGING_LEVEL_MAIL:-DEBUG}
+
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
     depends_on:
       mysql:
         condition: service_healthy
     networks:
       - graduate-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/graduate-insights/v1/api/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    mem_limit: 768m
+    cpus: 0.75
 
 volumes:
   mysql_data:

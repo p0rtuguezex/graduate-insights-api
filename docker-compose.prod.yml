@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+	mysql:
+		image: mysql:8.0
+		container_name: graduate-insights-mysql-prod
+		command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+		environment:
+			MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD}
+			MYSQL_DATABASE: ${MYSQL_DATABASE:-graduate_insights}
+			MYSQL_USER: ${MYSQL_USER:-app_user}
+			MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD}
+			TZ: ${TZ:-America/Lima}
+		volumes:
+			- mysql_data_prod:/var/lib/mysql
+		restart: always
+		networks:
+			- backend
+		healthcheck:
+			test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+			interval: 20s
+			timeout: 5s
+			retries: 10
+
+	api:
+		image: ${API_IMAGE:-unudev25/graduate-insights-api}:${API_TAG:-latest}
+		container_name: graduate-insights-api-prod
+		environment:
+			SPRING_PROFILES_ACTIVE: prod
+			SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:mysql://mysql:3306/graduate_insights}
+			SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-app_user}
+			SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:?Set SPRING_DATASOURCE_PASSWORD}
+			APP_FILE_UPLOAD_DIR: ${APP_FILE_UPLOAD_DIR:-/app/uploads/cv}
+			JAVA_OPTS: "${JAVA_OPTS:--Xms256m -Xmx512m -XX:+UseG1GC}"
+		ports:
+			- "8080:8080"
+		volumes:
+			- ./uploads:/app/uploads
+		depends_on:
+			mysql:
+				condition: service_healthy
+		restart: always
+		networks:
+			- backend
+		healthcheck:
+			test: ["CMD", "curl", "-f", "http://localhost:8080/graduate-insights/v1/api/actuator/health"]
+			interval: 30s
+			timeout: 5s
+			retries: 5
+			start_period: 60s
+
+volumes:
+	mysql_data_prod:
+
+networks:
+	backend:
+		driver: bridge
