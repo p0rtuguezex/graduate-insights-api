@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pe.com.graduate.insights.api.application.ports.input.UserUseCase;
 import pe.com.graduate.insights.api.application.ports.output.UserRepositoryPort;
+import pe.com.graduate.insights.api.domain.models.request.ProfileUpdateRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.UserResponse;
 
@@ -44,5 +45,15 @@ public class UserService implements UserUseCase {
   @Override
   public List<UserResponse> getList() {
     return userRepositoryPort.getList();
+  }
+
+  @Override
+  public void updateProfile(ProfileUpdateRequest request, Long id) {
+    userRepositoryPort.updateProfile(request, id);
+  }
+
+  @Override
+  public void updatePassword(Long id, String newPassword) {
+    userRepositoryPort.updatePassword(id, newPassword);
   }
 }

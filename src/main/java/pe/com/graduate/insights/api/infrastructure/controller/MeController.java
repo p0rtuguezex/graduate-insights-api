@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,12 +15,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.application.ports.input.AuthUseCase;
+import pe.com.graduate.insights.api.application.ports.input.UserUseCase;
 import pe.com.graduate.insights.api.application.service.UserRoleService;
+import pe.com.graduate.insights.api.domain.models.request.ProfileUpdateRequest;
+import pe.com.graduate.insights.api.domain.models.request.SelfPasswordChangeRequest;
 import pe.com.graduate.insights.api.domain.models.response.ApiResponseWrapper;
 import pe.com.graduate.insights.api.domain.models.response.UserDataResponse;
+import pe.com.graduate.insights.api.domain.models.response.UserResponse;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,6 +40,7 @@ import pe.com.graduate.insights.api.domain.models.response.UserDataResponse;
 public class MeController {
 
   private final AuthUseCase authUseCase;
+  private final UserUseCase userUseCase;
   private final UserRoleService userRoleService;
 
   @Operation(
@@ -47,12 +56,7 @@ public class MeController {
       })
   @GetMapping("/me")
   public ResponseEntity<ApiResponseWrapper<UserDataResponse>> getCurrentUser() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication == null) {
-      throw new AuthenticationCredentialsNotFoundException("No se encontró autenticación");
-    }
-
-    var user = authUseCase.getCurrentUser(authentication);
+    var user = getAuthenticatedUser();
     UserDataResponse response =
         UserDataResponse.builder()
             .id(user.getId())
@@ -63,5 +67,64 @@ public class MeController {
             .build();
     return ResponseEntity.ok(
         ApiResponseWrapper.success("Datos del usuario obtenidos exitosamente", response));
+  }
+
+  @Operation(
+      summary = "Obtener el perfil detallado",
+      description = "Retorna toda la información editable del usuario autenticado")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Perfil obtenido exitosamente",
+            content = @Content(schema = @Schema(implementation = UserResponse.class))),
+        @ApiResponse(responseCode = "401", description = "No autorizado")
+      })
+  @GetMapping("/me/profile")
+  public ResponseEntity<ApiResponseWrapper<UserResponse>> getProfileDetails() {
+    var user = getAuthenticatedUser();
+    var profile = userUseCase.getDomain(user.getId());
+    return ResponseEntity.ok(
+        ApiResponseWrapper.success("Perfil obtenido exitosamente", profile));
+  }
+
+  @Operation(summary = "Actualizar el perfil propio")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Perfil actualizado"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
+        @ApiResponse(responseCode = "401", description = "No autorizado")
+      })
+  @PutMapping("/me/profile")
+  public ResponseEntity<ApiResponseWrapper<Void>> updateProfile(
+      @Valid @RequestBody ProfileUpdateRequest request) {
+    var user = getAuthenticatedUser();
+    userUseCase.updateProfile(request, user.getId());
+    return ResponseEntity.ok(ApiResponseWrapper.success("Perfil actualizado", null));
+  }
+
+  @Operation(summary = "Actualizar contraseña propia")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Contraseña actualizada"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
+        @ApiResponse(responseCode = "401", description = "No autorizado")
+      })
+  @PostMapping("/me/password")
+  public ResponseEntity<ApiResponseWrapper<Void>> updatePassword(
+      @Valid @RequestBody SelfPasswordChangeRequest request) {
+    var user = getAuthenticatedUser();
+    userUseCase.updatePassword(user.getId(), request.getNewPassword());
+    return ResponseEntity.ok(ApiResponseWrapper.success("Contraseña actualizada", null));
+  }
+
+  private pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity
+      getAuthenticatedUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null) {
+      throw new AuthenticationCredentialsNotFoundException("No se encontró autenticación");
+    }
+
+    return authUseCase.getCurrentUser(authentication);
   }
 }

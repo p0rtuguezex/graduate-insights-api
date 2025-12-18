@@ -7,9 +7,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.UserRepositoryPort;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
+import pe.com.graduate.insights.api.domain.models.request.ProfileUpdateRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.UserResponse;
 import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
@@ -23,6 +25,7 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
 
   private final UserRepository userRepository;
   private final UserMapper userMapper;
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   public void save(UserRequest request) {
@@ -81,5 +84,31 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     return userRepository.findAllByEstado(ConstantsUtils.STATUS_ACTIVE).stream()
         .map(userMapper::toDomain)
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public void updateProfile(ProfileUpdateRequest request, Long id) {
+    userRepository
+        .findByIdAndEstado(id, ConstantsUtils.STATUS_ACTIVE)
+        .map(
+            userEntity -> {
+              userMapper.updateProfile(request, userEntity);
+              return userRepository.save(userEntity);
+            })
+        .orElseThrow(() -> new NotFoundException(String.format(ConstantsUtils.USER_NOT_FOUND, id)));
+  }
+
+  @Override
+  public void updatePassword(Long id, String newPassword) {
+    userRepository
+        .findByIdAndEstado(id, ConstantsUtils.STATUS_ACTIVE)
+        .ifPresentOrElse(
+            userEntity -> {
+              String encoded = passwordEncoder.encode(newPassword);
+              userRepository.updatePasswordByUserId(encoded, userEntity.getId());
+            },
+            () -> {
+              throw new NotFoundException(String.format(ConstantsUtils.USER_NOT_FOUND, id));
+            });
   }
 }
