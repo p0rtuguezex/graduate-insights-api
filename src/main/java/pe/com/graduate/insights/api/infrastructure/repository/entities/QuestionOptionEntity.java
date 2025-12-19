@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.repository.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "question_options")
+@Table(name = "opciones_pregunta")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,10 +24,13 @@ public class QuestionOptionEntity extends Auditable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(name = "texto_opcion")
   private String optionText;
+
+  @Column(name = "numero_orden")
   private Integer orderNumber;
 
   @ManyToOne
-  @JoinColumn(name = "question_id")
+  @JoinColumn(name = "pregunta_id")
   private QuestionEntity question;
 }

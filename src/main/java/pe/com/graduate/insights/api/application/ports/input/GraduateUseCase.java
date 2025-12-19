@@ -1,5 +1,7 @@
 package pe.com.graduate.insights.api.application.ports.input;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pe.com.graduate.insights.api.application.ports.generic.GenericCreate;
 import pe.com.graduate.insights.api.application.ports.generic.GenericDelete;
 import pe.com.graduate.insights.api.application.ports.generic.GenericList;
@@ -16,4 +18,9 @@ public interface GraduateUseCase
         GenericList<KeyValueResponse>,
         GenericRead<GraduateResponse>,
         GenericPaginate<GraduateResponse>,
-        GenericDelete {}
+        GenericDelete {
+
+  Page<GraduateResponse> getPagination(String search, Pageable pageable, Boolean validated);
+
+  void activate(Long id);
+}

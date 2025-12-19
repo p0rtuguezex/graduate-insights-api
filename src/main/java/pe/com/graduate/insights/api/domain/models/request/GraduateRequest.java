@@ -30,4 +30,6 @@ public class GraduateRequest extends UserRequest implements Serializable {
 
   @NotNull(message = "el cv no puede estar vacio")
   private String cvPath;
+
+  private Boolean validated;
 }

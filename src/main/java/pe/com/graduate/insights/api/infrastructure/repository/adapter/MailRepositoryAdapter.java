@@ -9,6 +9,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.MailRepositoryPort;
+import pe.com.graduate.insights.api.domain.exception.InvalidCodeException;
 import pe.com.graduate.insights.api.domain.exception.MailException;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.ChangePasswordRequest;
@@ -85,7 +86,25 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
     userRepository
         .findByCorreoAndEstado(validateCodeRequest.getEmail(), ConstantsUtils.STATUS_ACTIVE)
         .ifPresentOrElse(
-            userEntity -> userRepository.updateVerifiedTrueByUserId(userEntity.getId()),
+            userEntity -> {
+              String requestCode = validateCodeRequest.getCode();
+
+              boolean matchesRecoveryCode =
+                  userEntity.getPasswordRecoveryCode() != null
+                      && userEntity.getPasswordRecoveryCode().equals(requestCode);
+              boolean matchesConfirmationCode =
+                  userEntity.getCodeConfirm() != null
+                      && userEntity.getCodeConfirm().equals(requestCode);
+
+              if (matchesRecoveryCode) {
+                userRepository.updateRecoveryCodeByUserId(null, userEntity.getId());
+              } else if (matchesConfirmationCode) {
+                userRepository.updateVerifiedTrueByUserId(userEntity.getId());
+                userRepository.updateCodeConfirmByUserId(null, userEntity.getId());
+              } else {
+                throw new InvalidCodeException("El código ingresado es inválido o ha expirado.");
+              }
+            },
             () -> {
               throw new NotFoundException(
                   String.format(
@@ -99,9 +118,17 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
         .findByCorreoAndEstado(changePasswordRequest.getEmail(), ConstantsUtils.STATUS_ACTIVE)
         .ifPresentOrElse(
             userEntity -> {
+              String savedRecoveryCode = userEntity.getPasswordRecoveryCode();
+              if (savedRecoveryCode == null
+                  || !savedRecoveryCode.equals(changePasswordRequest.getCode())) {
+                throw new InvalidCodeException(
+                    "El código de recuperación es inválido o ha expirado.");
+              }
+
               String newPasswordEncode =
                   passwordEncoder.encode(changePasswordRequest.getNewPassword());
               userRepository.updatePasswordByUserId(newPasswordEncode, userEntity.getId());
+              userRepository.updateRecoveryCodeByUserId(null, userEntity.getId());
             },
             () -> {
               throw new NotFoundException(

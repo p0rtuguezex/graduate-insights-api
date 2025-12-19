@@ -7,8 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.AuthRepositoryPort;
+import pe.com.graduate.insights.api.domain.exception.AccountPendingApprovalException;
 import pe.com.graduate.insights.api.domain.exception.InvalidCredentialsException;
+import pe.com.graduate.insights.api.domain.models.enums.UserRole;
+import pe.com.graduate.insights.api.domain.utils.ConstantsUtils;
+import pe.com.graduate.insights.api.infrastructure.repository.entities.GraduateEntity;
 import pe.com.graduate.insights.api.infrastructure.repository.entities.UserEntity;
+import pe.com.graduate.insights.api.infrastructure.repository.jpa.GraduateRepository;
 import pe.com.graduate.insights.api.infrastructure.repository.jpa.UserRepository;
 
 @Component
@@ -19,6 +24,7 @@ public class AuthRepositoryAdapter implements AuthRepositoryPort {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final UserRoleRepositoryAdapter userRoleRepositoryAdapter;
+  private final GraduateRepository graduateRepository;
 
   @Override
   public UserEntity login(String email, String password) {
@@ -32,7 +38,22 @@ public class AuthRepositoryAdapter implements AuthRepositoryPort {
             .filter(u -> passwordEncoder.matches(password, u.getContrasena()))
             .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
 
-    user.setUserRole(userRoleRepositoryAdapter.getUserRole(user.getId()));
+    UserRole userRole = userRoleRepositoryAdapter.getUserRole(user.getId());
+    user.setUserRole(userRole);
+
+    if (UserRole.GRADUATE.equals(userRole)) {
+      GraduateEntity graduateEntity =
+          graduateRepository
+              .findByUserIdAndUserEstado(user.getId(), ConstantsUtils.STATUS_ACTIVE)
+              .orElseThrow(
+                  () ->
+                      new InvalidCredentialsException(
+                          String.format(ConstantsUtils.USER_NOT_FOUND, user.getId())));
+
+      if (Boolean.FALSE.equals(graduateEntity.getValidated())) {
+        throw new AccountPendingApprovalException(ConstantsUtils.GRADUATE_PENDING_APPROVAL);
+      }
+    }
 
     return user;
   }

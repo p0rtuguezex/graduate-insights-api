@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.repository.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "graduate_question_responses")
+@Table(name = "respuestas_preguntas_graduados")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,20 +28,23 @@ public class GraduateQuestionResponseEntity extends Auditable {
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "question_id")
+  @JoinColumn(name = "pregunta_id")
   private QuestionEntity question;
 
   @ManyToOne
-  @JoinColumn(name = "graduate_survey_response_id")
+  @JoinColumn(name = "respuesta_encuesta_graduado_id")
   private GraduateSurveyResponseEntity graduateSurveyResponse;
 
   @ManyToMany
   @JoinTable(
-      name = "graduate_question_response_options",
-      joinColumns = @JoinColumn(name = "response_id"),
-      inverseJoinColumns = @JoinColumn(name = "option_id"))
+      name = "opciones_respuesta_preguntas_graduados",
+      joinColumns = @JoinColumn(name = "respuesta_id"),
+      inverseJoinColumns = @JoinColumn(name = "opcion_id"))
   private List<QuestionOptionEntity> selectedOptions;
 
+  @Column(name = "respuesta_texto")
   private String textResponse;
+
+  @Column(name = "respuesta_numerica")
   private Integer numericResponse;
 }

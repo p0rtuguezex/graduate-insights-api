@@ -1,6 +1,7 @@
 package pe.com.graduate.insights.api.infrastructure.repository.entities;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "surveys")
+@Table(name = "encuestas")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,18 +31,24 @@ public class SurveyEntity extends Auditable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(name = "titulo")
   private String title;
+
+  @Column(name = "descripcion")
   private String description;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "survey_type_id", nullable = false)
+  @JoinColumn(name = "tipo_encuesta_id", nullable = false)
   private SurveyTypeEntity surveyType;
 
   @Enumerated(EnumType.STRING)
+  @Column(name = "estado")
   private SurveyStatus status;
 
+  @Column(name = "fecha_inicio")
   private LocalDate startDate;
 
+  @Column(name = "fecha_fin")
   private LocalDate endDate;
 
   @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)

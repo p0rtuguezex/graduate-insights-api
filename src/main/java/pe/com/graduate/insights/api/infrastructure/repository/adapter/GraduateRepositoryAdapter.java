@@ -10,9 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.GraduateRepositoryPort;
+import pe.com.graduate.insights.api.application.ports.output.GraduateSelfRegistrationRepositoryPort;
 import pe.com.graduate.insights.api.domain.exception.GraduateException;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.GraduateRequest;
+import pe.com.graduate.insights.api.domain.models.request.GraduateSelfRegistrationRequest;
 import pe.com.graduate.insights.api.domain.models.request.MailRequest;
 import pe.com.graduate.insights.api.domain.models.request.UserRequest;
 import pe.com.graduate.insights.api.domain.models.response.GraduateResponse;
@@ -27,7 +29,8 @@ import pe.com.graduate.insights.api.infrastructure.repository.mapper.UserMapper;
 
 @Component
 @RequiredArgsConstructor
-public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
+public class GraduateRepositoryAdapter
+  implements GraduateRepositoryPort, GraduateSelfRegistrationRepositoryPort {
 
   private final GraduateRepository graduateRepository;
   private final UserRepository userRepository;
@@ -51,6 +54,10 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
               userEntity.setContrasena(passwordEncoder.encode(userEntity.getContrasena()));
               userEntity = userRepository.save(userEntity);
               GraduateEntity graduateEntity = graduateMapper.toEntity(graduateRequest, userEntity);
+              graduateEntity.setValidated(
+                  graduateRequest.getValidated() != null
+                      ? graduateRequest.getValidated()
+                      : Boolean.TRUE);
               graduateRepository.save(graduateEntity);
             });
     MailRequest mailRequest =
@@ -76,13 +83,30 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
 
   @Override
   public Page<GraduateResponse> getPagination(String search, Pageable pageable) {
-    boolean hasSearch = !StringUtils.isEmpty(search);
+    return getPagination(search, pageable, null);
+  }
 
-    Page<GraduateEntity> graduatesEntities =
-        hasSearch
-            ? graduateRepository.findAllByUserEstadoSearch(
-                search, ConstantsUtils.STATUS_ACTIVE, pageable)
-            : graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE, pageable);
+  @Override
+  public Page<GraduateResponse> getPagination(
+      String search, Pageable pageable, Boolean validated) {
+    boolean hasSearch = StringUtils.isNotBlank(search);
+
+    Page<GraduateEntity> graduatesEntities;
+    if (validated == null) {
+      graduatesEntities =
+          hasSearch
+              ? graduateRepository.findAllByUserEstadoSearch(
+                  search, ConstantsUtils.STATUS_ACTIVE, pageable)
+              : graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE, pageable);
+    } else {
+      graduatesEntities =
+          hasSearch
+              ? graduateRepository.findAllByUserEstadoAndValidatedSearch(
+                  search, ConstantsUtils.STATUS_ACTIVE, validated, pageable)
+              : graduateRepository.findAllByUserEstadoAndValidated(
+                  ConstantsUtils.STATUS_ACTIVE, validated, pageable);
+    }
+
     List<GraduateResponse> graduateResponseList =
         graduatesEntities.getContent().stream().map(graduateMapper::toDomain).toList();
     return new PageImpl<>(graduateResponseList, pageable, graduatesEntities.getTotalElements());
@@ -107,6 +131,9 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
               graduateEntity
                   .getUser()
                   .setContrasena(passwordEncoder.encode(request.getContrasena()));
+              if (request.getValidated() != null) {
+                graduateEntity.setValidated(request.getValidated());
+              }
               return graduateRepository.save(graduateEntity);
             })
         .orElseThrow(
@@ -140,11 +167,61 @@ public class GraduateRepositoryAdapter implements GraduateRepositoryPort {
   }
 
   @Override
+  public void updateValidationStatus(Long graduateId, Boolean validated) {
+    graduateRepository
+        .findByIdAndUserEstado(graduateId, ConstantsUtils.STATUS_ACTIVE)
+        .ifPresentOrElse(
+            graduate -> {
+              graduate.setValidated(Boolean.TRUE.equals(validated));
+              graduateRepository.save(graduate);
+            },
+            () -> {
+              throw new NotFoundException(
+                  String.format(ConstantsUtils.GRADUATE_NOT_FOUND, graduateId));
+            });
+  }
+
+  @Override
   public Long getActiveGraduateIdByUserId(Long userId) {
     return graduateRepository
         .findByUserIdAndUserEstado(userId, ConstantsUtils.STATUS_ACTIVE)
         .map(GraduateEntity::getId)
         .orElseThrow(
             () -> new NotFoundException(String.format(ConstantsUtils.USER_NOT_FOUND, userId)));
+  }
+
+  @Override
+  public void register(GraduateSelfRegistrationRequest request) {
+    userRepository
+        .findByCorreoAndEstado(request.getCorreo(), ConstantsUtils.STATUS_ACTIVE)
+        .ifPresent(
+            user -> {
+              throw new GraduateException(
+                  String.format(ConstantsUtils.USER_CONFLICT, user.getCorreo()));
+            });
+
+    UserEntity userEntity = new UserEntity();
+    userEntity.setNombres(request.getNombres());
+    userEntity.setApellidos(request.getApellidos());
+    userEntity.setDni(request.getDni());
+    userEntity.setCelular(request.getCelular());
+    userEntity.setCorreo(request.getCorreo().toLowerCase());
+    userEntity.setGenero("Otro");
+    userEntity.setEstado(ConstantsUtils.STATUS_ACTIVE);
+    userEntity.setVerificado(Boolean.FALSE);
+    userEntity.setContrasena(passwordEncoder.encode(request.getContrasena()));
+    userEntity = userRepository.save(userEntity);
+
+    GraduateEntity graduateEntity = new GraduateEntity();
+    graduateEntity.setUser(userEntity);
+    graduateEntity.setValidated(Boolean.FALSE);
+    graduateRepository.save(graduateEntity);
+
+    MailRequest mailRequest =
+        MailRequest.builder()
+            .email(request.getCorreo())
+            .type(ConstantsUtils.SENT_CODE_VALIDATED)
+            .build();
+    mailRepositoryAdapter.sendCode(mailRequest);
   }
 }

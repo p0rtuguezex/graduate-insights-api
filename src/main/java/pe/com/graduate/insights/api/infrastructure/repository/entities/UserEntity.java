@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.infrastructure.repository.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +20,7 @@ import pe.com.graduate.insights.api.domain.models.enums.UserRole;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "usuarios")
 public class UserEntity extends Auditable implements UserDetails {
 
   @Id
@@ -28,6 +29,7 @@ public class UserEntity extends Auditable implements UserDetails {
 
   private String nombres;
   private String apellidos;
+  @Column(name = "fecha_nacimiento")
   private LocalDate fechaNacimiento;
   private String genero;
   private String correo;
@@ -36,7 +38,10 @@ public class UserEntity extends Auditable implements UserDetails {
   private String celular;
   private String contrasena;
   private boolean verificado;
+  @Column(name = "codigo_confirmacion")
   private String codeConfirm;
+
+  @Column(name = "codigo_recuperacion")
   private String passwordRecoveryCode;
 
   @Transient private UserRole userRole;

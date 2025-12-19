@@ -18,11 +18,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public abstract class Auditable {
 
   @CreatedDate
-  @Column(name = "created_date", updatable = false, insertable = false)
+  @Column(name = "fecha_creacion", updatable = false, insertable = false)
   private LocalDateTime createdDate;
 
   @LastModifiedDate
-  @Column(name = "modified_date", insertable = false)
+  @Column(name = "fecha_modificacion", insertable = false)
   private LocalDateTime modifiedDate;
 
   @PreUpdate

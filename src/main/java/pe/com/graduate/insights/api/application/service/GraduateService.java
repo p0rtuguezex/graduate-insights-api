@@ -31,7 +31,13 @@ public class GraduateService implements GraduateUseCase {
 
   @Override
   public Page<GraduateResponse> getPagination(String search, Pageable pageable) {
-    return graduateRepositoryPort.getPagination(search, pageable);
+    return graduateRepositoryPort.getPagination(search, pageable, null);
+  }
+
+  @Override
+  public Page<GraduateResponse> getPagination(
+      String search, Pageable pageable, Boolean validated) {
+    return graduateRepositoryPort.getPagination(search, pageable, validated);
   }
 
   @Override
@@ -74,5 +80,10 @@ public class GraduateService implements GraduateUseCase {
     }
 
     graduateRepositoryPort.delete(id);
+  }
+
+  @Override
+  public void activate(Long id) {
+    graduateRepositoryPort.updateValidationStatus(id, Boolean.TRUE);
   }
 }

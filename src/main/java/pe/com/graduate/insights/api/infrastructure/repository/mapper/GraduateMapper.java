@@ -29,6 +29,7 @@ public interface GraduateMapper {
   @Mapping(source = "user.estado", target = "estado")
   @Mapping(source = "user.dni", target = "dni")
   @Mapping(source = "user.celular", target = "celular")
+  @Mapping(source = "validated", target = "validated")
   GraduateResponse toDomain(GraduateEntity graduateEntity);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)

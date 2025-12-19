@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "director")
+@Table(name = "directores")
 public class DirectorEntity extends Auditable {
 
   @Id
@@ -23,6 +23,6 @@ public class DirectorEntity extends Auditable {
   private Long id;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
+  @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false, unique = true)
   private UserEntity user;
 }

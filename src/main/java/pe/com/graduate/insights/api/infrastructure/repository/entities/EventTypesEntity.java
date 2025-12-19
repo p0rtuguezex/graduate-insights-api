@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "event_types")
+@Table(name = "tipos_evento")
 public class EventTypesEntity extends Auditable {
 
   @Id

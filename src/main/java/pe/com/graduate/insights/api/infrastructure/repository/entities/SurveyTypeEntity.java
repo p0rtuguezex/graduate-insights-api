@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "survey_types")
+@Table(name = "tipos_encuesta")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,13 +25,13 @@ public class SurveyTypeEntity extends Auditable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false, unique = true, length = 100)
+  @Column(name = "nombre", nullable = false, unique = true, length = 100)
   private String name;
 
-  @Column(length = 500)
+  @Column(name = "descripcion", length = 500)
   private String description;
 
-  @Column(nullable = false)
+  @Column(name = "activo", nullable = false)
   private Boolean active = true;
 
   @OneToMany(mappedBy = "surveyType", cascade = CascadeType.ALL)

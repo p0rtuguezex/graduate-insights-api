@@ -18,10 +18,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import pe.com.graduate.insights.api.domain.exception.AccountPendingApprovalException;
 import pe.com.graduate.insights.api.domain.exception.DirectorException;
 import pe.com.graduate.insights.api.domain.exception.EducationCenterException;
 import pe.com.graduate.insights.api.domain.exception.EventTypesException;
 import pe.com.graduate.insights.api.domain.exception.GraduateException;
+import pe.com.graduate.insights.api.domain.exception.InvalidCodeException;
 import pe.com.graduate.insights.api.domain.exception.InvalidCredentialsException;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.exception.SurveyException;
@@ -46,6 +48,13 @@ public class GraduateInsightsExceptionHandler {
     HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
     List<String> errors = List.of(ex.getMessage());
     return ResponseUtils.errorResponse(status, errors);
+  }
+
+  @ExceptionHandler(AccountPendingApprovalException.class)
+  public ResponseEntity<ApiResponse<List<String>>> handlePendingApproval(
+      AccountPendingApprovalException ex) {
+    List<String> errors = List.of(ex.getMessage());
+    return ResponseUtils.errorResponse(HttpStatus.FORBIDDEN, errors);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -75,6 +84,14 @@ public class GraduateInsightsExceptionHandler {
     UnknownHostException.class
   })
   public ResponseEntity<ApiResponse<List<String>>> handleDomainExceptions(RuntimeException ex) {
+    HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+    List<String> errors = List.of(ex.getMessage());
+    return ResponseUtils.errorResponse(status, errors);
+  }
+
+  @ExceptionHandler(InvalidCodeException.class)
+  public ResponseEntity<ApiResponse<List<String>>> handleInvalidCodeException(
+      InvalidCodeException ex) {
     HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
     List<String> errors = List.of(ex.getMessage());
     return ResponseUtils.errorResponse(status, errors);

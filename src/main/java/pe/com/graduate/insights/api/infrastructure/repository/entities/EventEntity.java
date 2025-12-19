@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "event")
+@Table(name = "eventos")
 public class EventEntity extends Auditable {
 
   @Id
@@ -30,6 +30,6 @@ public class EventEntity extends Auditable {
   private DirectorEntity director;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "event_type_id", nullable = false)
+  @JoinColumn(name = "tipo_evento_id", nullable = false)
   private EventTypesEntity eventType;
 }

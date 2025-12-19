@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "employers")
+@Table(name = "empleadores")
 public class EmployerEntity extends Auditable {
 
   @Id
@@ -29,6 +29,6 @@ public class EmployerEntity extends Auditable {
   private String razonSocial;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
+  @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false, unique = true)
   private UserEntity user;
 }

@@ -25,7 +25,6 @@ spring:
     init:
       mode: always
       schema-locations: classpath:tables.sql
-      data-locations: classpath:inserts.sql
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
     port: ${MAIL_PORT:587}
@@ -58,6 +57,9 @@ springdoc:
 app:
   file:
     upload-dir: ${APP_FILE_UPLOAD_DIR:./uploads/cv}
+  seed:
+    admin-email: ${APP_SEED_ADMIN_EMAIL:director@university.edu}
+    admin-password: ${APP_SEED_ADMIN_PASSWORD:Director123*}
 
 logging:
   level:

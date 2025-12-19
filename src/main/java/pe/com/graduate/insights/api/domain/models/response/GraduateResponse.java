@@ -13,4 +13,5 @@ public class GraduateResponse extends UserResponse {
   private String fechaFin;
   private String cv;
   private String cvPath;
+  private Boolean validated;
 }

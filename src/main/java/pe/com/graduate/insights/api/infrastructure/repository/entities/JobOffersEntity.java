@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "jobs_offers")
+@Table(name = "ofertas_laborales")
 public class JobOffersEntity extends Auditable {
 
   @Id
@@ -31,6 +31,6 @@ public class JobOffersEntity extends Auditable {
   private String estado;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "employer_id")
+  @JoinColumn(name = "empleador_id")
   private EmployerEntity employer;
 }

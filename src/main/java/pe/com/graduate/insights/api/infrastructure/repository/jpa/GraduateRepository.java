@@ -25,11 +25,15 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
 
   Page<GraduateEntity> findAllByUserEstado(String status, Pageable pageable);
 
+  Page<GraduateEntity> findAllByUserEstadoAndValidated(
+      String status, Boolean validated, Pageable pageable);
+
   List<GraduateEntity> findAllByUserEstado(String status);
 
   @Query(
       "SELECT g FROM GraduateEntity g "
           + "WHERE g.user.estado = :status "
+        + "AND g.validated = :validated "
           + "AND ("
           + " LOWER(g.cvPath) LIKE LOWER(CONCAT('%', :search, '%')) OR "
           + " STR(g.fechaInicio) LIKE CONCAT('%', :search, '%') OR "
@@ -42,7 +46,26 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
           + " LOWER(g.user.dni) LIKE LOWER(CONCAT('%', :search, '%')) OR "
           + " LOWER(g.user.celular) LIKE LOWER(CONCAT('%', :search, '%')) "
           + ")")
-  Page<GraduateEntity> findAllByUserEstadoSearch(String search, String status, Pageable pageable);
+    Page<GraduateEntity> findAllByUserEstadoSearch(String search, String status, Pageable pageable);
+
+    @Query(
+      "SELECT g FROM GraduateEntity g "
+        + "WHERE g.user.estado = :status "
+        + "AND g.validated = :validated "
+        + "AND ("
+        + " LOWER(g.cvPath) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+        + " STR(g.fechaInicio) LIKE CONCAT('%', :search, '%') OR "
+        + " STR(g.fechaFin) LIKE CONCAT('%', :search, '%') OR "
+        + " LOWER(g.user.nombres) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+        + " LOWER(g.user.correo) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+        + " LOWER(g.user.apellidos) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+        + " LOWER(g.user.genero) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+        + " LOWER(g.user.estado) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+        + " LOWER(g.user.dni) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+        + " LOWER(g.user.celular) LIKE LOWER(CONCAT('%', :search, '%')) "
+        + ")")
+    Page<GraduateEntity> findAllByUserEstadoAndValidatedSearch(
+      String search, String status, Boolean validated, Pageable pageable);
 
   @Transactional
   @Modifying

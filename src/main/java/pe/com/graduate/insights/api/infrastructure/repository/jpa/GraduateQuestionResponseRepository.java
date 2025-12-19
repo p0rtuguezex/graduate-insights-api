@@ -36,8 +36,8 @@ public interface GraduateQuestionResponseRepository
   /** Obtiene todas las respuestas numéricas para una pregunta */
   @Query(
       value =
-          "SELECT numeric_response FROM graduate_question_responses "
-              + "WHERE question_id = :questionId AND numeric_response IS NOT NULL",
+          "SELECT respuesta_numerica FROM respuestas_preguntas_graduados "
+              + "WHERE pregunta_id = :questionId AND respuesta_numerica IS NOT NULL",
       nativeQuery = true)
   List<Integer> findNumericResponsesByQuestionId(@Param("questionId") Long questionId);
 
@@ -61,8 +61,8 @@ public interface GraduateQuestionResponseRepository
   /** Método de debug para verificar respuestas numéricas específicas */
   @Query(
       value =
-          "SELECT id, question_id, numeric_response FROM graduate_question_responses "
-              + "WHERE question_id = :questionId",
+          "SELECT id, pregunta_id, respuesta_numerica FROM respuestas_preguntas_graduados "
+              + "WHERE pregunta_id = :questionId",
       nativeQuery = true)
   List<Object[]> debugNumericResponsesByQuestionId(@Param("questionId") Long questionId);
 }

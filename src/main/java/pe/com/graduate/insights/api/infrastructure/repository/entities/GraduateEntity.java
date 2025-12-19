@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "graduates")
+@Table(name = "graduados")
 public class GraduateEntity extends Auditable {
 
   @Id
@@ -33,10 +33,13 @@ public class GraduateEntity extends Auditable {
   @Column(name = "cv")
   private String cv;
 
-  @Column(name = "cv_path")
+  @Column(name = "ruta_cv")
   private String cvPath;
 
+  @Column(name = "validado")
+  private Boolean validated = Boolean.TRUE;
+
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
+  @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false, unique = true)
   private UserEntity user;
 }

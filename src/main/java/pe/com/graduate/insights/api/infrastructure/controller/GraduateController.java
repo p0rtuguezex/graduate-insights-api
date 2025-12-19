@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -151,12 +152,34 @@ public class GraduateController {
               String page,
           @Parameter(description = "Tamaño de página", example = "10")
               @RequestParam(value = "size", defaultValue = "10")
-              String size) {
+              String size,
+          @Parameter(description = "Filtrar por estado de validación")
+              @RequestParam(value = "validated", required = false)
+              Boolean validated) {
     Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
     Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size), sort);
-    Page<GraduateResponse> graduatePage = graduateUseCase.getPagination(search, pageable);
+    Page<GraduateResponse> graduatePage =
+        graduateUseCase.getPagination(search, pageable, validated);
     return ResponseUtils.successResponsePaginate(
         graduatePage.getContent(), paginateMapper.toDomain(graduatePage));
+  }
+
+  @Operation(
+      summary = "Activar graduado",
+      description = "Habilita la cuenta de un graduado pendiente de aprobación")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Graduado activado exitosamente"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado"),
+        @ApiResponse(responseCode = "404", description = "Graduado no encontrado"),
+      })
+  @PatchMapping("/{id}/activate")
+  public ResponseEntity<pe.com.graduate.insights.api.domain.models.response.ApiResponse<Void>>
+      activateGraduate(
+          @Parameter(description = "ID del graduado", required = true) @PathVariable Long id) {
+    graduateUseCase.activate(id);
+    return ResponseUtils.successUpdateResponse();
   }
 
   @Operation(
