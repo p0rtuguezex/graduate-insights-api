@@ -3,6 +3,7 @@ package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,6 +28,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.jpa.UserRepository
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.GraduateMapper;
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.UserMapper;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class GraduateRepositoryAdapter
@@ -60,12 +62,7 @@ public class GraduateRepositoryAdapter
                       : Boolean.TRUE);
               graduateRepository.save(graduateEntity);
             });
-    MailRequest mailRequest =
-        MailRequest.builder()
-            .email(graduateRequest.getCorreo())
-            .type(ConstantsUtils.SENT_CODE_VALIDATED)
-            .build();
-    mailRepositoryAdapter.sendCode(mailRequest);
+    sendVerificationCode(graduateRequest.getCorreo());
   }
 
   @Override
@@ -217,11 +214,20 @@ public class GraduateRepositoryAdapter
     graduateEntity.setValidated(Boolean.FALSE);
     graduateRepository.save(graduateEntity);
 
+    sendVerificationCode(request.getCorreo());
+  }
+
+  private void sendVerificationCode(String email) {
     MailRequest mailRequest =
-        MailRequest.builder()
-            .email(request.getCorreo())
-            .type(ConstantsUtils.SENT_CODE_VALIDATED)
-            .build();
-    mailRepositoryAdapter.sendCode(mailRequest);
+        MailRequest.builder().email(email).type(ConstantsUtils.SENT_CODE_VALIDATED).build();
+    try {
+      mailRepositoryAdapter.sendCode(mailRequest);
+    } catch (RuntimeException ex) {
+      log.warn(
+          "No se pudo enviar el código de verificación al correo {}: {}",
+          email,
+          ex.getMessage(),
+          ex);
+    }
   }
 }
