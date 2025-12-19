@@ -3,14 +3,15 @@ package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.application.ports.output.MailRepositoryPort;
 import pe.com.graduate.insights.api.domain.exception.InvalidCodeException;
-import pe.com.graduate.insights.api.domain.exception.MailException;
 import pe.com.graduate.insights.api.domain.exception.NotFoundException;
 import pe.com.graduate.insights.api.domain.models.request.ChangePasswordRequest;
 import pe.com.graduate.insights.api.domain.models.request.MailRequest;
@@ -28,6 +29,8 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
   private final PasswordEncoder passwordEncoder;
   private final JavaMailSender javaMailSender;
   private final UserRepository userRepository;
+  @Qualifier("mailExecutor")
+  private final TaskExecutor mailExecutor;
 
   @Value("${spring.mail.username}")
   private String sender;
@@ -44,40 +47,47 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
                             ConstantsUtils.USER_NOT_FOUND_BY_EMAIL, mailRequest.getEmail())));
     String templateEmail;
     String code = GraduateUtils.generateRandomSixDigitNumber();
+    String templateSend = "";
+    String subject = null;
+
+    if (ConstantsUtils.RESET_PASSWORD.equals(mailRequest.getType())) {
+      templateSend = ConstantsUtils.TEMPLATE_EMAIL_HTML;
+      subject = ConstantsUtils.SUBJECT_EMAIL;
+      userRepository.updateRecoveryCodeByUserId(code, userEntity.getId());
+    } else if (ConstantsUtils.SENT_CODE_VALIDATED.equals(mailRequest.getType())) {
+      templateSend = ConstantsUtils.TEMPLATE_EMAIL_HTML_USER_VALIDATED;
+      subject = ConstantsUtils.SUBJECT_USER_VALIDATED;
+      userRepository.updateCodeConfirmByUserId(code, userEntity.getId());
+    }
+
+    if (subject == null) {
+      log.warn("Tipo de correo no soportado: {}", mailRequest.getType());
+      return;
+    }
+
+    templateEmail =
+        GraduateUtils.templateWithVariables(templateSend, userEntity.getNombres(), code);
+
+    final String subjectToSend = subject;
+    final String templateToSend = templateEmail;
+    mailExecutor.execute(
+        () -> sendMailAsync(mailRequest.getEmail(), subjectToSend, templateToSend));
+  }
+
+  private void sendMailAsync(String email, String subject, String templateEmail) {
     try {
-      String templateSend = "";
-      String subject = null;
-
-      if (ConstantsUtils.RESET_PASSWORD.equals(mailRequest.getType())) {
-        templateSend = ConstantsUtils.TEMPLATE_EMAIL_HTML;
-        subject = ConstantsUtils.SUBJECT_EMAIL;
-        userRepository.updateRecoveryCodeByUserId(code, userEntity.getId());
-      } else if (ConstantsUtils.SENT_CODE_VALIDATED.equals(mailRequest.getType())) {
-        templateSend = ConstantsUtils.TEMPLATE_EMAIL_HTML_USER_VALIDATED;
-        subject = ConstantsUtils.SUBJECT_USER_VALIDATED;
-        userRepository.updateCodeConfirmByUserId(code, userEntity.getId());
-      }
-
-      templateEmail =
-          GraduateUtils.templateWithVariables(templateSend, userEntity.getNombres(), code);
-
-      log.info("Intentando enviar correo a: {} con asunto: {}", mailRequest.getEmail(), subject);
-      log.debug("Configuración de correo - Usuario remitente: {}", sender);
-
+      log.info("Enviando correo async a: {} con asunto: {}", email, subject);
       MimeMessage mimeMessage = javaMailSender.createMimeMessage();
       mimeMessage.setSubject(subject);
       MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, Boolean.TRUE);
-      mimeMessageHelper.setTo(mailRequest.getEmail());
+      mimeMessageHelper.setTo(email);
       mimeMessageHelper.setText(templateEmail, Boolean.TRUE);
       mimeMessageHelper.setFrom(sender, ConstantsUtils.SISEG);
 
       javaMailSender.send(mimeMessage);
-      log.info("Correo enviado exitosamente a: {}", mailRequest.getEmail());
-
+      log.info("Correo enviado exitosamente a: {}", email);
     } catch (Exception e) {
-      log.error(
-          "Error detallado al enviar correo a {}: {}", mailRequest.getEmail(), e.getMessage(), e);
-      throw new MailException("Error al enviar correo: " + e.getMessage());
+      log.warn("No se pudo enviar el correo a {}: {}", email, e.getMessage(), e);
     }
   }
 

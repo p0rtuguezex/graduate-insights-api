@@ -3,6 +3,7 @@ package pe.com.graduate.insights.api.infrastructure.repository.adapter;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,6 +26,7 @@ import pe.com.graduate.insights.api.infrastructure.repository.jpa.UserRepository
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.EmployerMapper;
 import pe.com.graduate.insights.api.infrastructure.repository.mapper.UserMapper;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
@@ -53,12 +55,7 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
               EmployerEntity employerEntity = employerMapper.toEntity(request, userEntity);
               employerRepository.save(employerEntity);
             });
-    MailRequest mailRequest =
-        MailRequest.builder()
-            .email(request.getCorreo())
-            .type(ConstantsUtils.SENT_CODE_VALIDATED)
-            .build();
-    mailRepositoryAdapter.sendCode(mailRequest);
+    sendVerificationCode(request.getCorreo());
   }
 
   @Override
@@ -122,5 +119,19 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
             })
         .orElseThrow(
             () -> new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND, id)));
+  }
+
+  private void sendVerificationCode(String email) {
+    MailRequest mailRequest =
+        MailRequest.builder().email(email).type(ConstantsUtils.SENT_CODE_VALIDATED).build();
+    try {
+      mailRepositoryAdapter.sendCode(mailRequest);
+    } catch (RuntimeException ex) {
+      log.warn(
+          "No se pudo enviar el código de verificación al empleador {}: {}",
+          email,
+          ex.getMessage(),
+          ex);
+    }
   }
 }

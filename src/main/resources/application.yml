@@ -7,6 +7,7 @@ spring:
     name: graduate-insights-api
   servlet:
     multipart:
+      location: ${APP_FILE_TMP_DIR:/app/uploads/tmp}
       max-file-size: 10MB
       max-request-size: 10MB
   datasource:

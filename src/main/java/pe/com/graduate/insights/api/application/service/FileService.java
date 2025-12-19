@@ -28,6 +28,9 @@ public class FileService implements InitializingBean {
   @Value("${app.file.upload-dir:./uploads}")
   private String uploadDir;
 
+  @Value("${spring.servlet.multipart.location:}")
+  private String multipartTmpDir;
+
   private Path fileStorageLocation;
 
   @Override
@@ -35,6 +38,10 @@ public class FileService implements InitializingBean {
     this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
     try {
       Files.createDirectories(this.fileStorageLocation);
+      if (StringUtils.hasText(multipartTmpDir)) {
+        Path tmpLocation = Paths.get(multipartTmpDir).toAbsolutePath().normalize();
+        Files.createDirectories(tmpLocation);
+      }
     } catch (IOException ex) {
       throw new RuntimeException(
           "No se pudo crear el directorio para almacenar archivos: " + uploadDir, ex);
