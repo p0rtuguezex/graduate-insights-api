@@ -1,0 +1,22 @@
+package pe.com.graduate.insights.api.features.user.application.dto;
+
+import java.time.LocalDate;
+import lombok.Getter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+
+@SuperBuilder(toBuilder = true)
+@Getter
+@ToString
+public class UserResponse {
+  private Long userId;
+  private String nombres;
+  private String apellidos;
+  private LocalDate fechaNacimiento;
+  private String genero;
+  private String correo;
+  private String estado;
+  private String dni;
+  private String celular;
+  private String contrasena;
+}

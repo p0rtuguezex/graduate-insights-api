@@ -1,0 +1,116 @@
+package pe.com.graduate.insights.api.features.graduatesurveys.infrastructure.controller;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import pe.com.graduate.insights.api.shared.models.response.ApiResponseWrapper;
+import pe.com.graduate.insights.api.features.auth.application.ports.input.AuthenticatedGraduateUseCase;
+import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyDetailResponse;
+import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyListResponse;
+import pe.com.graduate.insights.api.features.graduatesurveys.application.ports.input.GraduateSurveyUseCase;
+
+@RestController
+@RequestMapping("/graduate-surveys")
+@RequiredArgsConstructor
+@PreAuthorize("hasRole('GRADUATE')")
+public class GraduateSurveyController {
+
+  private final AuthenticatedGraduateUseCase authenticatedGraduateUseCase;
+  private final GraduateSurveyUseCase graduateSurveyUseCase;
+
+  @Operation(
+      summary = "Obtener encuestas del graduado",
+      description =
+          "Obtiene las encuestas disponibles para el graduado autenticado con filtros opcionales")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Encuestas obtenidas exitosamente",
+            content =
+                @Content(schema = @Schema(implementation = GraduateSurveyListResponse.class))),
+        @ApiResponse(responseCode = "400", description = "Filtro invalido"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "404", description = "Graduado no encontrado")
+      })
+  @GetMapping
+  public ResponseEntity<ApiResponseWrapper<List<GraduateSurveyListResponse>>> getSurveys(
+      @Parameter(
+              description =
+                  "Filtro para el estado de las encuestas. Valores validos: 'all' (todas), 'completed' (completadas), 'pending' (pendientes)",
+              example = "all")
+          @RequestParam(value = "filter", defaultValue = "all")
+          String filter) {
+
+    Long graduateId = getAuthenticatedGraduateId();
+    List<GraduateSurveyListResponse> surveys;
+    String message;
+
+    switch (filter.toLowerCase()) {
+      case "completed":
+        surveys = graduateSurveyUseCase.getCompletedSurveysForGraduate(graduateId);
+        message = "Encuestas completadas obtenidas exitosamente";
+        break;
+      case "pending":
+        surveys = graduateSurveyUseCase.getPendingSurveysForGraduate(graduateId);
+        message = "Encuestas pendientes obtenidas exitosamente";
+        break;
+      case "all":
+      default:
+        surveys = graduateSurveyUseCase.getAllSurveysForGraduate(graduateId);
+        message = "Todas las encuestas obtenidas exitosamente";
+        break;
+    }
+
+    return ResponseEntity.ok(ApiResponseWrapper.success(message, surveys));
+  }
+
+  @Operation(
+      summary = "Obtener detalle de una encuesta",
+      description =
+          "Obtiene el detalle completo de una encuesta especifica con preguntas y respuestas (si las hay) del graduado autenticado")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Detalle de la encuesta obtenido exitosamente",
+            content =
+                @Content(schema = @Schema(implementation = GraduateSurveyDetailResponse.class))),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "404", description = "Encuesta o graduado no encontrado")
+      })
+  @GetMapping("/{surveyId}")
+  public ResponseEntity<ApiResponseWrapper<GraduateSurveyDetailResponse>> getSurveyDetail(
+      @Parameter(description = "ID de la encuesta", required = true) @PathVariable Long surveyId) {
+
+    Long graduateId = getAuthenticatedGraduateId();
+    GraduateSurveyDetailResponse surveyDetail =
+        graduateSurveyUseCase.getSurveyDetailForGraduate(surveyId, graduateId);
+
+    return ResponseEntity.ok(
+        ApiResponseWrapper.success("Detalle de la encuesta obtenido exitosamente", surveyDetail));
+  }
+
+  private Long getAuthenticatedGraduateId() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null) {
+      throw new AuthenticationCredentialsNotFoundException("No se encontro autenticacion");
+    }
+    return authenticatedGraduateUseCase.getAuthenticatedGraduateId(authentication);
+  }
+}

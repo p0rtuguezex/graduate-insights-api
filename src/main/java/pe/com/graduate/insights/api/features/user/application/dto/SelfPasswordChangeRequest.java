@@ -1,0 +1,25 @@
+package pe.com.graduate.insights.api.features.user.application.dto;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import pe.com.graduate.insights.api.shared.infrastructure.validation.PasswordConstraint;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class SelfPasswordChangeRequest {
+
+  @NotNull(message = "newPassword no puede ser null")
+  @NotBlank(message = "newPassword no puede estar vacio")
+  @PasswordConstraint
+  @JsonAlias({"newPassword", "new_password"})
+  private String newPassword;
+}

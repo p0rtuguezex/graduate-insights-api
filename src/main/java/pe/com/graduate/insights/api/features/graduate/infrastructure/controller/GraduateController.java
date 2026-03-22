@@ -1,0 +1,202 @@
+package pe.com.graduate.insights.api.features.graduate.infrastructure.controller;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateRequest;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
+import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateReadUseCase;
+import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateWriteUseCase;
+import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+
+@RestController
+@RequestMapping("/graduate")
+@RequiredArgsConstructor
+@PreAuthorize("hasRole('DIRECTOR')")
+@Tag(name = "Graduados", description = "APIs para gestión de graduados y sus CV")
+public class GraduateController {
+
+  private final GraduateReadUseCase graduateReadUseCase;
+  private final GraduateWriteUseCase graduateWriteUseCase;
+  private final PaginateMapper paginateMapper;
+
+  @Operation(
+      summary = "Obtener graduado por ID",
+      description = "Obtiene un graduado específico por su ID")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Graduado encontrado exitosamente",
+            content = @Content(schema = @Schema(implementation = GraduateResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Graduado no encontrado"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado")
+      })
+  @GetMapping("/{id}")
+  public ResponseEntity<
+          pe.com.graduate.insights.api.shared.models.response.ApiResponse<GraduateResponse>>
+      getGraduate(
+          @Parameter(description = "ID del graduado", required = true) @PathVariable Long id) {
+    return ResponseUtils.successResponse(graduateReadUseCase.getDomain(id));
+  }
+
+  @Operation(
+      summary = "Crear nuevo graduado",
+      description = "Crea un nuevo graduado con la información proporcionada")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "201", description = "Graduado creado exitosamente"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado"),
+        @ApiResponse(responseCode = "409", description = "Graduado ya existe")
+      })
+  @PostMapping
+  public ResponseEntity<pe.com.graduate.insights.api.shared.models.response.ApiResponse<Void>>
+      saveGraduate(
+          @Parameter(description = "Datos del graduado", required = true) @Valid @RequestBody
+              GraduateRequest graduateRequest) {
+    graduateWriteUseCase.save(graduateRequest);
+    return ResponseUtils.sucessCreateResponse();
+  }
+
+  @Operation(
+      summary = "Actualizar graduado",
+      description =
+          "Actualiza un graduado existente con la información proporcionada incluyendo el path del CV.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Graduado actualizado exitosamente"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado"),
+        @ApiResponse(responseCode = "404", description = "Graduado no encontrado")
+      })
+  @PutMapping("/{id}")
+  public ResponseEntity<pe.com.graduate.insights.api.shared.models.response.ApiResponse<Void>>
+      updateGraduate(
+          @Parameter(description = "Datos del graduado", required = true) @RequestBody
+              GraduateRequest graduateRequest,
+          @Parameter(description = "ID del graduado", required = true) @PathVariable Long id) {
+    graduateWriteUseCase.update(graduateRequest, id);
+    return ResponseUtils.successUpdateResponse();
+  }
+
+  @Operation(
+      summary = "Eliminar graduado",
+      description = "Elimina un graduado específico por su ID")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Graduado eliminado exitosamente"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado"),
+        @ApiResponse(responseCode = "404", description = "Graduado no encontrado")
+      })
+  @DeleteMapping("/{id}")
+  public ResponseEntity<pe.com.graduate.insights.api.shared.models.response.ApiResponse<Void>>
+      deleteGraduate(
+          @Parameter(description = "ID del graduado", required = true) @PathVariable Long id) {
+    graduateWriteUseCase.delete(id);
+    return ResponseUtils.successDeleteResponse();
+  }
+
+  @Operation(
+      summary = "Listar graduados paginados",
+      description = "Obtiene una lista paginada de graduados con búsqueda opcional")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Lista de graduados obtenida exitosamente",
+            content = @Content(schema = @Schema(implementation = GraduateResponse.class))),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado")
+      })
+  @GetMapping
+  ResponseEntity<
+          pe.com.graduate.insights.api.shared.models.response.ApiResponse<List<GraduateResponse>>>
+      getListGraduatesPaginate(
+          @Parameter(description = "Término de búsqueda", example = "maria")
+              @RequestParam(value = "search", defaultValue = "")
+              String search,
+          @Parameter(description = "Número de página", example = "1")
+              @RequestParam(value = "page", defaultValue = "1")
+              String page,
+          @Parameter(description = "Tamaño de página", example = "10")
+              @RequestParam(value = "size", defaultValue = "10")
+              String size,
+          @Parameter(description = "Filtrar por estado de validación")
+              @RequestParam(value = "validated", required = false)
+              Boolean validated) {
+    Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
+    Pageable pageable = PageRequest.of(Integer.parseInt(page) - 1, Integer.parseInt(size), sort);
+    Page<GraduateResponse> graduatePage =
+        graduateReadUseCase.getPagination(search, pageable, validated);
+    return ResponseUtils.successResponsePaginate(
+        graduatePage.getContent(), paginateMapper.toDomain(graduatePage));
+  }
+
+  @Operation(
+      summary = "Activar graduado",
+      description = "Habilita la cuenta de un graduado pendiente de aprobación")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Graduado activado exitosamente"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado"),
+        @ApiResponse(responseCode = "404", description = "Graduado no encontrado"),
+      })
+  @PatchMapping("/{id}/activate")
+  public ResponseEntity<pe.com.graduate.insights.api.shared.models.response.ApiResponse<Void>>
+      activateGraduate(
+          @Parameter(description = "ID del graduado", required = true) @PathVariable Long id) {
+    graduateWriteUseCase.activate(id);
+    return ResponseUtils.successUpdateResponse();
+  }
+
+  @Operation(
+      summary = "Listar todos los graduados",
+      description = "Obtiene una lista completa de graduados sin paginación")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Lista de graduados obtenida exitosamente",
+            content = @Content(schema = @Schema(implementation = KeyValueResponse.class))),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado")
+      })
+  @GetMapping("/list")
+  public ResponseEntity<List<KeyValueResponse>> getListGraduateAll() {
+    return new ResponseEntity<>(graduateReadUseCase.getList(), HttpStatus.OK);
+  }
+}
+
+
