@@ -2,9 +2,11 @@ package pe.com.graduate.insights.api.shared.infrastructure.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -64,18 +66,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
     try {
-      final String authHeader = request.getHeader("Authorization");
-      log.debug("Auth Header: {}", authHeader);
       final String jwt;
       final String userEmail;
 
-      if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-        log.debug("Header de autorización no válido o no presente: {}", authHeader);
+      jwt = extractJwtToken(request);
+
+      if (jwt == null || jwt.isBlank()) {
+        log.debug("No se encontró JWT en Authorization ni en cookie accessToken");
         filterChain.doFilter(request, response);
         return;
       }
 
-      jwt = authHeader.substring(7);
       userEmail = jwtService.extractUsername(jwt);
       log.debug("Email extraído del token: {}", userEmail);
 
@@ -107,6 +108,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       log.error("Error en el filtro JWT: {}", e.getMessage(), e);
       filterChain.doFilter(request, response);
     }
+  }
+
+  private String extractJwtToken(HttpServletRequest request) {
+    final String authHeader = request.getHeader("Authorization");
+    log.debug("Auth Header: {}", authHeader);
+
+    if (authHeader != null && authHeader.startsWith("Bearer ")) {
+      return authHeader.substring(7);
+    }
+
+    Cookie[] cookies = request.getCookies();
+    if (cookies == null || cookies.length == 0) {
+      return null;
+    }
+
+    return Arrays.stream(cookies)
+        .filter(cookie -> "accessToken".equals(cookie.getName()))
+        .map(Cookie::getValue)
+        .findFirst()
+        .orElse(null);
   }
 }
 

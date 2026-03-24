@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateCreatedResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
 import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
@@ -79,12 +80,16 @@ public class GraduateController {
         @ApiResponse(responseCode = "409", description = "Graduado ya existe")
       })
   @PostMapping
-  public ResponseEntity<pe.com.graduate.insights.api.shared.models.response.ApiResponse<Void>>
+    public ResponseEntity<
+                    pe.com.graduate.insights.api.shared.models.response.ApiResponse<GraduateCreatedResponse>>
       saveGraduate(
           @Parameter(description = "Datos del graduado", required = true) @Valid @RequestBody
               GraduateRequest graduateRequest) {
-    graduateWriteUseCase.save(graduateRequest);
-    return ResponseUtils.sucessCreateResponse();
+        Long graduateId = graduateWriteUseCase.save(graduateRequest);
+        GraduateCreatedResponse response = GraduateCreatedResponse.builder().graduateId(graduateId).build();
+        return new ResponseEntity<>(
+                new pe.com.graduate.insights.api.shared.models.response.ApiResponse<>(response),
+                HttpStatus.CREATED);
   }
 
   @Operation(

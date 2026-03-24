@@ -27,6 +27,15 @@ public class DatabaseSeeder implements CommandLineRunner {
   private static final List<String> SEED_TABLES =
       List.of("usuarios", "directores", "tipos_evento", "tipos_encuesta");
 
+    private static final List<String> ACADEMIC_SEED_TABLES =
+      List.of(
+        "facultades",
+        "escuelas_profesionales",
+        "tipos_grado",
+        "modalidades_titulacion",
+        "idiomas_catalogo",
+        "universidades");
+
   private final JdbcTemplate jdbcTemplate;
   private final DataSource dataSource;
   private final UserRepository userRepository;
@@ -45,6 +54,7 @@ public class DatabaseSeeder implements CommandLineRunner {
   @Override
   public void run(String... args) {
     seedCatalogDataIfNeeded();
+    seedAcademicCatalogDataIfNeeded();
     ensureAdminDirector();
   }
 
@@ -72,6 +82,69 @@ public class DatabaseSeeder implements CommandLineRunner {
       log.debug("Seed table {} unavailable when checking seed state", tableName, exception);
       return false;
     }
+  }
+
+  private void seedAcademicCatalogDataIfNeeded() {
+    if (ACADEMIC_SEED_TABLES.stream().allMatch(this::tableHasRows)) {
+      log.info("Academic catalog data already present. Skipping academic seed.");
+      return;
+    }
+
+    log.info("Seeding academic catalogs with default values");
+    jdbcTemplate.execute(
+        """
+        INSERT INTO facultades (id, nombre, estado, fecha_creacion, fecha_modificacion)
+        VALUES (1, 'Ingenieria civil e ingenieria de sistemas', '1', NOW(), NOW())
+        ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), estado = VALUES(estado), fecha_modificacion = NOW()
+        """);
+
+    jdbcTemplate.execute(
+        """
+        INSERT INTO escuelas_profesionales (id, facultad_id, nombre, estado, fecha_creacion, fecha_modificacion)
+        VALUES
+          (1, 1, 'Ingenieria de sistemas', '1', NOW(), NOW()),
+          (2, 1, 'Ingenieria civil', '1', NOW(), NOW())
+        ON DUPLICATE KEY UPDATE facultad_id = VALUES(facultad_id), nombre = VALUES(nombre), estado = VALUES(estado), fecha_modificacion = NOW()
+        """);
+
+    jdbcTemplate.execute(
+        """
+        INSERT INTO tipos_grado (id, codigo, nombre, estado, fecha_creacion, fecha_modificacion)
+        VALUES
+          (1, 'BACHILLER', 'Bachiller', '1', NOW(), NOW()),
+          (2, 'TITULADO', 'Titulado', '1', NOW(), NOW()),
+          (3, 'MAESTRIA', 'Maestria', '1', NOW(), NOW()),
+          (4, 'DOCTORADO', 'Doctorado', '1', NOW(), NOW()),
+          (5, 'OTRO', 'Otro', '1', NOW(), NOW())
+        ON DUPLICATE KEY UPDATE codigo = VALUES(codigo), nombre = VALUES(nombre), estado = VALUES(estado), fecha_modificacion = NOW()
+        """);
+
+    jdbcTemplate.execute(
+        """
+        INSERT INTO modalidades_titulacion (id, codigo, nombre, estado, fecha_creacion, fecha_modificacion)
+        VALUES
+          (1, 'EXAMEN_SUFICIENCIA', 'Examen de suficiencia', '1', NOW(), NOW()),
+          (2, 'TESIS', 'Tesis', '1', NOW(), NOW()),
+          (3, 'OTROS', 'Otros', '1', NOW(), NOW())
+        ON DUPLICATE KEY UPDATE codigo = VALUES(codigo), nombre = VALUES(nombre), estado = VALUES(estado), fecha_modificacion = NOW()
+        """);
+
+    jdbcTemplate.execute(
+        """
+        INSERT INTO idiomas_catalogo (id, codigo, nombre, estado, fecha_creacion, fecha_modificacion)
+        VALUES
+          (1, 'ES', 'Espanol', '1', NOW(), NOW()),
+          (2, 'EN', 'Ingles', '1', NOW(), NOW())
+        ON DUPLICATE KEY UPDATE codigo = VALUES(codigo), nombre = VALUES(nombre), estado = VALUES(estado), fecha_modificacion = NOW()
+        """);
+
+    jdbcTemplate.execute(
+        """
+        INSERT INTO universidades (id, nombre, estado, fecha_creacion, fecha_modificacion)
+        VALUES
+          (1, 'Universidad Nacional San Luis Gonzaga', '1', NOW(), NOW())
+        ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), estado = VALUES(estado), fecha_modificacion = NOW()
+        """);
   }
 
   private void ensureAdminDirector() {

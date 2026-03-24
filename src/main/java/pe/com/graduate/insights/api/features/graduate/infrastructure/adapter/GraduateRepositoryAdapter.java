@@ -2,6 +2,7 @@ package pe.com.graduate.insights.api.features.graduate.infrastructure.adapter;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -10,8 +11,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateAcademicDegreeRequest;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateLanguageRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateTitulationRequest;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateIdentityRepositoryPort;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateReadRepositoryPort;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateWriteRepositoryPort;
@@ -23,6 +27,9 @@ import pe.com.graduate.insights.api.features.mail.application.ports.output.MailR
 import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
 import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateDegreeEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateLanguageEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateTitulationEntity;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
 import pe.com.graduate.insights.api.features.user.infrastructure.jpa.UserRepository;
@@ -49,7 +56,8 @@ public class GraduateRepositoryAdapter
   private final MailRepositoryPort mailRepositoryPort;
 
   @Override
-  public void save(GraduateRequest graduateRequest) {
+  public Long save(GraduateRequest graduateRequest) {
+    final Long[] createdGraduateId = new Long[1];
     userRepository
         .findByCorreoAndEstado(graduateRequest.getCorreo(), ConstantsUtils.STATUS_ACTIVE)
         .ifPresentOrElse(
@@ -63,13 +71,16 @@ public class GraduateRepositoryAdapter
               userEntity.setContrasena(passwordEncoder.encode(userEntity.getContrasena()));
               userEntity = userRepository.save(userEntity);
               GraduateEntity graduateEntity = graduateMapper.toEntity(graduateRequest, userEntity);
+                applyAcademicCollections(graduateRequest, graduateEntity);
               graduateEntity.setValidated(
                   graduateRequest.getValidated() != null
                       ? graduateRequest.getValidated()
                       : Boolean.TRUE);
-              graduateRepository.save(graduateEntity);
+              GraduateEntity savedGraduate = graduateRepository.save(graduateEntity);
+              createdGraduateId[0] = savedGraduate.getId();
             });
     sendVerificationCode(graduateRequest.getCorreo());
+    return createdGraduateId[0];
   }
 
   @Override
@@ -131,6 +142,7 @@ public class GraduateRepositoryAdapter
         .map(
             graduateEntity -> {
               graduateMapper.updateGraduateEntity(request, graduateEntity);
+              applyAcademicCollections(request, graduateEntity);
               graduateEntity
                   .getUser()
                   .setContrasena(passwordEncoder.encode(request.getContrasena()));
@@ -234,6 +246,64 @@ public class GraduateRepositoryAdapter
           ex.getMessage(),
           ex);
     }
+  }
+
+  private void applyAcademicCollections(GraduateRequest request, GraduateEntity graduateEntity) {
+    if (request.getGrados() != null) {
+      graduateEntity.getGrados().clear();
+      request.getGrados().stream()
+          .filter(Objects::nonNull)
+          .forEach(
+              gradoRequest -> {
+                GraduateDegreeEntity degree = mapDegree(gradoRequest, graduateEntity);
+                graduateEntity.getGrados().add(degree);
+              });
+    }
+
+    if (request.getIdiomas() != null) {
+      graduateEntity.getIdiomas().clear();
+      request.getIdiomas().stream()
+          .filter(Objects::nonNull)
+          .forEach(
+              idiomaRequest -> {
+                GraduateLanguageEntity language = mapLanguage(idiomaRequest, graduateEntity);
+                graduateEntity.getIdiomas().add(language);
+              });
+    }
+  }
+
+  private GraduateDegreeEntity mapDegree(
+      GraduateAcademicDegreeRequest request, GraduateEntity graduateEntity) {
+    GraduateDegreeEntity entity = new GraduateDegreeEntity();
+    entity.setGraduate(graduateEntity);
+    entity.setTipoGradoId(request.getTipoGradoId());
+    entity.setUniversidadId(request.getUniversidadId());
+    entity.setFechaGrado(request.getFechaGrado());
+    entity.setOtroGradoNombre(request.getOtroGradoNombre());
+
+    GraduateTitulationRequest titulationRequest = request.getTitulacion();
+    if (titulationRequest != null
+      && (titulationRequest.getModalidadTitulacionId() != null
+        || StringUtils.isNotBlank(titulationRequest.getModalidadOtro()))) {
+      GraduateTitulationEntity titulation = new GraduateTitulationEntity();
+      titulation.setGrado(entity);
+      titulation.setModalidadTitulacionId(titulationRequest.getModalidadTitulacionId());
+      titulation.setModalidadOtro(titulationRequest.getModalidadOtro());
+      entity.setTitulation(titulation);
+    }
+
+    return entity;
+  }
+
+  private GraduateLanguageEntity mapLanguage(GraduateLanguageRequest request, GraduateEntity graduateEntity) {
+    GraduateLanguageEntity entity = new GraduateLanguageEntity();
+    entity.setGraduate(graduateEntity);
+    entity.setIdiomaId(request.getIdiomaId());
+    entity.setNivel(request.getNivel());
+    entity.setFechaInicio(request.getFechaInicio());
+    entity.setFechaFin(request.getFechaFin());
+    entity.setAprendizaje(request.getAprendizaje());
+    return entity;
   }
 }
 

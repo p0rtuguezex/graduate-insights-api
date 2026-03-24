@@ -5,7 +5,7 @@ import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateRe
 
 public interface GraduateWriteRepositoryPort {
 
-  void save(GraduateRequest request);
+  Long save(GraduateRequest request);
 
   void update(GraduateRequest request, Long id);
 

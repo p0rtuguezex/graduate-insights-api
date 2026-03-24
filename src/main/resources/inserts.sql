@@ -9,6 +9,70 @@ SET NAMES utf8mb4;
 -- ============================================
 
 -- ============================================
+-- CATALOGOS ACADEMICOS
+-- ============================================
+
+INSERT INTO facultades (id, nombre, estado, fecha_creacion, fecha_modificacion)
+VALUES
+    (1, 'Ingenieria civil e ingenieria de sistemas', '1', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+    nombre = VALUES(nombre),
+    estado = VALUES(estado),
+    fecha_modificacion = NOW();
+
+INSERT INTO escuelas_profesionales (id, facultad_id, nombre, estado, fecha_creacion, fecha_modificacion)
+VALUES
+    (1, 1, 'Ingenieria de sistemas', '1', NOW(), NOW()),
+    (2, 1, 'Ingenieria civil', '1', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+    facultad_id = VALUES(facultad_id),
+    nombre = VALUES(nombre),
+    estado = VALUES(estado),
+    fecha_modificacion = NOW();
+
+INSERT INTO tipos_grado (id, codigo, nombre, estado, fecha_creacion, fecha_modificacion)
+VALUES
+    (1, 'BACHILLER', 'Bachiller', '1', NOW(), NOW()),
+    (2, 'TITULADO', 'Titulado', '1', NOW(), NOW()),
+    (3, 'MAESTRIA', 'Maestria', '1', NOW(), NOW()),
+    (4, 'DOCTORADO', 'Doctorado', '1', NOW(), NOW()),
+    (5, 'OTRO', 'Otro', '1', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+    codigo = VALUES(codigo),
+    nombre = VALUES(nombre),
+    estado = VALUES(estado),
+    fecha_modificacion = NOW();
+
+INSERT INTO modalidades_titulacion (id, codigo, nombre, estado, fecha_creacion, fecha_modificacion)
+VALUES
+    (1, 'EXAMEN_SUFICIENCIA', 'Examen de suficiencia', '1', NOW(), NOW()),
+    (2, 'TESIS', 'Tesis', '1', NOW(), NOW()),
+    (3, 'OTROS', 'Otros', '1', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+    codigo = VALUES(codigo),
+    nombre = VALUES(nombre),
+    estado = VALUES(estado),
+    fecha_modificacion = NOW();
+
+INSERT INTO idiomas_catalogo (id, codigo, nombre, estado, fecha_creacion, fecha_modificacion)
+VALUES
+    (1, 'ES', 'Espanol', '1', NOW(), NOW()),
+    (2, 'EN', 'Ingles', '1', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+    codigo = VALUES(codigo),
+    nombre = VALUES(nombre),
+    estado = VALUES(estado),
+    fecha_modificacion = NOW();
+
+INSERT INTO universidades (id, nombre, estado, fecha_creacion, fecha_modificacion)
+VALUES
+    (1, 'Universidad Nacional San Luis Gonzaga', '1', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+    nombre = VALUES(nombre),
+    estado = VALUES(estado),
+    fecha_modificacion = NOW();
+
+-- ============================================
 -- USUARIOS
 -- ============================================
 
