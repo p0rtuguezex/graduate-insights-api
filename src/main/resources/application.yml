@@ -26,20 +26,6 @@ spring:
     init:
       mode: always
       schema-locations: classpath:tables.sql
-  mail:
-    host: ${MAIL_HOST:smtp.gmail.com}
-    port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:garlee016@gmail.com}
-    password: ${MAIL_PASSWORD:azejzfwfshvwdiok}
-    properties:
-      mail:
-        smtp:
-          auth: ${MAIL_SMTP_AUTH:true}
-          timeout: ${MAIL_TIMEOUT:5000}
-          starttls:
-            enable: ${MAIL_STARTTLS_ENABLE:true}
-          ssl:
-            trust: ${MAIL_SSL_TRUST:smtp.gmail.com}
 
 application:
   security:
@@ -67,9 +53,6 @@ logging:
     root: INFO
     '[pe.com.graduate.insights.api]': DEBUG
     '[org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer]': error
-    '[org.springframework.mail]': DEBUG
-    '[org.springframework.mail.javamail]': DEBUG
-    '[jakarta.mail]': DEBUG
 
 management:
   endpoints:

@@ -153,6 +153,15 @@ public class DatabaseSeeder implements CommandLineRunner {
     UserEntity adminUser =
         userRepository
             .findByCorreo(normalizedEmail)
+            .map(existing -> {
+              if (existing.getContrasena() == null || existing.getContrasena().isBlank()) {
+                existing.setContrasena(passwordEncoder.encode(adminPassword));
+                existing.setVerificado(true);
+                userRepository.save(existing);
+                log.info("Admin director password was empty, re-encoded for {}", normalizedEmail);
+              }
+              return existing;
+            })
             .orElseGet(
                 () -> {
                   UserEntity user = new UserEntity();

@@ -1,20 +1,21 @@
 package pe.com.graduate.insights.api.features.mail.infrastructure.adapter;
 
-import jakarta.mail.internet.MimeMessage;
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.features.auth.domain.exception.InvalidCodeException;
+import pe.com.graduate.insights.api.features.emailconfig.infrastructure.entity.EmailConfigEntity;
+import pe.com.graduate.insights.api.features.emailconfig.infrastructure.jpa.EmailConfigRepository;
 import pe.com.graduate.insights.api.features.mail.application.dto.ChangePasswordRequest;
 import pe.com.graduate.insights.api.features.mail.application.dto.MailRequest;
 import pe.com.graduate.insights.api.features.mail.application.dto.ValidateCodeRequest;
 import pe.com.graduate.insights.api.features.mail.application.ports.output.MailRepositoryPort;
+import pe.com.graduate.insights.api.features.mail.domain.exception.MailException;
 import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
 import pe.com.graduate.insights.api.features.user.infrastructure.jpa.UserRepository;
@@ -27,13 +28,10 @@ import pe.com.graduate.insights.api.shared.utils.GraduateUtils;
 public class MailRepositoryAdapter implements MailRepositoryPort {
 
   private final PasswordEncoder passwordEncoder;
-  private final JavaMailSender javaMailSender;
+  private final EmailConfigRepository emailConfigRepository;
   private final UserRepository userRepository;
   @Qualifier("mailExecutor")
   private final TaskExecutor mailExecutor;
-
-  @Value("${spring.mail.username}")
-  private String sender;
 
   @Override
   public void sendCode(MailRequest mailRequest) {
@@ -68,27 +66,58 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
     templateEmail =
         GraduateUtils.templateWithVariables(templateSend, userEntity.getNombres(), code);
 
+    EmailConfigEntity config =
+        emailConfigRepository
+            .findByActivoTrue()
+            .orElseThrow(
+                () ->
+                    new MailException(
+                        "No hay configuracion de email activa. Configure Resend desde el panel de administracion."));
+
     final String subjectToSend = subject;
     final String templateToSend = templateEmail;
     mailExecutor.execute(
-        () -> sendMailAsync(mailRequest.getEmail(), subjectToSend, templateToSend));
+        () -> sendViaResend(config, mailRequest.getEmail(), subjectToSend, templateToSend));
   }
 
-  private void sendMailAsync(String email, String subject, String templateEmail) {
+  private void sendViaResend(
+      EmailConfigEntity config, String to, String subject, String htmlBody) {
     try {
-      log.info("Enviando correo async a: {} con asunto: {}", email, subject);
-      MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-      mimeMessage.setSubject(subject);
-      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, Boolean.TRUE);
-      mimeMessageHelper.setTo(email);
-      mimeMessageHelper.setText(templateEmail, Boolean.TRUE);
-      mimeMessageHelper.setFrom(sender, ConstantsUtils.SISEG);
-
-      javaMailSender.send(mimeMessage);
-      log.info("Correo enviado exitosamente a: {}", email);
+      Resend resend = new Resend(config.getApiKey());
+      CreateEmailOptions params =
+          CreateEmailOptions.builder()
+              .from(config.getNombreRemitente() + " <" + config.getEmailRemitente() + ">")
+              .to(to)
+              .subject(subject)
+              .html(htmlBody)
+              .build();
+      resend.emails().send(params);
+      log.info("Email enviado exitosamente a {} via Resend", to);
     } catch (Exception e) {
-      log.warn("No se pudo enviar el correo a {}: {}", email, e.getMessage(), e);
+      log.error("Error enviando email a {} via Resend: {}", to, e.getMessage(), e);
     }
+  }
+
+  @Override
+  public void sendTestEmail(String toEmail) {
+    EmailConfigEntity config =
+        emailConfigRepository
+            .findByActivoTrue()
+            .orElseThrow(
+                () ->
+                    new MailException(
+                        "No hay configuracion de email activa. Configure Resend desde el panel de administracion."));
+
+    String htmlBody =
+        "<!DOCTYPE html><html><body>"
+            + "<h2>Correo de prueba</h2>"
+            + "<p>Este es un correo de prueba enviado desde GraduateInsights "
+            + "para verificar la configuracion de Resend.</p>"
+            + "<p>Si recibiste este correo, la configuracion es correcta.</p>"
+            + "</body></html>";
+
+    mailExecutor.execute(
+        () -> sendViaResend(config, toEmail, "Correo de prueba - GraduateInsights", htmlBody));
   }
 
   @Override
@@ -112,7 +141,7 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
                 userRepository.updateVerifiedTrueByUserId(userEntity.getId());
                 userRepository.updateCodeConfirmByUserId(null, userEntity.getId());
               } else {
-                throw new InvalidCodeException("El código ingresado es inválido o ha expirado.");
+                throw new InvalidCodeException("El codigo ingresado es invalido o ha expirado.");
               }
             },
             () -> {
@@ -132,7 +161,7 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
               if (savedRecoveryCode == null
                   || !savedRecoveryCode.equals(changePasswordRequest.getCode())) {
                 throw new InvalidCodeException(
-                    "El código de recuperación es inválido o ha expirado.");
+                    "El codigo de recuperacion es invalido o ha expirado.");
               }
 
               String newPasswordEncode =
@@ -147,4 +176,3 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
             });
   }
 }
-

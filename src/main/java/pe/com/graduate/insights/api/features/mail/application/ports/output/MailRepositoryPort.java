@@ -10,4 +10,6 @@ public interface MailRepositoryPort {
   void validateCode(ValidateCodeRequest validateCodeRequest);
 
   void changePassword(ChangePasswordRequest changePasswordRequest);
+
+  void sendTestEmail(String toEmail);
 }

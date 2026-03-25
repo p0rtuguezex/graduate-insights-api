@@ -22,6 +22,8 @@ import pe.com.graduate.insights.api.features.auth.domain.exception.AccountPendin
 import pe.com.graduate.insights.api.features.director.domain.exception.DirectorException;
 import pe.com.graduate.insights.api.features.educationcenter.domain.exception.EducationCenterException;
 import pe.com.graduate.insights.api.features.eventtypes.domain.exception.EventTypesException;
+import pe.com.graduate.insights.api.features.emailconfig.domain.exception.EmailConfigException;
+import pe.com.graduate.insights.api.features.mail.domain.exception.MailException;
 import pe.com.graduate.insights.api.features.storage.domain.exception.FileException;
 import pe.com.graduate.insights.api.features.graduate.domain.exception.GraduateException;
 import pe.com.graduate.insights.api.features.auth.domain.exception.InvalidCodeException;
@@ -83,6 +85,8 @@ public class GraduateInsightsExceptionHandler {
     DirectorException.class,
     SurveyException.class,
     FileException.class,
+    EmailConfigException.class,
+    MailException.class,
     UnknownHostException.class
   })
   public ResponseEntity<ApiResponse<List<String>>> handleDomainExceptions(RuntimeException ex) {

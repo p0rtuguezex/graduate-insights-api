@@ -558,3 +558,17 @@ PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 SET @idx_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'usuarios' AND INDEX_NAME = 'uk_usuarios_correo');
 SET @ddl = IF(@idx_exists = 0, 'ALTER TABLE usuarios ADD CONSTRAINT uk_usuarios_correo UNIQUE (correo)', 'SELECT 1');
 PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- =============================================
+-- Email Configuration
+-- =============================================
+CREATE TABLE IF NOT EXISTS configuracion_email (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    proveedor VARCHAR(20) NOT NULL DEFAULT 'resend',
+    api_key VARCHAR(255) NOT NULL,
+    email_remitente VARCHAR(150) NOT NULL,
+    nombre_remitente VARCHAR(100) NOT NULL DEFAULT 'GraduateInsights',
+    activo BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
