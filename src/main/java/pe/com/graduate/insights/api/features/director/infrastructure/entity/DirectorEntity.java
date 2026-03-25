@@ -1,6 +1,7 @@
 package pe.com.graduate.insights.api.features.director.infrastructure.entity;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +24,9 @@ public class DirectorEntity extends Auditable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @Column(name = "cargo")
+  private String cargo;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false, unique = true)

@@ -7,7 +7,6 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pe.com.graduate.insights.api.features.employer.application.dto.EmployerRequest;
-import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
 import pe.com.graduate.insights.api.features.employer.application.dto.EmployerResponse;
 import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.employer.infrastructure.entity.EmployerEntity;
@@ -31,8 +30,6 @@ public interface EmployerMapper {
   @Mapping(source = "user.celular", target = "celular")
   EmployerResponse toDomain(EmployerEntity employerEntity);
 
-  UserRequest toEmployerRequest(EmployerRequest employerRequest);
-
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(source = "id", target = "key")
   @Mapping(source = "user.nombreCompleto", target = "value")
@@ -43,23 +40,11 @@ public interface EmployerMapper {
   @Mapping(target = "id", ignore = true)
   EmployerEntity toEntity(EmployerRequest employerRequest, UserEntity userEntity);
 
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "modifiedDate", ignore = true)
-  @Mapping(target = "user.nombres", source = "nombres")
-  @Mapping(target = "user.apellidos", source = "apellidos")
-  @Mapping(target = "user.fechaNacimiento", source = "fechaNacimiento")
-  @Mapping(target = "user.genero", source = "genero")
-  @Mapping(target = "user.correo", source = "correo")
-  @Mapping(target = "user.dni", source = "dni")
-  @Mapping(target = "user.celular", source = "celular")
-  @Mapping(target = "user.contrasena", source = "contrasena")
+  @Mapping(target = "user", ignore = true)
   void updateEmployerEntity(
       EmployerRequest employerRequest, @MappingTarget EmployerEntity employerEntity);
 }
-
-
-
-
-
-

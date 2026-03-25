@@ -3,6 +3,8 @@ package pe.com.graduate.insights.api.features.event.application.dto;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,4 +33,10 @@ public class EventRequest implements Serializable {
 
   @NotNull(message = "el eventTypeId no puede estar vacio")
   private Long eventTypeId;
+
+  @NotNull(message = "La fecha del evento es obligatoria")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDate fechaEvento;
+
+  private String enlaceInscripcion;
 }

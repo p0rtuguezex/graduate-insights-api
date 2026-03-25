@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.features.event.infrastructure.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 import pe.com.graduate.insights.api.features.eventtypes.infrastructure.entity.EventTypesEntity;
@@ -27,6 +29,12 @@ public class EventEntity extends Auditable {
   private String nombre;
   private String contenido;
   private String estado;
+
+  @Column(name = "fecha_evento")
+  private LocalDate fechaEvento;
+
+  @Column(name = "enlace_inscripcion")
+  private String enlaceInscripcion;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "director_id", nullable = false)

@@ -9,5 +9,6 @@ import pe.com.graduate.insights.api.features.user.application.dto.UserResponse;
 @Getter
 @ToString
 public class DirectorResponse extends UserResponse {
-  private String directorId;
+  private Long directorId;
+  private String cargo;
 }

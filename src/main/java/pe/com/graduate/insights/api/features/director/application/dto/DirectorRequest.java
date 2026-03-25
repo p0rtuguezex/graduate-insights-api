@@ -15,4 +15,6 @@ import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
 public class DirectorRequest extends UserRequest implements Serializable {
 
   @Serial private static final long serialVersionUID = 1L;
+
+  private String cargo;
 }

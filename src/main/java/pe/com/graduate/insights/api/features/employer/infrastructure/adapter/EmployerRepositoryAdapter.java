@@ -16,14 +16,12 @@ import pe.com.graduate.insights.api.features.employer.application.ports.output.E
 import pe.com.graduate.insights.api.features.graduate.domain.exception.GraduateException;
 import pe.com.graduate.insights.api.features.mail.application.dto.MailRequest;
 import pe.com.graduate.insights.api.features.mail.application.ports.output.MailRepositoryPort;
-import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
 import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.features.employer.infrastructure.entity.EmployerEntity;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
 import pe.com.graduate.insights.api.features.employer.infrastructure.jpa.EmployerRepository;
 import pe.com.graduate.insights.api.features.user.infrastructure.jpa.UserRepository;
 import pe.com.graduate.insights.api.features.employer.infrastructure.mapper.EmployerMapper;
-import pe.com.graduate.insights.api.features.user.infrastructure.mapper.UserMapper;
 import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
@@ -35,7 +33,6 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
   private final EmployerRepository employerRepository;
   private final EmployerMapper employerMapper;
   private final UserRepository userRepository;
-  private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
   private final MailRepositoryPort mailRepositoryPort;
 
@@ -49,9 +46,9 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
                   String.format(ConstantsUtils.USER_CONFLICT, user.getCorreo()));
             },
             () -> {
-              UserRequest userRequest = employerMapper.toEmployerRequest(request);
-              UserEntity userEntity = userMapper.toEntity(userRequest);
-              userEntity.setContrasena(passwordEncoder.encode(userEntity.getContrasena()));
+              UserEntity userEntity = buildUserEntityFromRequest(request);
+              userEntity.setContrasena(passwordEncoder.encode(request.getContrasena()));
+              userEntity.setEstado(ConstantsUtils.STATUS_ACTIVE);
               userEntity = userRepository.save(userEntity);
               EmployerEntity employerEntity = employerMapper.toEntity(request, userEntity);
               employerRepository.save(employerEntity);
@@ -111,15 +108,38 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
     employerRepository
         .findByIdAndUserEstado(id, ConstantsUtils.STATUS_ACTIVE)
         .map(
-            graduateEntity -> {
-              employerMapper.updateEmployerEntity(request, graduateEntity);
-              graduateEntity
-                  .getUser()
-                  .setContrasena(passwordEncoder.encode(request.getContrasena()));
-              return employerRepository.save(graduateEntity);
+            employerEntity -> {
+              // Update employer-specific fields (ruc, razonSocial, direccion, resumenEmpresa)
+              employerMapper.updateEmployerEntity(request, employerEntity);
+
+              // Update user contact fields manually
+              UserEntity user = employerEntity.getUser();
+              user.setNombres(request.getNombres());
+              user.setApellidos(request.getApellidos());
+              user.setCorreo(request.getCorreo());
+              user.setCelular(request.getCelular());
+
+              // Only re-encode password if provided
+              if (StringUtils.isNotBlank(request.getContrasena())) {
+                user.setContrasena(passwordEncoder.encode(request.getContrasena()));
+              }
+
+              return employerRepository.save(employerEntity);
             })
         .orElseThrow(
             () -> new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND, id)));
+  }
+
+  private UserEntity buildUserEntityFromRequest(EmployerRequest request) {
+    UserEntity userEntity = new UserEntity();
+    userEntity.setNombres(request.getNombres());
+    userEntity.setApellidos(request.getApellidos());
+    userEntity.setCorreo(request.getCorreo());
+    userEntity.setCelular(request.getCelular());
+    userEntity.setGenero("N/A");
+    userEntity.setDni(null);
+    userEntity.setFechaNacimiento(null);
+    return userEntity;
   }
 
   private void sendVerificationCode(String email) {
@@ -129,13 +149,10 @@ public class EmployerRepositoryAdapter implements EmployerRepositoryPort {
       mailRepositoryPort.sendCode(mailRequest);
     } catch (RuntimeException ex) {
       log.warn(
-          "No se pudo enviar el código de verificación al empleador {}: {}",
+          "No se pudo enviar el codigo de verificacion al empleador {}: {}",
           email,
           ex.getMessage(),
           ex);
     }
   }
 }
-
-
-

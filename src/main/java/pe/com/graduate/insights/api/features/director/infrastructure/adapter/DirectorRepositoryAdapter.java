@@ -102,9 +102,11 @@ public class DirectorRepositoryAdapter implements DirectorRepositoryPort {
         .map(
             directorEntity -> {
               directorMapper.updateDirectorEntity(request, directorEntity);
-              directorEntity
-                  .getUser()
-                  .setContrasena(passwordEncoder.encode(request.getContrasena()));
+              if (request.getContrasena() != null && !request.getContrasena().isBlank()) {
+                directorEntity
+                    .getUser()
+                    .setContrasena(passwordEncoder.encode(request.getContrasena()));
+              }
               return directorRepository.save(directorEntity);
             })
         .orElseThrow(

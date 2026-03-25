@@ -30,6 +30,12 @@ public class EmployerEntity extends Auditable {
   @Column(name = "razon_social")
   private String razonSocial;
 
+  @Column(name = "direccion")
+  private String direccion;
+
+  @Column(name = "resumen_empresa", columnDefinition = "TEXT")
+  private String resumenEmpresa;
+
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false, unique = true)
   private UserEntity user;

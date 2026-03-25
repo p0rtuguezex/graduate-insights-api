@@ -22,6 +22,7 @@ public interface EventMapper {
   @Mapping(source = "director.user.nombres", target = "directorNombre")
   @Mapping(source = "eventType.id", target = "eventTypeId")
   @Mapping(source = "eventType.nombre", target = "eventTypeNombre")
+  @Mapping(source = "fechaEvento", target = "fechaEvento", dateFormat = "yyyy-MM-dd")
   EventResponse toDomain(EventEntity eventEntity);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)

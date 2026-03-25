@@ -12,4 +12,6 @@ public class EmployerResponse extends UserResponse {
   private Long employerId;
   private String ruc;
   private String razonSocial;
+  private String direccion;
+  private String resumenEmpresa;
 }

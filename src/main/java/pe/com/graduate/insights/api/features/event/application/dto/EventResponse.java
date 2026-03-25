@@ -22,4 +22,6 @@ public class EventResponse {
   private String directorNombre;
   private Long eventTypeId;
   private String eventTypeNombre;
+  private String fechaEvento;
+  private String enlaceInscripcion;
 }

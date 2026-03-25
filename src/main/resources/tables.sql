@@ -364,6 +364,7 @@ CREATE TABLE IF NOT EXISTS graduado_trayectorias_laborales (
 CREATE TABLE IF NOT EXISTS directores (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     usuario_id BIGINT UNIQUE,
+    cargo VARCHAR(100),
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
@@ -376,6 +377,8 @@ CREATE TABLE IF NOT EXISTS empleadores (
     usuario_id BIGINT UNIQUE,
     ruc VARCHAR(12),
     razon_social VARCHAR(150),
+    direccion VARCHAR(200),
+    resumen_empresa TEXT,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
@@ -423,6 +426,8 @@ CREATE TABLE IF NOT EXISTS eventos (
     estado CHAR(1),
     director_id BIGINT,
     tipo_evento_id BIGINT,
+    fecha_evento DATE,
+    enlace_inscripcion VARCHAR(500),
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (director_id) REFERENCES directores(id)
@@ -521,3 +526,35 @@ CREATE TABLE IF NOT EXISTS opciones_respuesta_preguntas_graduados (
     FOREIGN KEY (respuesta_id) REFERENCES respuestas_preguntas_graduados(id) ON DELETE CASCADE,
     FOREIGN KEY (opcion_id) REFERENCES opciones_pregunta(id)
 );
+
+-- =============================================
+-- FASE 5: Employer, Director, Event field additions
+-- =============================================
+
+-- Employer new fields
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'empleadores' AND COLUMN_NAME = 'direccion');
+SET @ddl = IF(@col_exists = 0, 'ALTER TABLE empleadores ADD COLUMN direccion VARCHAR(200)', 'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'empleadores' AND COLUMN_NAME = 'resumen_empresa');
+SET @ddl = IF(@col_exists = 0, 'ALTER TABLE empleadores ADD COLUMN resumen_empresa TEXT', 'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- Director new field
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'directores' AND COLUMN_NAME = 'cargo');
+SET @ddl = IF(@col_exists = 0, 'ALTER TABLE directores ADD COLUMN cargo VARCHAR(100)', 'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- Event new fields
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'eventos' AND COLUMN_NAME = 'fecha_evento');
+SET @ddl = IF(@col_exists = 0, 'ALTER TABLE eventos ADD COLUMN fecha_evento DATE', 'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'eventos' AND COLUMN_NAME = 'enlace_inscripcion');
+SET @ddl = IF(@col_exists = 0, 'ALTER TABLE eventos ADD COLUMN enlace_inscripcion VARCHAR(500)', 'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- Unique constraint on email
+SET @idx_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'usuarios' AND INDEX_NAME = 'uk_usuarios_correo');
+SET @ddl = IF(@idx_exists = 0, 'ALTER TABLE usuarios ADD CONSTRAINT uk_usuarios_correo UNIQUE (correo)', 'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;

@@ -153,9 +153,11 @@ public class GraduateRepositoryAdapter
             graduateEntity -> {
               graduateMapper.updateGraduateEntity(request, graduateEntity);
               applyAcademicCollections(request, graduateEntity);
-              graduateEntity
-                  .getUser()
-                  .setContrasena(passwordEncoder.encode(request.getContrasena()));
+              if (request.getContrasena() != null && !request.getContrasena().isBlank()) {
+                graduateEntity
+                    .getUser()
+                    .setContrasena(passwordEncoder.encode(request.getContrasena()));
+              }
               if (request.getValidated() != null) {
                 graduateEntity.setValidated(request.getValidated());
               }
