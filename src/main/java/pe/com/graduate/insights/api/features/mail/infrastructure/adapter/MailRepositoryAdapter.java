@@ -121,6 +121,19 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
   }
 
   @Override
+  public void sendGenericEmail(String to, String subject, String htmlBody) {
+    EmailConfigEntity config =
+        emailConfigRepository
+            .findByActivoTrue()
+            .orElseThrow(
+                () ->
+                    new MailException(
+                        "No hay configuracion de email activa. Configure Resend desde el panel de administracion."));
+
+    mailExecutor.execute(() -> sendViaResend(config, to, subject, htmlBody));
+  }
+
+  @Override
   public void validateCode(ValidateCodeRequest validateCodeRequest) {
     userRepository
         .findByCorreoAndEstado(validateCodeRequest.getEmail(), ConstantsUtils.STATUS_ACTIVE)

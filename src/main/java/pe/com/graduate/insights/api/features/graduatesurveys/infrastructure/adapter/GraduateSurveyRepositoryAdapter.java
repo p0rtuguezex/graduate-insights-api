@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pe.com.graduate.insights.api.shared.exception.NotFoundException;
+import pe.com.graduate.insights.api.features.survey.infrastructure.entity.SurveyStatus;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyDetailResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyListResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.QuestionDetailResponse;
@@ -15,6 +17,7 @@ import pe.com.graduate.insights.api.features.graduatesurveys.infrastructure.jpa.
 import pe.com.graduate.insights.api.features.survey.infrastructure.jpa.SurveyRepository;
 import pe.com.graduate.insights.api.features.survey.infrastructure.mapper.SurveyMapper;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class GraduateSurveyRepositoryAdapter implements GraduateSurveyRepositoryPort {
@@ -25,8 +28,8 @@ public class GraduateSurveyRepositoryAdapter implements GraduateSurveyRepository
 
   @Override
   public List<GraduateSurveyListResponse> getAllSurveysForGraduate(Long graduateId) {
-    // Obtener todas las encuestas
-    var allSurveys = surveyRepository.findAll();
+    // Obtener todas las encuestas activas con sus preguntas y tipo (evita N+1)
+    var allSurveys = surveyRepository.findByStatusWithQuestionsAndType(SurveyStatus.ACTIVE);
 
     // Obtener las encuestas completadas por el graduado
     var completedSurveys = graduateSurveyResponseRepository.findByGraduateId(graduateId);

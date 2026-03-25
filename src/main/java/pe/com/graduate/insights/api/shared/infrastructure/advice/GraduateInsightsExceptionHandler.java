@@ -30,6 +30,7 @@ import pe.com.graduate.insights.api.features.auth.domain.exception.InvalidCodeEx
 import pe.com.graduate.insights.api.features.auth.domain.exception.InvalidCredentialsException;
 import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.features.survey.domain.exception.SurveyException;
+import pe.com.graduate.insights.api.features.graduatesurveys.domain.exception.SurveyResponseValidationException;
 import pe.com.graduate.insights.api.shared.models.response.ApiResponse;
 import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
@@ -87,7 +88,8 @@ public class GraduateInsightsExceptionHandler {
     FileException.class,
     EmailConfigException.class,
     MailException.class,
-    UnknownHostException.class
+    UnknownHostException.class,
+    SurveyResponseValidationException.class
   })
   public ResponseEntity<ApiResponse<List<String>>> handleDomainExceptions(RuntimeException ex) {
     HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;

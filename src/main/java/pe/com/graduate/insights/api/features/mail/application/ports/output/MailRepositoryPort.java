@@ -12,4 +12,6 @@ public interface MailRepositoryPort {
   void changePassword(ChangePasswordRequest changePasswordRequest);
 
   void sendTestEmail(String toEmail);
+
+  void sendGenericEmail(String to, String subject, String htmlBody);
 }

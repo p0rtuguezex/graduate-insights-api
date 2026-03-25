@@ -81,4 +81,28 @@ public class ConstantsUtils {
           + "ignora este correo o contacta a nuestro equipo de soporte para más ayuda.</p> <p>Gracias por tu atención.</p> </div> <div "
           + "class=\"footer\"> <p>Atentamente,</p> <p>SISEG 2025</p> <p>garlee016@gmail.com | 954886187</p> </div> "
           + "</div> </body> </html> ";
+
+  public static final String SUBJECT_SURVEY_NOTIFICATION = "Nueva encuesta disponible";
+
+  public static final String TEMPLATE_EMAIL_SURVEY_NOTIFICATION =
+      "<!DOCTYPE html> <html lang=\"es\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, "
+          + "initial-scale=1.0\"> <title>Nueva encuesta disponible</title> <style> body { font-family: Arial, sans-serif; "
+          + "background-color: #f7f7f7; margin: 0; padding: 0; color: #333; } .container { max-width: 600px; margin: 20px auto; "
+          + "background-color: #ffffff; padding: 20px; border: 1px solid #dddddd; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); } "
+          + ".header { text-align: center; padding-bottom: 20px; } .header h1 { color: #22a127; } .content { font-size: 16px; line-height: 1.5; text-align: justify; } "
+          + ".survey-title { display: block; width: fit-content; margin: 20px auto; padding: 10px 20px; background-color: #22a127; color: #ffffff; "
+          + "font-weight: bold; border-radius: 5px; font-size: 18px; text-align: center; } "
+          + ".survey-description { display: block; margin: 15px 0; padding: 10px 15px; background-color: #f0f0f0; border-left: 4px solid #22a127; "
+          + "border-radius: 3px; font-style: italic; color: #555; } "
+          + ".cta-button { display: block; width: fit-content; margin: 25px auto; padding: 12px 30px; background-color: #22a127; color: #ffffff; "
+          + "text-decoration: none; font-weight: bold; border-radius: 5px; font-size: 16px; text-align: center; } "
+          + ".footer { margin-top: 20px; font-size: 14px; text-align: center; color: #888888; } </style> </head> <body> <div class=\"container\"> "
+          + "<div class=\"content\"> <p>Hola {{user}},</p> <p>Se ha publicado una nueva encuesta que requiere tu participacion:</p> "
+          + "<div class=\"survey-title\">{{surveyTitle}}</div> "
+          + "<div class=\"survey-description\">{{surveyDescription}}</div> "
+          + "<p>Tu opinion es muy importante para nosotros. Por favor, tomate unos minutos para completarla.</p> "
+          + "<a href=\"{{appUrl}}/my-surveys\" class=\"cta-button\">Responder encuesta</a> "
+          + "<p>Si no puedes acceder al enlace, copia y pega la siguiente URL en tu navegador: {{appUrl}}/my-surveys</p> "
+          + "</div> <div class=\"footer\"> <p>Atentamente,</p> <p>SISEG 2025</p> <p>garlee016@gmail.com | 954886187</p> </div> "
+          + "</div> </body> </html> ";
 }

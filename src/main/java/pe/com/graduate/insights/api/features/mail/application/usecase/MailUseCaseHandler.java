@@ -28,4 +28,9 @@ public class MailUseCaseHandler implements MailUseCase {
   public void changePassword(ChangePasswordRequest changePasswordRequest) {
     mailRepositoryPort.changePassword(changePasswordRequest);
   }
+
+  @Override
+  public void sendGenericEmail(String to, String subject, String htmlBody) {
+    mailRepositoryPort.sendGenericEmail(to, subject, htmlBody);
+  }
 }

@@ -15,5 +15,10 @@ public interface GraduateSurveyResponseRepository
       Long surveyId, Long graduateId);
 
   List<GraduateSurveyResponseEntity> findBySurveyIdAndCompleted(Long surveyId, boolean completed);
+
+  boolean existsBySurveyIdAndGraduateIdAndCompleted(Long surveyId, Long graduateId, boolean completed);
+
+  Optional<GraduateSurveyResponseEntity> findBySurveyIdAndGraduateIdAndCompleted(
+      Long surveyId, Long graduateId, boolean completed);
 }
 

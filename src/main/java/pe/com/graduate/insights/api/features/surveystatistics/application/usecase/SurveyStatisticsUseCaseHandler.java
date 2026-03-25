@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,8 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   private static final String COLOR_ORANGE = "#FF9800";
   private static final String COLOR_RED = "#F44336";
 
+  private static final Pattern SCALE_NUMERIC_PATTERN = Pattern.compile("^(\\d+(?:\\.\\d+)?)");
+
   private final SurveyRepositoryPort surveyRepositoryPort;
   private final SurveyStatisticsRepositoryPort surveyStatisticsRepositoryPort;
 
@@ -53,20 +57,20 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
 
     Long totalGraduates = surveyStatisticsRepositoryPort.countActiveGraduates();
 
-    // Calcular métricas
+    // Calcular metricas
     int totalResponses = surveyResponses.size();
     int completedCount = completedResponses.size();
     double responseRate = totalGraduates > 0 ? (totalResponses * 100.0) / totalGraduates : 0.0;
     double completionRate = totalResponses > 0 ? (completedCount * 100.0) / totalResponses : 0.0;
 
-    // Obtener estadísticas por pregunta
+    // Obtener estadisticas por pregunta
     List<QuestionStatistics> questionStats = generateQuestionStatisticsFromDb(survey.getQuestions());
 
-    // Obtener datos demográficos
-    Map<String, Long> responsesByLocation = getResponsesByLocation();
+    // Obtener datos demograficos
+    Map<String, Long> responsesByLocation = getResponsesByLocation(surveyId);
     Map<String, Long> responsesByIndustry = getResponsesByIndustry();
     Map<String, Long> responsesByGender = getResponsesByGender(surveyId);
-    Map<String, Long> responsesByEmploymentStatus = getResponsesByEmploymentStatus();
+    Map<String, Long> responsesByEmploymentStatus = getResponsesByEmploymentStatus(surveyId);
 
     // Obtener datos temporales
     Map<String, Long> responsesByMonth = getResponsesByMonth(surveyId);
@@ -160,7 +164,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
         break;
 
       case NUMBER:
-        // Para preguntas NUMBER, usar valores numéricos directos
+        // Para preguntas NUMBER, usar valores numericos directos
         List<Integer> numericResponses =
             surveyStatisticsRepositoryPort.findNumericResponsesByQuestionId(questionId);
         Map<String, Long> distribution =
@@ -177,14 +181,14 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
             .datasets(
                 Arrays.asList(
                     ChartDataResponse.ChartDataset.builder()
-                        .label("Distribución")
+                        .label("Distribucion")
                         .data(numData)
                       .backgroundColor(COLOR_BLUE)
                         .build()));
         break;
 
       case TEXT:
-        // Para texto, mostrar palabras más comunes
+        // Para texto, mostrar palabras mas comunes
         List<String> textResponses =
             surveyStatisticsRepositoryPort.findTextResponsesByQuestionId(questionId);
         Map<String, Long> wordCount = getWordFrequency(textResponses);
@@ -224,7 +228,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     Long totalSurveys = surveyStatisticsRepositoryPort.countSurveys();
     Long activeSurveys = surveyStatisticsRepositoryPort.countSurveysByStatus(SurveyStatus.ACTIVE);
 
-    // Filtrar graduados por año de graduación si se especifica
+    // Filtrar graduados por anio de graduacion si se especifica
     Long totalGraduates;
     Long totalResponses;
 
@@ -250,7 +254,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     Double overallResponseRate =
         totalGraduates > 0 ? (totalResponses * 100.0) / totalGraduates : 0.0;
 
-    // Crear estadísticas generales
+    // Crear estadisticas generales
     DashboardOverviewResponse.GeneralStatistics generalStats =
         DashboardOverviewResponse.GeneralStatistics.builder()
             .totalSurveys(totalSurveys)
@@ -262,7 +266,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
             .responsesByGraduationYear(getResponsesByGraduationYear(graduationYear))
             .build();
 
-    // Crear gráficos del dashboard
+    // Crear graficos del dashboard
     List<ChartDataResponse> dashboardCharts = generateDashboardCharts(graduationYear);
 
     // Crear KPIs
@@ -340,7 +344,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
 
     return ChartDataResponse.builder()
         .chartType("doughnut")
-        .title("Distribución por " + demographic.toUpperCase())
+        .title("Distribucion por " + demographic.toUpperCase())
         .labels(labels)
         .datasets(
             Arrays.asList(
@@ -371,7 +375,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     return ResponseEntity.ok().headers(headers).body(csvData.getBytes());
   }
 
-  // Métodos auxiliares para obtener datos reales de la base de datos
+  // Metodos auxiliares para obtener datos reales de la base de datos
 
   private List<QuestionStatistics> generateQuestionStatisticsFromDb(List<QuestionResponse> questions) {
     if (questions == null) {
@@ -446,10 +450,31 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
       double average = numericValues.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
       double min = numericValues.stream().mapToDouble(Double::doubleValue).min().orElse(0.0);
       double max = numericValues.stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
-      builder.average(average).min(min).max(max);
+
+      // Compute median
+      Collections.sort(numericValues);
+      int n = numericValues.size();
+      double median = n % 2 == 0
+          ? (numericValues.get(n / 2 - 1) + numericValues.get(n / 2)) / 2.0
+          : numericValues.get(n / 2);
+
+      // Compute mode
+      Map<Double, Long> frequencyMap = numericValues.stream()
+          .collect(Collectors.groupingBy(v -> v, Collectors.counting()));
+      double mode = frequencyMap.entrySet().stream()
+          .max(Map.Entry.comparingByValue())
+          .map(Map.Entry::getKey).orElse(0.0);
+
+      // Compute standard deviation
+      double variance = numericValues.stream()
+          .mapToDouble(v -> Math.pow(v - average, 2)).average().orElse(0.0);
+      double stddev = Math.sqrt(variance);
+
+      builder.average(average).min(min).max(max)
+          .median(median).mode(mode).standardDeviation(stddev);
     } catch (Exception e) {
       log.debug(
-          "No se pudieron extraer valores numéricos de las opciones SCALE para pregunta {}",
+          "No se pudieron extraer valores numericos de las opciones SCALE para pregunta {}",
           questionId,
           e);
     }
@@ -459,16 +484,16 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     return scaleOptionCounts.entrySet().stream()
         .flatMap(
             entry -> {
-              String[] parts = entry.getKey().split(" - ");
-              if (parts.length == 0) {
-                return Stream.empty();
+              Matcher matcher = SCALE_NUMERIC_PATTERN.matcher(entry.getKey().trim());
+              if (matcher.find()) {
+                try {
+                  double value = Double.parseDouble(matcher.group(1));
+                  return Collections.nCopies(entry.getValue().intValue(), value).stream();
+                } catch (NumberFormatException e) {
+                  return Stream.empty();
+                }
               }
-              try {
-                double value = Double.parseDouble(parts[0]);
-                return Collections.nCopies(entry.getValue().intValue(), value).stream();
-              } catch (NumberFormatException e) {
-                return Stream.empty();
-              }
+              return Stream.empty();
             })
         .collect(Collectors.toList());
   }
@@ -485,6 +510,28 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     double min = numericResponses.stream().mapToDouble(Integer::doubleValue).min().orElse(0.0);
     double max = numericResponses.stream().mapToDouble(Integer::doubleValue).max().orElse(0.0);
 
+    // Compute median
+    List<Double> sortedValues = numericResponses.stream()
+        .map(Integer::doubleValue)
+        .sorted()
+        .collect(Collectors.toList());
+    int n = sortedValues.size();
+    double median = n % 2 == 0
+        ? (sortedValues.get(n / 2 - 1) + sortedValues.get(n / 2)) / 2.0
+        : sortedValues.get(n / 2);
+
+    // Compute mode
+    Map<Double, Long> frequencyMap = sortedValues.stream()
+        .collect(Collectors.groupingBy(v -> v, Collectors.counting()));
+    double mode = frequencyMap.entrySet().stream()
+        .max(Map.Entry.comparingByValue())
+        .map(Map.Entry::getKey).orElse(0.0);
+
+    // Compute standard deviation
+    double variance = sortedValues.stream()
+        .mapToDouble(v -> Math.pow(v - average, 2)).average().orElse(0.0);
+    double stddev = Math.sqrt(variance);
+
     Map<String, Long> numberDistribution =
         numericResponses.stream().collect(Collectors.groupingBy(String::valueOf, Collectors.counting()));
     Map<String, Double> numberPercentages = calculatePercentages(numberDistribution, totalResponses);
@@ -493,6 +540,9 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
         .average(average)
         .min(min)
         .max(max)
+        .median(median)
+        .mode(mode)
+        .standardDeviation(stddev)
         .optionCounts(numberDistribution)
         .percentages(numberPercentages)
         .recommendedChartType("bar");
@@ -561,15 +611,23 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     return percentages;
   }
 
-  private Map<String, Long> getResponsesByLocation() {
-    // Implementar consulta para obtener respuestas por ubicación
-    // Esto dependería de cómo tienes modelada la ubicación en GraduateEntity
-    return new HashMap<>();
+  private Map<String, Long> getResponsesByLocation(Long surveyId) {
+    List<SurveyStatisticsRepositoryPort.SurveyResponseData> responses =
+        surveyStatisticsRepositoryPort.findSurveyResponsesBySurveyId(surveyId);
+
+    return responses.stream()
+        .collect(
+            Collectors.groupingBy(
+                response ->
+                    response.departamento() != null && !response.departamento().isBlank()
+                        ? response.departamento()
+                        : "No especificado",
+                Collectors.counting()));
   }
 
   private Map<String, Long> getResponsesByIndustry() {
     // Implementar consulta para obtener respuestas por industria
-    // Esto dependería de cómo tienes modelada la industria
+    // Esto dependeria de como tienes modelada la industria
     return new HashMap<>();
   }
 
@@ -587,10 +645,22 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
           Collectors.counting()));
   }
 
-    private Map<String, Long> getResponsesByEmploymentStatus() {
-    // Implementar consulta para obtener respuestas por estado laboral
-    // Esto dependería de cómo tienes modelado el estado laboral
-    return new HashMap<>();
+  private Map<String, Long> getResponsesByEmploymentStatus(Long surveyId) {
+    List<SurveyStatisticsRepositoryPort.SurveyResponseData> responses =
+        surveyStatisticsRepositoryPort.findSurveyResponsesBySurveyId(surveyId);
+
+    return responses.stream()
+        .collect(
+            Collectors.groupingBy(
+                response -> {
+                  if (response.hasCurrentJob() != null && response.hasCurrentJob()) {
+                    return "Empleado";
+                  } else if (response.hasCurrentJob() != null) {
+                    return "Desempleado";
+                  }
+                  return "Sin informacion";
+                },
+                Collectors.counting()));
   }
 
   private Map<String, Long> getResponsesByMonth(Long surveyId) {
@@ -645,10 +715,10 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
 
     for (String response : textResponses) {
       if (response != null && !response.trim().isEmpty()) {
-        String[] words = response.toLowerCase().replaceAll("[^a-záéíóúñü\\s]", "").split("\\s+");
+        String[] words = response.toLowerCase().replaceAll("[^a-z\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1\u00fc\\s]", "").split("\\s+");
 
         for (String word : words) {
-          if (word.length() > 3) { // Solo palabras de más de 3 caracteres
+          if (word.length() > 3) { // Solo palabras de mas de 3 caracteres
             wordCount.merge(word, 1L, Long::sum);
           }
         }
@@ -702,7 +772,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
                   if (response.graduationYear() != null) {
                     return String.valueOf(response.graduationYear());
                   }
-                  return "Sin fecha de graduación";
+                  return "Sin fecha de graduacion";
                 },
                 Collectors.counting()));
   }
@@ -710,7 +780,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   private List<ChartDataResponse> generateDashboardCharts(Integer graduationYear) {
     List<ChartDataResponse> charts = new ArrayList<>();
 
-    // Gráfico de encuestas por estado (no cambia con el filtro de año)
+    // Grafico de encuestas por estado (no cambia con el filtro de anio)
     Map<String, Long> surveysByStatus =
         Arrays.stream(SurveyStatus.values())
             .collect(
@@ -732,7 +802,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
             .configuration(createDefaultChartConfiguration())
             .build());
 
-    // Gráfico de respuestas por mes (filtrado por año de graduación)
+    // Grafico de respuestas por mes (filtrado por anio de graduacion)
     Map<String, Long> responsesByMonth =
       surveyStatisticsRepositoryPort.findAllSurveyResponses().stream()
         .filter(response -> response.submittedAt() != null)
@@ -783,7 +853,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
             .value(String.format("%.1f%%", responseRate))
             .unit("%")
         .trend(responseTrend)
-            .changePercentage(0.0) // Aquí podrías calcular el cambio vs período anterior
+            .changePercentage(0.0) // Aqui podrias calcular el cambio vs periodo anterior
             .description("Porcentaje de graduados que han respondido encuestas")
         .color(responseColor)
             .build());
@@ -796,7 +866,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
             .unit("encuestas")
             .trend("stable")
             .changePercentage(0.0)
-            .description("Número de encuestas actualmente abiertas")
+            .description("Numero de encuestas actualmente abiertas")
             .color(COLOR_BLUE)
             .build());
 
@@ -807,7 +877,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
             .unit("graduados")
             .trend("up")
             .changePercentage(0.0)
-            .description("Número total de graduados activos")
+            .description("Numero total de graduados activos")
             .color("#9C27B0")
             .build());
 
@@ -844,18 +914,22 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
             : "No especificado";
       case "location":
       case "ubicacion":
-        // Aquí deberías acceder al campo de ubicación en tu modelo
-        return "Ubicación por definir"; // Placeholder
+        return response.departamento() != null && !response.departamento().isBlank()
+            ? response.departamento()
+            : "No especificado";
       case "industry":
       case "industria":
-        // Aquí deberías acceder al campo de industria en tu modelo
         return "Industria por definir"; // Placeholder
       case "employment":
       case "empleo":
-        // Aquí deberías acceder al estado laboral en tu modelo
-        return "Estado laboral por definir"; // Placeholder
+        if (response.hasCurrentJob() != null && response.hasCurrentJob()) {
+          return "Empleado";
+        } else if (response.hasCurrentJob() != null) {
+          return "Desempleado";
+        }
+        return "Sin informacion";
       default:
-        return "Sin categoría";
+        return "Sin categoria";
     }
   }
 
@@ -879,5 +953,3 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     return COLOR_RED;
   }
 }
-
-

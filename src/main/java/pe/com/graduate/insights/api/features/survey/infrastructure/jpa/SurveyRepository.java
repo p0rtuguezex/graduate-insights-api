@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +29,10 @@ public interface SurveyRepository extends JpaRepository<SurveyEntity, Long> {
 
   // Métodos para estado de encuesta
   List<SurveyEntity> findByStatus(SurveyStatus status);
+
+  @EntityGraph(attributePaths = {"surveyType", "questions"})
+  @Query("SELECT s FROM SurveyEntity s WHERE s.status = :status")
+  List<SurveyEntity> findByStatusWithQuestionsAndType(@Param("status") SurveyStatus status);
 
   Page<SurveyEntity> findByStatus(SurveyStatus status, Pageable pageable);
 

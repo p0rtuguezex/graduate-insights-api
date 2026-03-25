@@ -202,6 +202,30 @@ public class SurveyController {
   }
 
   @Operation(
+      summary = "Notificar a graduados activos sobre una encuesta",
+      description =
+          "Envia una notificacion por correo electronico a todos los graduados activos sobre una encuesta publicada")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Notificaciones enviadas exitosamente"),
+        @ApiResponse(responseCode = "401", description = "No autorizado"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado"),
+        @ApiResponse(responseCode = "404", description = "Encuesta no encontrada"),
+        @ApiResponse(
+            responseCode = "422",
+            description = "La encuesta no esta activa")
+      })
+  @PostMapping("/{id}/notify")
+  public ResponseEntity<pe.com.graduate.insights.api.shared.models.response.ApiResponse<Void>>
+      notifyGraduates(
+          @Parameter(description = "ID de la encuesta", required = true) @PathVariable Long id) {
+    surveyUseCase.notifyGraduates(id);
+    return ResponseUtils.successResponse(null);
+  }
+
+  @Operation(
       summary = "Obtener encuestas por estado",
       description = "Obtiene todas las encuestas que tienen un estado específico")
   @ApiResponses(

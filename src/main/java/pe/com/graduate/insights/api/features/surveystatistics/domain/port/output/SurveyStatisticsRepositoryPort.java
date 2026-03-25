@@ -34,7 +34,7 @@ public interface SurveyStatisticsRepositoryPort {
 
   Map<String, Long> countResponsesByOptionForQuestion(Long questionId);
 
-  record SurveyResponseData(LocalDateTime submittedAt, Integer graduationYear, String gender, String graduateFullName) {}
+  record SurveyResponseData(LocalDateTime submittedAt, Integer graduationYear, String gender, String graduateFullName, String departamento, Boolean hasCurrentJob) {}
 
   record QuestionResponseData(
       Long questionId,

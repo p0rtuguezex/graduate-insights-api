@@ -21,5 +21,7 @@ public interface SurveyUseCase
   List<SurveyResponse> getActiveSurveys();
 
   List<SurveyResponse> getSurveysByStatus(String status);
+
+  void notifyGraduates(Long surveyId);
 }
 

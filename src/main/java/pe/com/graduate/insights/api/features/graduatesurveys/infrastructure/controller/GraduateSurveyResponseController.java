@@ -1,5 +1,7 @@
 package pe.com.graduate.insights.api.features.graduatesurveys.infrastructure.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +27,14 @@ import pe.com.graduate.insights.api.features.graduatesurveys.domain.model.Gradua
 @RequestMapping("/survey-responses")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('GRADUATE')")
+@Tag(name = "Respuestas de Encuestas", description = "APIs para gestion de respuestas de encuestas de graduados")
 public class GraduateSurveyResponseController {
 
   private final GraduateSurveyResponseUseCase graduateSurveyResponseUseCase;
   private final AuthenticatedGraduateUseCase authenticatedGraduateUseCase;
 
   @PostMapping
+  @Operation(summary = "Enviar respuesta completa de encuesta")
   public ResponseEntity<ApiResponse<Void>> saveSurveyResponse(
       @Valid @RequestBody GraduateSurveyResponseRequest request) {
     Long graduateId = getAuthenticatedGraduateId();
@@ -38,13 +42,24 @@ public class GraduateSurveyResponseController {
     return ResponseUtils.sucessCreateResponse();
   }
 
+  @PostMapping("/draft")
+  @Operation(summary = "Guardar borrador de respuesta de encuesta")
+  public ResponseEntity<ApiResponse<Void>> saveDraft(
+      @Valid @RequestBody GraduateSurveyResponseRequest request) {
+    Long graduateId = getAuthenticatedGraduateId();
+    graduateSurveyResponseUseCase.saveDraft(request, graduateId);
+    return ResponseUtils.successResponse(null);
+  }
+
   @GetMapping("/survey/{surveyId}")
+  @Operation(summary = "Obtener respuestas por ID de encuesta")
   public ResponseEntity<ApiResponse<List<GraduateSurveyResponse>>> getResponsesBySurveyId(
       @PathVariable Long surveyId) {
     return ResponseUtils.successResponse(graduateSurveyResponseUseCase.findBySurveyId(surveyId));
   }
 
   @GetMapping("/graduate")
+  @Operation(summary = "Obtener mis respuestas")
   public ResponseEntity<ApiResponse<List<GraduateSurveyResponse>>> getMyResponses() {
     Long graduateId = getAuthenticatedGraduateId();
     return ResponseUtils.successResponse(
@@ -59,4 +74,3 @@ public class GraduateSurveyResponseController {
     return authenticatedGraduateUseCase.getAuthenticatedGraduateId(authentication);
   }
 }
-

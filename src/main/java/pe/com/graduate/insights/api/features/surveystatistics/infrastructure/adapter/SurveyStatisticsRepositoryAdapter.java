@@ -120,7 +120,18 @@ public class SurveyStatisticsRepositoryAdapter implements SurveyStatisticsReposi
             + " "
             + response.getGraduate().getUser().getApellidos();
 
-    return new SurveyResponseData(response.getSubmittedAt(), graduationYear, gender, fullName);
+    String departamento = response.getGraduate().getDepartamento();
+
+    // Determine employment status: graduate has a current job if at least one
+    // work trajectory has fechaFin IS NULL (currently employed)
+    Boolean hasCurrentJob = null;
+    if (response.getGraduate().getTrayectoriasLaborales() != null
+        && !response.getGraduate().getTrayectoriasLaborales().isEmpty()) {
+      hasCurrentJob = response.getGraduate().getTrayectoriasLaborales().stream()
+          .anyMatch(t -> t.getFechaFin() == null);
+    }
+
+    return new SurveyResponseData(response.getSubmittedAt(), graduationYear, gender, fullName, departamento, hasCurrentJob);
   }
 
   private QuestionResponseData toQuestionResponseData(GraduateQuestionResponseEntity response) {

@@ -7,6 +7,8 @@ import pe.com.graduate.insights.api.features.graduatesurveys.domain.model.Gradua
 public interface GraduateSurveyResponseRepositoryPort {
   void save(GraduateSurveyResponseRequest request, Long graduateId);
 
+  void saveDraft(GraduateSurveyResponseRequest request, Long graduateId);
+
   List<GraduateSurveyResponse> findBySurveyId(Long surveyId);
 
   List<GraduateSurveyResponse> findByGraduateId(Long graduateId);

@@ -10,4 +10,6 @@ public interface MailUseCase {
   void validateCode(ValidateCodeRequest validateCodeRequest);
 
   void changePassword(ChangePasswordRequest changePasswordRequest);
+
+  void sendGenericEmail(String to, String subject, String htmlBody);
 }
