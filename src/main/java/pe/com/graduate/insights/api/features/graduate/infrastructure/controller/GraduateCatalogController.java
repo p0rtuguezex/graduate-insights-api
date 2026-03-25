@@ -23,7 +23,7 @@ import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 @RestController
 @RequestMapping("/graduate/catalog")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('DIRECTOR')")
+@PreAuthorize("hasAnyRole('DIRECTOR', 'GRADUATE')")
 public class GraduateCatalogController {
 
   private final FacultyRepository facultyRepository;

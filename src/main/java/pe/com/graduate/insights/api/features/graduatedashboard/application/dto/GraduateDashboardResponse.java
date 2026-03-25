@@ -20,6 +20,7 @@ public class GraduateDashboardResponse {
   private List<GraduateSurveyListResponse> completedSurveys;
   private List<JobResponse> jobs;
   private List<JobOffersResponse> jobOffers;
+  private Boolean profileComplete;
 
   @Getter
   @Builder

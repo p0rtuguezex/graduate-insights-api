@@ -35,6 +35,9 @@ public interface JobOffersMapper {
   @Mapping(source = "id", target = "jobOffersId")
   @Mapping(source = "employer.id", target = "employerId")
   @Mapping(source = "employer.razonSocial", target = "employerName")
+  @Mapping(source = "employer.ruc", target = "employerRuc")
+  @Mapping(source = "employer.direccion", target = "employerDireccion")
+  @Mapping(source = "employer.user.correo", target = "employerCorreo")
   JobOffersResponse toJobOffersResponse(JobOffersEntity jobOffersEntity);
 
   /** Método especial para employers que no deben ver su propio employer_id */
@@ -42,6 +45,9 @@ public interface JobOffersMapper {
   @Mapping(source = "id", target = "jobOffersId")
   @Mapping(target = "employerId", ignore = true)
   @Mapping(source = "employer.razonSocial", target = "employerName")
+  @Mapping(source = "employer.ruc", target = "employerRuc")
+  @Mapping(source = "employer.direccion", target = "employerDireccion")
+  @Mapping(source = "employer.user.correo", target = "employerCorreo")
   JobOffersResponse toJobOffersResponseWithoutEmployerId(JobOffersEntity jobOffersEntity);
 
   @Mapping(target = "id", ignore = true)

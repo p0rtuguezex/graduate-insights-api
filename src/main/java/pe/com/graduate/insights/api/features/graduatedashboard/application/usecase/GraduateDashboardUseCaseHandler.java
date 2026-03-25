@@ -8,6 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.features.graduatedashboard.application.dto.GraduateDashboardResponse;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
+import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateReadUseCase;
 import pe.com.graduate.insights.api.features.graduatedashboard.application.ports.input.GraduateDashboardUseCase;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyListResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.ports.input.GraduateSurveyUseCase;
@@ -26,6 +28,7 @@ public class GraduateDashboardUseCaseHandler implements GraduateDashboardUseCase
   private final GraduateSurveyUseCase graduateSurveyUseCase;
   private final JobRepositoryPort jobRepositoryPort;
   private final JobOffersRepositoryPort jobOffersRepositoryPort;
+  private final GraduateReadUseCase graduateReadUseCase;
 
   @Override
   public GraduateDashboardResponse getDashboard(Long graduateId) {
@@ -56,8 +59,21 @@ public class GraduateDashboardUseCaseHandler implements GraduateDashboardUseCase
 
     List<JobOffersResponse> jobOffers = jobOffersRepositoryPort.getRecentActiveOffers(JOB_OFFER_LIMIT);
 
-    return new GraduateDashboardResponse(
-        surveyStats, jobStats, pendingSurveys, completedSurveys, jobs, jobOffers);
+    GraduateResponse graduate = graduateReadUseCase.getDomain(graduateId);
+    boolean profileComplete =
+        graduate.getEscuelaProfesionalId() != null
+            && graduate.getGrados() != null
+            && !graduate.getGrados().isEmpty();
+
+    return GraduateDashboardResponse.builder()
+        .surveyStats(surveyStats)
+        .jobStats(jobStats)
+        .pendingSurveys(pendingSurveys)
+        .completedSurveys(completedSurveys)
+        .jobs(jobs)
+        .jobOffers(jobOffers)
+        .profileComplete(profileComplete)
+        .build();
   }
 
   private int calculateCompletionRate(int completed, int total) {

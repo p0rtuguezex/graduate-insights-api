@@ -15,4 +15,7 @@ public class JobOffersResponse {
   private String estado;
   private Long employerId;
   private String employerName;
+  private String employerRuc;
+  private String employerDireccion;
+  private String employerCorreo;
 }
