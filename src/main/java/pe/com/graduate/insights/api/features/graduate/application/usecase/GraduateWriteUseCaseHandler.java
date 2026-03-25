@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateAcademicDegreeRequest;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateComplementaryTrainingRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateLanguageRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateWorkTrajectoryRequest;
 import pe.com.graduate.insights.api.features.graduate.domain.exception.GraduateException;
 import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateWriteUseCase;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateFileStoragePort;
@@ -57,18 +59,10 @@ public class GraduateWriteUseCaseHandler implements GraduateWriteUseCase {
   }
 
   private void validateAcademicCollections(GraduateRequest request) {
-    validateSchoolRelation(request);
     validateDegrees(request);
     validateLanguages(request);
-  }
-
-  private void validateSchoolRelation(GraduateRequest request) {
-    boolean hasSchoolData =
-        StringUtils.isNotBlank(request.getEscuelaProfesional())
-            || StringUtils.isNotBlank(request.getFacultad());
-    if (request.getEscuelaProfesionalId() == null && hasSchoolData) {
-      throw new GraduateException("Debe seleccionar una escuela profesional valida");
-    }
+    validateComplementaryTrainings(request);
+    validateWorkTrajectories(request);
   }
 
   private void validateDegrees(GraduateRequest request) {
@@ -140,5 +134,109 @@ public class GraduateWriteUseCaseHandler implements GraduateWriteUseCase {
               "La fecha fin del idioma %d no puede ser anterior a la fecha de inicio",
               languageIndex));
     }
+  }
+
+  private void validateComplementaryTrainings(GraduateRequest request) {
+    if (request.getFormacionesComplementarias() == null) {
+      return;
+    }
+
+    int trainingIndex = 0;
+    for (GraduateComplementaryTrainingRequest training : request.getFormacionesComplementarias()) {
+      trainingIndex++;
+      if (training != null && hasComplementaryTrainingData(training)) {
+        if (StringUtils.isBlank(training.getNombreCurso())) {
+          throw new GraduateException(
+              String.format("El nombre del curso de la formacion %d es obligatorio", trainingIndex));
+        }
+
+        if (training.getFechaInicio() != null
+            && training.getFechaFin() != null
+            && training.getFechaFin().isBefore(training.getFechaInicio())) {
+          throw new GraduateException(
+              String.format(
+                  "La fecha fin de la formacion %d no puede ser anterior a la fecha de inicio",
+                  trainingIndex));
+        }
+      }
+    }
+  }
+
+  private boolean hasComplementaryTrainingData(GraduateComplementaryTrainingRequest training) {
+    return StringUtils.isNotBlank(training.getNombreCurso())
+        || StringUtils.isNotBlank(training.getInstitucion())
+        || training.getFechaInicio() != null
+        || training.getFechaFin() != null;
+  }
+
+  private void validateWorkTrajectories(GraduateRequest request) {
+    if (request.getTrayectoriasLaborales() == null) {
+      return;
+    }
+
+    int activeJobs = 0;
+    int trajectoryIndex = 0;
+    for (GraduateWorkTrajectoryRequest trajectory : request.getTrayectoriasLaborales()) {
+      trajectoryIndex++;
+      if (!shouldValidateWorkTrajectory(trajectory)) {
+        continue;
+      }
+
+      validateWorkTrajectoryRequiredFields(trajectory, trajectoryIndex);
+      validateWorkTrajectoryDates(trajectory, trajectoryIndex);
+
+      if (isActiveWorkTrajectory(trajectory)) {
+        activeJobs++;
+      }
+    }
+
+    if (activeJobs > 1) {
+      throw new GraduateException("Solo se permite una trayectoria laboral activa");
+    }
+  }
+
+  private boolean shouldValidateWorkTrajectory(GraduateWorkTrajectoryRequest trajectory) {
+    return trajectory != null && hasWorkTrajectoryData(trajectory);
+  }
+
+  private void validateWorkTrajectoryRequiredFields(
+      GraduateWorkTrajectoryRequest trajectory, int trajectoryIndex) {
+    if (StringUtils.isBlank(trajectory.getEmpresa())) {
+      throw new GraduateException(
+          String.format("La empresa de la trayectoria %d es obligatoria", trajectoryIndex));
+    }
+
+    if (StringUtils.isBlank(trajectory.getCargo())) {
+      throw new GraduateException(
+          String.format("El cargo de la trayectoria %d es obligatorio", trajectoryIndex));
+    }
+
+    if (trajectory.getFechaInicio() == null) {
+      throw new GraduateException(
+          String.format("La fecha de inicio de la trayectoria %d es obligatoria", trajectoryIndex));
+    }
+  }
+
+  private void validateWorkTrajectoryDates(
+      GraduateWorkTrajectoryRequest trajectory, int trajectoryIndex) {
+    if (trajectory.getFechaFin() != null
+        && trajectory.getFechaFin().isBefore(trajectory.getFechaInicio())) {
+      throw new GraduateException(
+          String.format(
+              "La fecha fin de la trayectoria %d no puede ser anterior a la fecha de inicio",
+              trajectoryIndex));
+    }
+  }
+
+  private boolean isActiveWorkTrajectory(GraduateWorkTrajectoryRequest trajectory) {
+    return trajectory.getFechaFin() == null;
+  }
+
+  private boolean hasWorkTrajectoryData(GraduateWorkTrajectoryRequest trajectory) {
+    return StringUtils.isNotBlank(trajectory.getEmpresa())
+        || StringUtils.isNotBlank(trajectory.getCargo())
+        || StringUtils.isNotBlank(trajectory.getModalidad())
+        || trajectory.getFechaInicio() != null
+        || trajectory.getFechaFin() != null;
   }
 }

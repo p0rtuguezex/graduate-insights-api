@@ -95,33 +95,9 @@ CREATE TABLE IF NOT EXISTS graduados (
     pais_residencia VARCHAR(80),
     linkedin VARCHAR(255),
     portafolio VARCHAR(255),
-    facultad VARCHAR(120),
-    escuela_profesional VARCHAR(120),
     escuela_profesional_id BIGINT,
     anio_ingreso VARCHAR(4),
     anio_egreso VARCHAR(4),
-    grado_obtenido VARCHAR(100),
-    bachiller_fecha DATE,
-    bachiller_universidad VARCHAR(150),
-    titulo_profesional_fecha DATE,
-    titulo_profesional_universidad VARCHAR(150),
-    maestria_fecha DATE,
-    maestria_universidad VARCHAR(150),
-    doctorado_fecha DATE,
-    doctorado_universidad VARCHAR(150),
-    otro_grado_nombre VARCHAR(100),
-    otro_grado_fecha DATE,
-    otro_grado_universidad VARCHAR(150),
-    modalidad_titulacion VARCHAR(100),
-    modalidad_titulacion_otro VARCHAR(100),
-    idioma_nombre VARCHAR(60),
-    idioma_nivel VARCHAR(20),
-    idioma_fecha_inicio DATE,
-    idioma_fecha_fin DATE,
-    idioma_aprendizaje VARCHAR(100),
-    fecha_inicio DATE,
-    fecha_fin DATE,
-    cv TEXT,
     ruta_cv VARCHAR(500),
     validado BOOLEAN NOT NULL DEFAULT TRUE,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -174,14 +150,6 @@ CREATE TABLE IF NOT EXISTS graduados (
     SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN portafolio VARCHAR(255)', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
-    SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'facultad');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN facultad VARCHAR(120)', 'SELECT 1');
-    PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
-
-    SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'escuela_profesional');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN escuela_profesional VARCHAR(120)', 'SELECT 1');
-    PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
-
         SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'escuela_profesional_id');
         SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN escuela_profesional_id BIGINT', 'SELECT 1');
         PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
@@ -209,80 +177,101 @@ CREATE TABLE IF NOT EXISTS graduados (
     SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN anio_egreso VARCHAR(4)', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
+    -- Drop legacy flat columns (data now lives in normalized child tables)
+    SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'facultad');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN facultad', 'SELECT 1');
+    PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+    SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'escuela_profesional');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN escuela_profesional', 'SELECT 1');
+    PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'grado_obtenido');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN grado_obtenido VARCHAR(100)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN grado_obtenido', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'bachiller_fecha');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN bachiller_fecha DATE', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN bachiller_fecha', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'bachiller_universidad');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN bachiller_universidad VARCHAR(150)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN bachiller_universidad', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'titulo_profesional_fecha');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN titulo_profesional_fecha DATE', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN titulo_profesional_fecha', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'titulo_profesional_universidad');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN titulo_profesional_universidad VARCHAR(150)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN titulo_profesional_universidad', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'maestria_fecha');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN maestria_fecha DATE', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN maestria_fecha', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'maestria_universidad');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN maestria_universidad VARCHAR(150)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN maestria_universidad', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'doctorado_fecha');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN doctorado_fecha DATE', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN doctorado_fecha', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'doctorado_universidad');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN doctorado_universidad VARCHAR(150)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN doctorado_universidad', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'otro_grado_nombre');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN otro_grado_nombre VARCHAR(100)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN otro_grado_nombre', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'otro_grado_fecha');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN otro_grado_fecha DATE', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN otro_grado_fecha', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'otro_grado_universidad');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN otro_grado_universidad VARCHAR(150)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN otro_grado_universidad', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'modalidad_titulacion');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN modalidad_titulacion VARCHAR(100)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN modalidad_titulacion', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'modalidad_titulacion_otro');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN modalidad_titulacion_otro VARCHAR(100)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN modalidad_titulacion_otro', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'idioma_nombre');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN idioma_nombre VARCHAR(60)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN idioma_nombre', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'idioma_nivel');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN idioma_nivel VARCHAR(20)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN idioma_nivel', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'idioma_fecha_inicio');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN idioma_fecha_inicio DATE', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN idioma_fecha_inicio', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'idioma_fecha_fin');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN idioma_fecha_fin DATE', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN idioma_fecha_fin', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
     SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'idioma_aprendizaje');
-    SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN idioma_aprendizaje VARCHAR(100)', 'SELECT 1');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN idioma_aprendizaje', 'SELECT 1');
+    PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+    SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'fecha_inicio');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN fecha_inicio', 'SELECT 1');
+    PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+    SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'fecha_fin');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN fecha_fin', 'SELECT 1');
+    PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+    SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'cv');
+    SET @ddl = IF(@col_exists > 0, 'ALTER TABLE graduados DROP COLUMN cv', 'SELECT 1');
     PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
 CREATE TABLE IF NOT EXISTS graduado_grados (
@@ -339,6 +328,37 @@ CREATE TABLE IF NOT EXISTS graduado_idiomas (
         ON DELETE RESTRICT
         ON UPDATE CASCADE,
     UNIQUE KEY uk_graduado_idiomas_semantic (graduado_id, idioma_id, nivel, fecha_inicio)
+);
+
+CREATE TABLE IF NOT EXISTS graduado_formaciones_complementarias (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    graduado_id BIGINT NOT NULL,
+    nombre_curso VARCHAR(150) NOT NULL,
+    institucion VARCHAR(150),
+    fecha_inicio DATE,
+    fecha_fin DATE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (graduado_id) REFERENCES graduados(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    UNIQUE KEY uk_graduado_formaciones_semantic (graduado_id, nombre_curso, institucion, fecha_inicio)
+);
+
+CREATE TABLE IF NOT EXISTS graduado_trayectorias_laborales (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    graduado_id BIGINT NOT NULL,
+    empresa VARCHAR(150) NOT NULL,
+    cargo VARCHAR(150) NOT NULL,
+    modalidad VARCHAR(80),
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (graduado_id) REFERENCES graduados(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    UNIQUE KEY uk_graduado_trayectorias_semantic (graduado_id, empresa, cargo, fecha_inicio)
 );
 
 CREATE TABLE IF NOT EXISTS directores (

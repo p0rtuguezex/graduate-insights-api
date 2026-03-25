@@ -109,8 +109,11 @@ public class SurveyStatisticsRepositoryAdapter implements SurveyStatisticsReposi
   }
 
   private SurveyResponseData toSurveyResponseData(GraduateSurveyResponseEntity response) {
-    Integer graduationYear =
-        response.getGraduate().getFechaFin() != null ? response.getGraduate().getFechaFin().getYear() : null;
+    Integer graduationYear = null;
+    if (response.getGraduate().getAnioEgreso() != null) {
+      try { graduationYear = Integer.parseInt(response.getGraduate().getAnioEgreso()); }
+      catch (NumberFormatException ignored) { /* anioEgreso no es numerico */ }
+    }
     String gender = response.getGraduate().getUser().getGenero();
     String fullName =
         response.getGraduate().getUser().getNombres()
@@ -121,10 +124,11 @@ public class SurveyStatisticsRepositoryAdapter implements SurveyStatisticsReposi
   }
 
   private QuestionResponseData toQuestionResponseData(GraduateQuestionResponseEntity response) {
-    Integer graduationYear =
-        response.getGraduateSurveyResponse().getGraduate().getFechaFin() != null
-            ? response.getGraduateSurveyResponse().getGraduate().getFechaFin().getYear()
-            : null;
+    Integer graduationYear = null;
+    if (response.getGraduateSurveyResponse().getGraduate().getAnioEgreso() != null) {
+      try { graduationYear = Integer.parseInt(response.getGraduateSurveyResponse().getGraduate().getAnioEgreso()); }
+      catch (NumberFormatException ignored) { /* anioEgreso no es numerico */ }
+    }
     String gender = response.getGraduateSurveyResponse().getGraduate().getUser().getGenero();
     String fullName =
         response.getGraduateSurveyResponse().getGraduate().getUser().getNombres()

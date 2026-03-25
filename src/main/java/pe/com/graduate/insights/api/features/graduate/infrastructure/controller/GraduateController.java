@@ -107,7 +107,7 @@ public class GraduateController {
   @PutMapping("/{id}")
   public ResponseEntity<pe.com.graduate.insights.api.shared.models.response.ApiResponse<Void>>
       updateGraduate(
-          @Parameter(description = "Datos del graduado", required = true) @RequestBody
+          @Parameter(description = "Datos del graduado", required = true) @Valid @RequestBody
               GraduateRequest graduateRequest,
           @Parameter(description = "ID del graduado", required = true) @PathVariable Long id) {
     graduateWriteUseCase.update(graduateRequest, id);

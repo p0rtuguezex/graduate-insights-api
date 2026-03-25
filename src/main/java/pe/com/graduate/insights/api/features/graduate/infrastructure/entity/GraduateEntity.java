@@ -11,9 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.entities.Auditable;
@@ -28,12 +27,6 @@ public class GraduateEntity extends Auditable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @Column(name = "fecha_inicio")
-  private LocalDate fechaInicio;
-
-  @Column(name = "fecha_fin")
-  private LocalDate fechaFin;
 
   @Column(name = "codigo_universitario")
   private String codigoUniversitario;
@@ -65,12 +58,6 @@ public class GraduateEntity extends Auditable {
   @Column(name = "portafolio")
   private String portafolio;
 
-  @Column(name = "facultad")
-  private String facultad;
-
-  @Column(name = "escuela_profesional")
-  private String escuelaProfesional;
-
   @Column(name = "escuela_profesional_id")
   private Long escuelaProfesionalId;
 
@@ -80,66 +67,6 @@ public class GraduateEntity extends Auditable {
   @Column(name = "anio_egreso")
   private String anioEgreso;
 
-  @Column(name = "grado_obtenido")
-  private String gradoObtenido;
-
-  @Column(name = "bachiller_fecha")
-  private LocalDate bachillerFecha;
-
-  @Column(name = "bachiller_universidad")
-  private String bachillerUniversidad;
-
-  @Column(name = "titulo_profesional_fecha")
-  private LocalDate tituloProfesionalFecha;
-
-  @Column(name = "titulo_profesional_universidad")
-  private String tituloProfesionalUniversidad;
-
-  @Column(name = "maestria_fecha")
-  private LocalDate maestriaFecha;
-
-  @Column(name = "maestria_universidad")
-  private String maestriaUniversidad;
-
-  @Column(name = "doctorado_fecha")
-  private LocalDate doctoradoFecha;
-
-  @Column(name = "doctorado_universidad")
-  private String doctoradoUniversidad;
-
-  @Column(name = "otro_grado_nombre")
-  private String otroGradoNombre;
-
-  @Column(name = "otro_grado_fecha")
-  private LocalDate otroGradoFecha;
-
-  @Column(name = "otro_grado_universidad")
-  private String otroGradoUniversidad;
-
-  @Column(name = "modalidad_titulacion")
-  private String modalidadTitulacion;
-
-  @Column(name = "modalidad_titulacion_otro")
-  private String modalidadTitulacionOtro;
-
-  @Column(name = "idioma_nombre")
-  private String idiomaNombre;
-
-  @Column(name = "idioma_nivel")
-  private String idiomaNivel;
-
-  @Column(name = "idioma_fecha_inicio")
-  private LocalDate idiomaFechaInicio;
-
-  @Column(name = "idioma_fecha_fin")
-  private LocalDate idiomaFechaFin;
-
-  @Column(name = "idioma_aprendizaje")
-  private String idiomaAprendizaje;
-
-  @Column(name = "cv")
-  private String cv;
-
   @Column(name = "ruta_cv")
   private String cvPath;
 
@@ -147,15 +74,19 @@ public class GraduateEntity extends Auditable {
   private Boolean validated = Boolean.TRUE;
 
   @OneToMany(mappedBy = "graduate", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<GraduateDegreeEntity> grados = new ArrayList<>();
+  private Set<GraduateDegreeEntity> grados = new HashSet<>();
 
   @OneToMany(mappedBy = "graduate", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<GraduateLanguageEntity> idiomas = new ArrayList<>();
+  private Set<GraduateLanguageEntity> idiomas = new HashSet<>();
+
+  @OneToMany(mappedBy = "graduate", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<GraduateComplementaryTrainingEntity> formacionesComplementarias =
+      new HashSet<>();
+
+  @OneToMany(mappedBy = "graduate", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<GraduateWorkTrajectoryEntity> trayectoriasLaborales = new HashSet<>();
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false, unique = true)
   private UserEntity user;
 }
-
-
-

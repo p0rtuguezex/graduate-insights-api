@@ -11,11 +11,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateAcademicDegreeRequest;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateComplementaryTrainingRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateLanguageRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateTitulationRequest;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateWorkTrajectoryRequest;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateIdentityRepositoryPort;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateReadRepositoryPort;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateWriteRepositoryPort;
@@ -27,9 +30,11 @@ import pe.com.graduate.insights.api.features.mail.application.ports.output.MailR
 import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
 import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateComplementaryTrainingEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateDegreeEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateLanguageEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateTitulationEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateWorkTrajectoryEntity;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
 import pe.com.graduate.insights.api.features.user.infrastructure.jpa.UserRepository;
@@ -55,6 +60,7 @@ public class GraduateRepositoryAdapter
   private final PasswordEncoder passwordEncoder;
   private final MailRepositoryPort mailRepositoryPort;
 
+  @Transactional
   @Override
   public Long save(GraduateRequest graduateRequest) {
     final Long[] createdGraduateId = new Long[1];
@@ -96,11 +102,13 @@ public class GraduateRepositoryAdapter
         .toList();
   }
 
+  @Transactional(readOnly = true)
   @Override
   public Page<GraduateResponse> getPagination(String search, Pageable pageable) {
     return getPagination(search, pageable, null);
   }
 
+  @Transactional(readOnly = true)
   @Override
   public Page<GraduateResponse> getPagination(String search, Pageable pageable, Boolean validated) {
     boolean hasSearch = StringUtils.isNotBlank(search);
@@ -126,6 +134,7 @@ public class GraduateRepositoryAdapter
     return new PageImpl<>(graduateResponseList, pageable, graduatesEntities.getTotalElements());
   }
 
+  @Transactional(readOnly = true)
   @Override
   public GraduateResponse getDomain(Long id) {
     return graduateRepository
@@ -135,6 +144,7 @@ public class GraduateRepositoryAdapter
             () -> new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND, id)));
   }
 
+  @Transactional
   @Override
   public void update(GraduateRequest request, Long id) {
     graduateRepository
@@ -155,6 +165,7 @@ public class GraduateRepositoryAdapter
             () -> new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND, id)));
   }
 
+  @Transactional
   @Override
   public void delete(Long id) {
     graduateRepository
@@ -204,6 +215,7 @@ public class GraduateRepositoryAdapter
             () -> new NotFoundException(String.format(ConstantsUtils.USER_NOT_FOUND, userId)));
   }
 
+  @Transactional
   @Override
   public void register(GraduateSelfRegistrationRequest request) {
     userRepository
@@ -270,6 +282,30 @@ public class GraduateRepositoryAdapter
                 graduateEntity.getIdiomas().add(language);
               });
     }
+
+    if (request.getFormacionesComplementarias() != null) {
+      graduateEntity.getFormacionesComplementarias().clear();
+      request.getFormacionesComplementarias().stream()
+          .filter(Objects::nonNull)
+          .forEach(
+              formacionRequest -> {
+                GraduateComplementaryTrainingEntity training =
+                    mapComplementaryTraining(formacionRequest, graduateEntity);
+                graduateEntity.getFormacionesComplementarias().add(training);
+              });
+    }
+
+    if (request.getTrayectoriasLaborales() != null) {
+      graduateEntity.getTrayectoriasLaborales().clear();
+      request.getTrayectoriasLaborales().stream()
+          .filter(Objects::nonNull)
+          .forEach(
+              trayectoriaRequest -> {
+                GraduateWorkTrajectoryEntity trajectory =
+                    mapWorkTrajectory(trayectoriaRequest, graduateEntity);
+                graduateEntity.getTrayectoriasLaborales().add(trajectory);
+              });
+    }
   }
 
   private GraduateDegreeEntity mapDegree(
@@ -303,6 +339,29 @@ public class GraduateRepositoryAdapter
     entity.setFechaInicio(request.getFechaInicio());
     entity.setFechaFin(request.getFechaFin());
     entity.setAprendizaje(request.getAprendizaje());
+    return entity;
+  }
+
+  private GraduateComplementaryTrainingEntity mapComplementaryTraining(
+      GraduateComplementaryTrainingRequest request, GraduateEntity graduateEntity) {
+    GraduateComplementaryTrainingEntity entity = new GraduateComplementaryTrainingEntity();
+    entity.setGraduate(graduateEntity);
+    entity.setNombreCurso(request.getNombreCurso());
+    entity.setInstitucion(request.getInstitucion());
+    entity.setFechaInicio(request.getFechaInicio());
+    entity.setFechaFin(request.getFechaFin());
+    return entity;
+  }
+
+  private GraduateWorkTrajectoryEntity mapWorkTrajectory(
+      GraduateWorkTrajectoryRequest request, GraduateEntity graduateEntity) {
+    GraduateWorkTrajectoryEntity entity = new GraduateWorkTrajectoryEntity();
+    entity.setGraduate(graduateEntity);
+    entity.setEmpresa(request.getEmpresa());
+    entity.setCargo(request.getCargo());
+    entity.setModalidad(request.getModalidad());
+    entity.setFechaInicio(request.getFechaInicio());
+    entity.setFechaFin(request.getFechaFin());
     return entity;
   }
 }

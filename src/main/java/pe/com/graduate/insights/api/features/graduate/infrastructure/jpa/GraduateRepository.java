@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +22,13 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
 
   Optional<GraduateEntity> findByUserIdAndUserEstado(Long userId, String estado);
 
+  @EntityGraph(attributePaths = {
+      "user",
+      "grados", "grados.titulation",
+      "idiomas",
+      "formacionesComplementarias",
+      "trayectoriasLaborales"
+  })
   Optional<GraduateEntity> findByIdAndUserEstado(Long id, String estado);
 
   Page<GraduateEntity> findAllByUserEstado(String status, Pageable pageable);
@@ -33,18 +41,15 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
   @Query(
       "SELECT g FROM GraduateEntity g "
           + "WHERE g.user.estado = :status "
-        + "AND g.validated = :validated "
+          + "AND g.validated = :validated "
           + "AND ("
-          + " LOWER(g.cvPath) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-          + " STR(g.fechaInicio) LIKE CONCAT('%', :search, '%') OR "
-          + " STR(g.fechaFin) LIKE CONCAT('%', :search, '%') OR "
           + " LOWER(g.user.nombres) LIKE LOWER(CONCAT('%', :search, '%')) OR "
           + " LOWER(g.user.correo) LIKE LOWER(CONCAT('%', :search, '%')) OR "
           + " LOWER(g.user.apellidos) LIKE LOWER(CONCAT('%', :search, '%')) OR "
           + " LOWER(g.user.genero) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-          + " LOWER(g.user.estado) LIKE LOWER(CONCAT('%', :search, '%')) OR "
           + " LOWER(g.user.dni) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-          + " LOWER(g.user.celular) LIKE LOWER(CONCAT('%', :search, '%')) "
+          + " LOWER(g.user.celular) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(g.codigoUniversitario) LIKE LOWER(CONCAT('%', :search, '%'))"
           + ")")
     Page<GraduateEntity> findAllByUserEstadoSearch(String search, String status, Pageable pageable);
 
@@ -53,16 +58,13 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
         + "WHERE g.user.estado = :status "
         + "AND g.validated = :validated "
         + "AND ("
-        + " LOWER(g.cvPath) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-        + " STR(g.fechaInicio) LIKE CONCAT('%', :search, '%') OR "
-        + " STR(g.fechaFin) LIKE CONCAT('%', :search, '%') OR "
         + " LOWER(g.user.nombres) LIKE LOWER(CONCAT('%', :search, '%')) OR "
         + " LOWER(g.user.correo) LIKE LOWER(CONCAT('%', :search, '%')) OR "
         + " LOWER(g.user.apellidos) LIKE LOWER(CONCAT('%', :search, '%')) OR "
         + " LOWER(g.user.genero) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-        + " LOWER(g.user.estado) LIKE LOWER(CONCAT('%', :search, '%')) OR "
         + " LOWER(g.user.dni) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-        + " LOWER(g.user.celular) LIKE LOWER(CONCAT('%', :search, '%')) "
+        + " LOWER(g.user.celular) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+        + " LOWER(g.codigoUniversitario) LIKE LOWER(CONCAT('%', :search, '%'))"
         + ")")
     Page<GraduateEntity> findAllByUserEstadoAndValidatedSearch(
       String search, String status, Boolean validated, Pageable pageable);

@@ -8,16 +8,20 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateAcademicDegreeResponse;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateComplementaryTrainingResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateLanguageResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateTitulationResponse;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateWorkTrajectoryResponse;
 import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateComplementaryTrainingEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateDegreeEntity;
 import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateLanguageEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateTitulationEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateWorkTrajectoryEntity;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
 
 @Mapper(componentModel = "spring")
@@ -46,32 +50,13 @@ public interface GraduateMapper {
     @Mapping(source = "paisResidencia", target = "paisResidencia")
     @Mapping(source = "linkedin", target = "linkedin")
     @Mapping(source = "portafolio", target = "portafolio")
-    @Mapping(source = "facultad", target = "facultad")
-    @Mapping(source = "escuelaProfesional", target = "escuelaProfesional")
     @Mapping(source = "escuelaProfesionalId", target = "escuelaProfesionalId")
     @Mapping(source = "anioIngreso", target = "anioIngreso")
     @Mapping(source = "anioEgreso", target = "anioEgreso")
-    @Mapping(source = "gradoObtenido", target = "gradoObtenido")
-    @Mapping(source = "bachillerFecha", target = "bachillerFecha", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "bachillerUniversidad", target = "bachillerUniversidad")
-    @Mapping(source = "tituloProfesionalFecha", target = "tituloProfesionalFecha", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "tituloProfesionalUniversidad", target = "tituloProfesionalUniversidad")
-    @Mapping(source = "maestriaFecha", target = "maestriaFecha", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "maestriaUniversidad", target = "maestriaUniversidad")
-    @Mapping(source = "doctoradoFecha", target = "doctoradoFecha", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "doctoradoUniversidad", target = "doctoradoUniversidad")
-    @Mapping(source = "otroGradoNombre", target = "otroGradoNombre")
-    @Mapping(source = "otroGradoFecha", target = "otroGradoFecha", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "otroGradoUniversidad", target = "otroGradoUniversidad")
-    @Mapping(source = "modalidadTitulacion", target = "modalidadTitulacion")
-    @Mapping(source = "modalidadTitulacionOtro", target = "modalidadTitulacionOtro")
-    @Mapping(source = "idiomaNombre", target = "idiomaNombre")
-    @Mapping(source = "idiomaNivel", target = "idiomaNivel")
-    @Mapping(source = "idiomaFechaInicio", target = "idiomaFechaInicio", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "idiomaFechaFin", target = "idiomaFechaFin", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "idiomaAprendizaje", target = "idiomaAprendizaje")
     @Mapping(source = "grados", target = "grados")
     @Mapping(source = "idiomas", target = "idiomas")
+    @Mapping(source = "formacionesComplementarias", target = "formacionesComplementarias")
+    @Mapping(source = "trayectoriasLaborales", target = "trayectoriasLaborales")
   @Mapping(source = "validated", target = "validated")
   GraduateResponse toDomain(GraduateEntity graduateEntity);
 
@@ -96,6 +81,22 @@ public interface GraduateMapper {
     @Mapping(source = "aprendizaje", target = "aprendizaje")
     GraduateLanguageResponse toLanguageResponse(GraduateLanguageEntity entity);
 
+    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+    @Mapping(source = "nombreCurso", target = "nombreCurso")
+    @Mapping(source = "institucion", target = "institucion")
+    @Mapping(source = "fechaInicio", target = "fechaInicio", dateFormat = "yyyy-MM-dd")
+    @Mapping(source = "fechaFin", target = "fechaFin", dateFormat = "yyyy-MM-dd")
+    GraduateComplementaryTrainingResponse toComplementaryTrainingResponse(
+      GraduateComplementaryTrainingEntity entity);
+
+    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+    @Mapping(source = "empresa", target = "empresa")
+    @Mapping(source = "cargo", target = "cargo")
+    @Mapping(source = "modalidad", target = "modalidad")
+    @Mapping(source = "fechaInicio", target = "fechaInicio", dateFormat = "yyyy-MM-dd")
+    @Mapping(source = "fechaFin", target = "fechaFin", dateFormat = "yyyy-MM-dd")
+    GraduateWorkTrajectoryResponse toWorkTrajectoryResponse(GraduateWorkTrajectoryEntity entity);
+
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(source = "id", target = "key")
   @Mapping(source = "user.nombreCompleto", target = "value")
@@ -106,6 +107,8 @@ public interface GraduateMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "grados", ignore = true)
   @Mapping(target = "idiomas", ignore = true)
+  @Mapping(target = "formacionesComplementarias", ignore = true)
+  @Mapping(target = "trayectoriasLaborales", ignore = true)
   GraduateEntity toEntity(GraduateRequest graduateRequest, UserEntity userEntity);
 
   UserRequest toGraduateRequest(GraduateRequest graduateRequest);
@@ -116,9 +119,10 @@ public interface GraduateMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "modifiedDate", ignore = true)
-  @Mapping(target = "cv", ignore = true)
   @Mapping(target = "grados", ignore = true)
   @Mapping(target = "idiomas", ignore = true)
+  @Mapping(target = "formacionesComplementarias", ignore = true)
+  @Mapping(target = "trayectoriasLaborales", ignore = true)
   @Mapping(target = "user.nombres", source = "nombres")
   @Mapping(target = "user.apellidos", source = "apellidos")
   @Mapping(target = "user.fechaNacimiento", source = "fechaNacimiento")
@@ -130,8 +134,3 @@ public interface GraduateMapper {
   void updateGraduateEntity(
       GraduateRequest graduateRequest, @MappingTarget GraduateEntity graduateEntity);
 }
-
-
-
-
-
