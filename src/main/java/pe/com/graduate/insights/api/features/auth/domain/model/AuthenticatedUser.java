@@ -8,4 +8,5 @@ public record AuthenticatedUser(
     String firstName,
     String lastName,
     String email,
+    String genero,
     boolean verified) {}

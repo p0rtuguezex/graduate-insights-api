@@ -9,4 +9,5 @@ public record AuthPrincipal(
     String firstName,
     String lastName,
     String email,
+    String genero,
     boolean verified) {}

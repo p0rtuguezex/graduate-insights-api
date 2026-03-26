@@ -21,6 +21,7 @@ public class CurrentUserUseCaseHandler implements CurrentUserUseCase {
         .firstName(user.firstName())
         .lastName(user.lastName())
         .email(user.email())
+        .genero(user.genero())
         .verified(user.verified())
         .build();
   }

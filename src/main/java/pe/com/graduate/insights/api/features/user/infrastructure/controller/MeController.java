@@ -61,6 +61,7 @@ public class MeController {
             .id(user.id())
             .name(user.firstName() + " " + user.lastName())
             .email(user.email())
+            .genero(user.genero())
             .verified(user.verified())
             .role(userRoleUseCase.getUserRoleDisplayName(user.id()))
             .build();

@@ -86,6 +86,7 @@ public class AuthRepositoryAdapter implements AuthRepositoryPort {
         .firstName(user.getNombres())
         .lastName(user.getApellidos())
         .email(user.getCorreo())
+        .genero(user.getGenero())
         .verified(user.isVerificado())
         .build();
   }
