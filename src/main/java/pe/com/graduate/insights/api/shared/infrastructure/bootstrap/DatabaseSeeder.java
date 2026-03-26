@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,6 +77,11 @@ public class DatabaseSeeder implements CommandLineRunner {
     seedAcademicCatalogDataIfNeeded();
     ensureAdminDirector();
     seedMockDataIfNeeded();
+    seedEducationCentersIfNeeded();
+    seedEventsIfNeeded();
+    seedJobsIfNeeded();
+    seedJobOffersIfNeeded();
+    seedSurveyQuestionsIfNeeded();
   }
 
   private void seedCatalogDataIfNeeded() {
@@ -371,5 +377,436 @@ public class DatabaseSeeder implements CommandLineRunner {
         log.info("Mock survey created: Encuesta de Seguimiento de Egresados 2023");
       }
     });
+  }
+
+  // ============================================================
+  // CENTROS EDUCATIVOS
+  // ============================================================
+
+  private void seedEducationCentersIfNeeded() {
+    Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM centros_educativos", Long.class);
+    if (count != null && count > 0) {
+      log.info("Education centers already present. Skipping.");
+      return;
+    }
+
+    log.info("Seeding mock education centers...");
+    jdbcTemplate.update(
+        "INSERT INTO centros_educativos (nombre, direccion, estado, fecha_creacion, fecha_modificacion) VALUES (?, ?, '1', NOW(), NOW())",
+        "Universidad Nacional San Luis Gonzaga", "Av. San Carlos 1099, Ica");
+    jdbcTemplate.update(
+        "INSERT INTO centros_educativos (nombre, direccion, estado, fecha_creacion, fecha_modificacion) VALUES (?, ?, '1', NOW(), NOW())",
+        "Instituto Superior Tecnológico Público de Ica", "Calle Bolívar 456, Ica");
+    jdbcTemplate.update(
+        "INSERT INTO centros_educativos (nombre, direccion, estado, fecha_creacion, fecha_modificacion) VALUES (?, ?, '1', NOW(), NOW())",
+        "CEBA José Carlos Mariátegui", "Av. Grau 234, Ica");
+    jdbcTemplate.update(
+        "INSERT INTO centros_educativos (nombre, direccion, estado, fecha_creacion, fecha_modificacion) VALUES (?, ?, '1', NOW(), NOW())",
+        "Instituto Superior de Educación Público de Palpa", "Jr. Lima 123, Palpa");
+    jdbcTemplate.update(
+        "INSERT INTO centros_educativos (nombre, direccion, estado, fecha_creacion, fecha_modificacion) VALUES (?, ?, '1', NOW(), NOW())",
+        "Universidad Alas Peruanas - Filial Ica", "Av. Los Maestros 300, Ica");
+
+    log.info("Education centers seeded successfully.");
+  }
+
+  // ============================================================
+  // EVENTOS
+  // ============================================================
+
+  private void seedEventsIfNeeded() {
+    Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM eventos", Long.class);
+    if (count != null && count > 0) {
+      log.info("Events already present. Skipping.");
+      return;
+    }
+
+    Long directorId = null;
+    try {
+      directorId = jdbcTemplate.queryForObject(
+          "SELECT d.id FROM directores d JOIN usuarios u ON d.usuario_id = u.id WHERE u.estado = '1' LIMIT 1",
+          Long.class);
+    } catch (DataAccessException e) {
+      log.warn("No director found to seed events. Skipping events.");
+      return;
+    }
+    if (directorId == null) return;
+
+    List<Map<String, Object>> eventTypes = jdbcTemplate.queryForList(
+        "SELECT id, nombre FROM tipos_evento WHERE estado = '1'");
+    if (eventTypes.isEmpty()) return;
+
+    long feriaTipoId = (Long) eventTypes.stream()
+        .filter(t -> "Feria de Empleo".equals(t.get("nombre"))).findFirst()
+        .map(t -> t.get("id")).orElse(eventTypes.get(0).get("id"));
+    long conferenciaTipoId = (Long) eventTypes.stream()
+        .filter(t -> "Conferencia Tecnológica".equals(t.get("nombre"))).findFirst()
+        .map(t -> t.get("id")).orElse(eventTypes.get(0).get("id"));
+    long workshopTipoId = (Long) eventTypes.stream()
+        .filter(t -> "Workshop de Emprendimiento".equals(t.get("nombre"))).findFirst()
+        .map(t -> t.get("id")).orElse(eventTypes.get(0).get("id"));
+    long seminarioTipoId = (Long) eventTypes.stream()
+        .filter(t -> "Seminario de Liderazgo".equals(t.get("nombre"))).findFirst()
+        .map(t -> t.get("id")).orElse(eventTypes.get(0).get("id"));
+
+    log.info("Seeding mock events...");
+
+    jdbcTemplate.update(
+        "INSERT INTO eventos (nombre, contenido, estado, fecha_evento, enlace_inscripcion, director_id, tipo_evento_id, fecha_creacion, fecha_modificacion) "
+        + "VALUES (?, ?, '1', ?, ?, ?, ?, NOW(), NOW())",
+        "Feria de Empleo Ica 2024",
+        "Gran feria de empleo dirigida a egresados universitarios de la región Ica. Más de 30 empresas participantes de los sectores de tecnología, construcción, agroindustria y servicios.",
+        java.sql.Date.valueOf(LocalDate.of(2024, 8, 15)),
+        "https://egresys.ica.edu.pe/eventos/feria-empleo-2024",
+        directorId, feriaTipoId);
+
+    jdbcTemplate.update(
+        "INSERT INTO eventos (nombre, contenido, estado, fecha_evento, enlace_inscripcion, director_id, tipo_evento_id, fecha_creacion, fecha_modificacion) "
+        + "VALUES (?, ?, '1', ?, ?, ?, ?, NOW(), NOW())",
+        "Conferencia de Innovación Tecnológica 2024",
+        "Conferencia magistral sobre tendencias tecnológicas: Inteligencia Artificial, Cloud Computing y Ciberseguridad. Ponentes nacionales e internacionales del sector tecnológico.",
+        java.sql.Date.valueOf(LocalDate.of(2024, 9, 20)),
+        "https://egresys.ica.edu.pe/eventos/conferencia-tech-2024",
+        directorId, conferenciaTipoId);
+
+    jdbcTemplate.update(
+        "INSERT INTO eventos (nombre, contenido, estado, fecha_evento, enlace_inscripcion, director_id, tipo_evento_id, fecha_creacion, fecha_modificacion) "
+        + "VALUES (?, ?, '1', ?, ?, ?, ?, NOW(), NOW())",
+        "Workshop: Emprendimiento y Startups",
+        "Taller práctico de emprendimiento para egresados que desean iniciar su propio negocio. Incluye mentoría, plan de negocios y acceso a red de inversionistas ángeles de la región.",
+        java.sql.Date.valueOf(LocalDate.of(2024, 10, 5)),
+        "https://egresys.ica.edu.pe/eventos/workshop-emprendimiento",
+        directorId, workshopTipoId);
+
+    jdbcTemplate.update(
+        "INSERT INTO eventos (nombre, contenido, estado, fecha_evento, enlace_inscripcion, director_id, tipo_evento_id, fecha_creacion, fecha_modificacion) "
+        + "VALUES (?, ?, '1', ?, ?, ?, ?, NOW(), NOW())",
+        "Seminario de Liderazgo Profesional",
+        "Seminario orientado al desarrollo de habilidades de liderazgo, comunicación efectiva y gestión de equipos para profesionales jóvenes.",
+        java.sql.Date.valueOf(LocalDate.of(2024, 11, 10)),
+        "https://egresys.ica.edu.pe/eventos/seminario-liderazgo",
+        directorId, seminarioTipoId);
+
+    jdbcTemplate.update(
+        "INSERT INTO eventos (nombre, contenido, estado, fecha_evento, enlace_inscripcion, director_id, tipo_evento_id, fecha_creacion, fecha_modificacion) "
+        + "VALUES (?, ?, '1', ?, ?, ?, ?, NOW(), NOW())",
+        "Feria de Empleo Ica 2025",
+        "Segunda edición de la feria de empleo más importante de la región. Oportunidades laborales en más de 40 empresas del sector público y privado.",
+        java.sql.Date.valueOf(LocalDate.of(2025, 4, 22)),
+        "https://egresys.ica.edu.pe/eventos/feria-empleo-2025",
+        directorId, feriaTipoId);
+
+    log.info("Events seeded successfully.");
+  }
+
+  // ============================================================
+  // TRABAJOS DE EGRESADOS
+  // ============================================================
+
+  private void seedJobsIfNeeded() {
+    Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM trabajos", Long.class);
+    if (count != null && count > 0) {
+      log.info("Jobs already present. Skipping.");
+      return;
+    }
+
+    List<Map<String, Object>> graduates = jdbcTemplate.queryForList(
+        "SELECT g.id, u.nombres FROM graduados g JOIN usuarios u ON g.usuario_id = u.id WHERE u.estado = '1' ORDER BY g.id ASC LIMIT 6");
+    if (graduates.isEmpty()) return;
+
+    log.info("Seeding mock graduate jobs...");
+
+    if (graduates.size() >= 1) {
+      Long gId = toLong(graduates.get(0).get("id"));
+      // Carlos Mendoza — trabaja en tecnología, trabajo actual
+      jdbcTemplate.update(
+          "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
+          + "VALUES (?, ?, ?, '1', ?, null, ?, NOW(), NOW())",
+          "TechIca Solutions SAC", "Desarrollador de Software Junior", "Híbrido",
+          java.sql.Date.valueOf(LocalDate.of(2024, 3, 1)), gId);
+    }
+
+    if (graduates.size() >= 2) {
+      Long gId = toLong(graduates.get(1).get("id"));
+      // Luis García — trabajo anterior y trabajo actual
+      jdbcTemplate.update(
+          "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
+          + "VALUES (?, ?, ?, '1', ?, ?, ?, NOW(), NOW())",
+          "Municipalidad Provincial de Ica", "Practicante de TI", "Presencial",
+          java.sql.Date.valueOf(LocalDate.of(2023, 1, 1)),
+          java.sql.Date.valueOf(LocalDate.of(2023, 12, 31)), gId);
+      jdbcTemplate.update(
+          "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
+          + "VALUES (?, ?, ?, '1', ?, null, ?, NOW(), NOW())",
+          "Municipalidad Provincial de Ica", "Analista de Sistemas", "Presencial",
+          java.sql.Date.valueOf(LocalDate.of(2024, 1, 15)), gId);
+    }
+
+    if (graduates.size() >= 3) {
+      Long gId = toLong(graduates.get(2).get("id"));
+      // Andrés Quispe — freelance
+      jdbcTemplate.update(
+          "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
+          + "VALUES (?, ?, ?, '1', ?, null, ?, NOW(), NOW())",
+          "Independiente", "Desarrollador Web Freelance", "Remoto",
+          java.sql.Date.valueOf(LocalDate.of(2024, 6, 1)), gId);
+    }
+
+    if (graduates.size() >= 4) {
+      Long gId = toLong(graduates.get(3).get("id"));
+      // María López — trabajo en empresa privada
+      jdbcTemplate.update(
+          "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
+          + "VALUES (?, ?, ?, '1', ?, null, ?, NOW(), NOW())",
+          "Inversiones IcaCorp SAC", "Ingeniera de Proyectos TI", "Presencial",
+          java.sql.Date.valueOf(LocalDate.of(2024, 2, 1)), gId);
+    }
+
+    if (graduates.size() >= 5) {
+      Long gId = toLong(graduates.get(4).get("id"));
+      // Ana Castillo — trabajo anterior y actual
+      jdbcTemplate.update(
+          "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
+          + "VALUES (?, ?, ?, '1', ?, ?, ?, NOW(), NOW())",
+          "SUNAT Oficina Ica", "Practicante Profesional", "Presencial",
+          java.sql.Date.valueOf(LocalDate.of(2023, 4, 1)),
+          java.sql.Date.valueOf(LocalDate.of(2023, 12, 31)), gId);
+      jdbcTemplate.update(
+          "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
+          + "VALUES (?, ?, ?, '1', ?, null, ?, NOW(), NOW())",
+          "SUNAT Oficina Ica", "Especialista en Sistemas", "Presencial",
+          java.sql.Date.valueOf(LocalDate.of(2024, 1, 10)), gId);
+    }
+
+    log.info("Graduate jobs seeded successfully.");
+  }
+
+  // ============================================================
+  // OFERTAS LABORALES
+  // ============================================================
+
+  private void seedJobOffersIfNeeded() {
+    Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM ofertas_laborales", Long.class);
+    if (count != null && count > 0) {
+      log.info("Job offers already present. Skipping.");
+      return;
+    }
+
+    List<Map<String, Object>> employers = jdbcTemplate.queryForList(
+        "SELECT e.id, e.razon_social FROM empleadores e ORDER BY e.id ASC LIMIT 2");
+    if (employers.isEmpty()) return;
+
+    log.info("Seeding mock job offers...");
+
+    Long emp1Id = toLong(employers.get(0).get("id")); // TechIca Solutions SAC
+
+    jdbcTemplate.update(
+        "INSERT INTO ofertas_laborales (titulo, descripcion, link, estado, empleador_id, fecha_creacion, fecha_modificacion) "
+        + "VALUES (?, ?, ?, '1', ?, NOW(), NOW())",
+        "Desarrollador Full Stack (Java + Vue.js)",
+        "Buscamos desarrollador Full Stack con experiencia en Java Spring Boot y Vue.js. "
+        + "Requisitos: egresado de Ing. de Sistemas, conocimiento de bases de datos relacionales, "
+        + "trabajo en equipo ágil. Beneficios: seguro médico, horario flexible, trabajo híbrido. Salario: S/ 3,500 - S/ 5,000.",
+        "https://techica.pe/empleos/dev-fullstack",
+        emp1Id);
+
+    jdbcTemplate.update(
+        "INSERT INTO ofertas_laborales (titulo, descripcion, link, estado, empleador_id, fecha_creacion, fecha_modificacion) "
+        + "VALUES (?, ?, ?, '1', ?, NOW(), NOW())",
+        "Analista de Datos e Inteligencia de Negocios",
+        "Se requiere analista de datos con conocimientos en SQL, Power BI o Tableau. "
+        + "Funciones: diseño de dashboards, análisis de KPIs y generación de reportes para la dirección. "
+        + "Modalidad remota. Salario: S/ 2,800 - S/ 3,800.",
+        "https://techica.pe/empleos/analista-datos",
+        emp1Id);
+
+    jdbcTemplate.update(
+        "INSERT INTO ofertas_laborales (titulo, descripcion, link, estado, empleador_id, fecha_creacion, fecha_modificacion) "
+        + "VALUES (?, ?, ?, '1', ?, NOW(), NOW())",
+        "DevOps / Administrador de Servidores Linux",
+        "Perfil DevOps para gestión de infraestructura en la nube (AWS/Azure), CI/CD pipelines y monitoreo de sistemas. "
+        + "Experiencia mínima 1 año. Salario: S/ 4,000 - S/ 6,000.",
+        "https://techica.pe/empleos/devops",
+        emp1Id);
+
+    if (employers.size() >= 2) {
+      Long emp2Id = toLong(employers.get(1).get("id")); // Constructora IcaSur SRL
+
+      jdbcTemplate.update(
+          "INSERT INTO ofertas_laborales (titulo, descripcion, link, estado, empleador_id, fecha_creacion, fecha_modificacion) "
+          + "VALUES (?, ?, ?, '1', ?, NOW(), NOW())",
+          "Ingeniero Residente de Obra",
+          "Se solicita ingeniero civil para supervisión de obras de infraestructura en la región sur. "
+          + "Requisitos: título profesional en Ing. Civil, experiencia en proyectos de construcción, "
+          + "disponibilidad para trabajar en campo. Salario: S/ 4,500 + viáticos.",
+          "https://constructoraicasur.pe/empleos/ing-residente",
+          emp2Id);
+
+      jdbcTemplate.update(
+          "INSERT INTO ofertas_laborales (titulo, descripcion, link, estado, empleador_id, fecha_creacion, fecha_modificacion) "
+          + "VALUES (?, ?, ?, '1', ?, NOW(), NOW())",
+          "Asistente de Ingeniería y Presupuestos",
+          "Asistente para elaboración de presupuestos, metrados y expedientes técnicos. "
+          + "Conocimientos en AutoCAD y S10 indispensables. Recién egresados con ganas de aprender son bienvenidos. "
+          + "Salario: S/ 1,800 - S/ 2,500.",
+          "https://constructoraicasur.pe/empleos/asistente-ing",
+          emp2Id);
+    }
+
+    log.info("Job offers seeded successfully.");
+  }
+
+  // ============================================================
+  // PREGUNTAS DE ENCUESTAS
+  // ============================================================
+
+  private void seedSurveyQuestionsIfNeeded() {
+    Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM preguntas", Long.class);
+    if (count != null && count > 0) {
+      log.info("Survey questions already present. Skipping.");
+      return;
+    }
+
+    List<Map<String, Object>> surveys = jdbcTemplate.queryForList(
+        "SELECT id, titulo FROM encuestas ORDER BY id ASC");
+    if (surveys.isEmpty()) return;
+
+    log.info("Seeding mock survey questions...");
+
+    for (Map<String, Object> survey : surveys) {
+      Long surveyId = toLong(survey.get("id"));
+      String titulo = (String) survey.get("titulo");
+
+      if (titulo != null && titulo.contains("Inserción Laboral")) {
+        seedEmploymentSurveyQuestions(surveyId);
+      } else if (titulo != null && titulo.contains("Satisfacción Académica")) {
+        seedAcademicSurveyQuestions(surveyId);
+      } else if (titulo != null && titulo.contains("Seguimiento")) {
+        seedFollowUpSurveyQuestions(surveyId);
+      }
+    }
+
+    log.info("Survey questions seeded successfully.");
+  }
+
+  private void seedEmploymentSurveyQuestions(Long surveyId) {
+    long q1 = insertQuestion(surveyId, "¿Actualmente se encuentra trabajando?", "YES_NO", true);
+
+    long q2 = insertQuestion(surveyId, "¿En qué sector labora actualmente?", "SINGLE_CHOICE", true);
+    insertOption(q2, "Sector público", 1);
+    insertOption(q2, "Sector privado", 2);
+    insertOption(q2, "Trabajo independiente / freelance", 3);
+    insertOption(q2, "No me encuentro trabajando", 4);
+
+    long q3 = insertQuestion(surveyId, "¿Su trabajo está relacionado con su carrera profesional?", "SINGLE_CHOICE", true);
+    insertOption(q3, "Sí, totalmente relacionado", 1);
+    insertOption(q3, "Sí, parcialmente relacionado", 2);
+    insertOption(q3, "No, es de un área diferente", 3);
+
+    long q4 = insertQuestion(surveyId, "¿Cuánto tiempo le tomó conseguir su primer empleo tras graduarse?", "SINGLE_CHOICE", true);
+    insertOption(q4, "Menos de 3 meses", 1);
+    insertOption(q4, "Entre 3 y 6 meses", 2);
+    insertOption(q4, "Entre 6 y 12 meses", 3);
+    insertOption(q4, "Más de 1 año", 4);
+    insertOption(q4, "Aún no he trabajado", 5);
+
+    long q5 = insertQuestion(surveyId, "¿Cuál es su modalidad de trabajo actual?", "SINGLE_CHOICE", false);
+    insertOption(q5, "Presencial", 1);
+    insertOption(q5, "Remoto", 2);
+    insertOption(q5, "Híbrido", 3);
+    insertOption(q5, "No aplica", 4);
+
+    long q6 = insertQuestion(surveyId, "¿Cuál es su rango salarial mensual aproximado?", "SINGLE_CHOICE", false);
+    insertOption(q6, "Menos de S/ 1,000", 1);
+    insertOption(q6, "S/ 1,000 – S/ 2,000", 2);
+    insertOption(q6, "S/ 2,001 – S/ 3,500", 3);
+    insertOption(q6, "S/ 3,501 – S/ 5,000", 4);
+    insertOption(q6, "Más de S/ 5,000", 5);
+    insertOption(q6, "Prefiero no indicarlo", 6);
+
+    insertQuestion(surveyId, "Describa brevemente sus funciones o actividades laborales actuales", "TEXT", false);
+  }
+
+  private void seedAcademicSurveyQuestions(Long surveyId) {
+    insertQuestion(surveyId,
+        "En general, ¿cuál es su nivel de satisfacción con la formación académica recibida? (1 = Muy insatisfecho, 5 = Muy satisfecho)",
+        "SCALE", true);
+
+    long q2 = insertQuestion(surveyId, "¿La malla curricular fue relevante para el mercado laboral?", "SINGLE_CHOICE", true);
+    insertOption(q2, "Muy relevante", 1);
+    insertOption(q2, "Relevante", 2);
+    insertOption(q2, "Poco relevante", 3);
+    insertOption(q2, "Nada relevante", 4);
+
+    insertQuestion(surveyId,
+        "¿Los docentes demostraron dominio y actualización en sus especialidades? (1 = Muy en desacuerdo, 5 = Muy de acuerdo)",
+        "SCALE", true);
+
+    long q4 = insertQuestion(surveyId, "¿La infraestructura y equipamiento de la universidad fue adecuada?", "SINGLE_CHOICE", true);
+    insertOption(q4, "Excelente", 1);
+    insertOption(q4, "Buena", 2);
+    insertOption(q4, "Regular", 3);
+    insertOption(q4, "Deficiente", 4);
+
+    long q5 = insertQuestion(surveyId, "¿Recomendaría esta carrera a otras personas?", "YES_NO", true);
+
+    insertQuestion(surveyId, "¿Qué aspecto mejoraría de la carrera o de la universidad?", "TEXT", false);
+  }
+
+  private void seedFollowUpSurveyQuestions(Long surveyId) {
+    long q1 = insertQuestion(surveyId, "¿Continúa residiendo en la región Ica?", "YES_NO", true);
+
+    long q2 = insertQuestion(surveyId, "¿Ha iniciado o completado estudios de posgrado?", "SINGLE_CHOICE", true);
+    insertOption(q2, "Sí, actualmente estoy cursando una maestría", 1);
+    insertOption(q2, "Sí, ya completé estudios de posgrado", 2);
+    insertOption(q2, "No, pero planeo hacerlo pronto", 3);
+    insertOption(q2, "No, y no tengo planes por ahora", 4);
+
+    long q3 = insertQuestion(surveyId, "¿Participa en actividades de extensión o redes de egresados de la universidad?", "YES_NO", false);
+
+    insertQuestion(surveyId,
+        "En general, ¿cómo evaluaría su desarrollo profesional desde que se graduó? (1 = Muy insatisfecho, 5 = Muy satisfecho)",
+        "SCALE", true);
+
+    long q5 = insertQuestion(surveyId, "¿Qué tipo de apoyo considera que la universidad debería brindar a sus egresados?", "MULTIPLE_CHOICE", false);
+    insertOption(q5, "Bolsa de trabajo", 1);
+    insertOption(q5, "Cursos de actualización", 2);
+    insertOption(q5, "Certificaciones profesionales", 3);
+    insertOption(q5, "Red de contactos (networking)", 4);
+    insertOption(q5, "Asesoría para emprendimiento", 5);
+  }
+
+  // ============================================================
+  // HELPERS
+  // ============================================================
+
+  private long insertQuestion(Long surveyId, String text, String type, boolean required) {
+    KeyHolder kh = new GeneratedKeyHolder();
+    jdbcTemplate.update(con -> {
+      PreparedStatement ps = con.prepareStatement(
+          "INSERT INTO preguntas (texto_pregunta, tipo_pregunta, requerida, encuesta_id, fecha_creacion, fecha_modificacion) "
+          + "VALUES (?, ?, ?, ?, NOW(), NOW())",
+          Statement.RETURN_GENERATED_KEYS);
+      ps.setString(1, text);
+      ps.setString(2, type);
+      ps.setBoolean(3, required);
+      ps.setLong(4, surveyId);
+      return ps;
+    }, kh);
+    return kh.getKey().longValue();
+  }
+
+  private void insertOption(Long questionId, String text, int order) {
+    jdbcTemplate.update(
+        "INSERT INTO opciones_pregunta (texto_opcion, numero_orden, pregunta_id, fecha_creacion, fecha_modificacion) "
+        + "VALUES (?, ?, ?, NOW(), NOW())",
+        text, order, questionId);
+  }
+
+  private Long toLong(Object value) {
+    if (value instanceof Long l) return l;
+    if (value instanceof Integer i) return i.longValue();
+    if (value instanceof Number n) return n.longValue();
+    return null;
   }
 }
