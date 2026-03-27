@@ -14,7 +14,7 @@ SET NAMES utf8mb4;
 
 INSERT INTO facultades (id, nombre, estado, fecha_creacion, fecha_modificacion)
 VALUES
-    (1, 'Ingenieria civil e ingenieria de sistemas', '1', NOW(), NOW())
+    (1, 'Facultad de ingenieria de Sistemas e Ingeniería Civil', '1', NOW(), NOW())
 ON DUPLICATE KEY UPDATE
     nombre = VALUES(nombre),
     estado = VALUES(estado),
@@ -22,8 +22,7 @@ ON DUPLICATE KEY UPDATE
 
 INSERT INTO escuelas_profesionales (id, facultad_id, nombre, estado, fecha_creacion, fecha_modificacion)
 VALUES
-    (1, 1, 'Ingenieria de sistemas', '1', NOW(), NOW()),
-    (2, 1, 'Ingenieria civil', '1', NOW(), NOW())
+    (1, 1, 'Escuela Académica Profesional de Ingeniería de Sistemas', '1', NOW(), NOW())
 ON DUPLICATE KEY UPDATE
     facultad_id = VALUES(facultad_id),
     nombre = VALUES(nombre),

@@ -55,5 +55,7 @@ public class GraduateRequest extends UserRequest implements Serializable {
 
   private String cvPath;
 
+  private String fotoPath;
+
   private Boolean validated;
 }

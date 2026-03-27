@@ -70,6 +70,9 @@ public class GraduateEntity extends Auditable {
   @Column(name = "ruta_cv")
   private String cvPath;
 
+  @Column(name = "ruta_foto")
+  private String fotoPath;
+
   @Column(name = "validado")
   private Boolean validated = Boolean.TRUE;
 

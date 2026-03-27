@@ -29,5 +29,6 @@ public class GraduateResponse extends UserResponse {
   private List<GraduateComplementaryTrainingResponse> formacionesComplementarias;
   private List<GraduateWorkTrajectoryResponse> trayectoriasLaborales;
   private String cvPath;
+  private String fotoPath;
   private Boolean validated;
 }

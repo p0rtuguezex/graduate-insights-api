@@ -57,6 +57,7 @@ public interface GraduateMapper {
     @Mapping(source = "idiomas", target = "idiomas")
     @Mapping(source = "formacionesComplementarias", target = "formacionesComplementarias")
     @Mapping(source = "trayectoriasLaborales", target = "trayectoriasLaborales")
+  @Mapping(source = "fotoPath", target = "fotoPath")
   @Mapping(source = "validated", target = "validated")
   GraduateResponse toDomain(GraduateEntity graduateEntity);
 
@@ -131,6 +132,7 @@ public interface GraduateMapper {
   @Mapping(target = "user.dni", source = "dni")
   @Mapping(target = "user.celular", source = "celular")
   @Mapping(target = "user.contrasena", source = "contrasena")
+  @Mapping(target = "fotoPath", source = "fotoPath")
   void updateGraduateEntity(
       GraduateRequest graduateRequest, @MappingTarget GraduateEntity graduateEntity);
 }

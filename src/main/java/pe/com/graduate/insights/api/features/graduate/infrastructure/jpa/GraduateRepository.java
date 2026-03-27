@@ -41,7 +41,6 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
   @Query(
       "SELECT g FROM GraduateEntity g "
           + "WHERE g.user.estado = :status "
-          + "AND g.validated = :validated "
           + "AND ("
           + " LOWER(g.user.nombres) LIKE LOWER(CONCAT('%', :search, '%')) OR "
           + " LOWER(g.user.correo) LIKE LOWER(CONCAT('%', :search, '%')) OR "

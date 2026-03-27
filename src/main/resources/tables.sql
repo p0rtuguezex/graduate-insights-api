@@ -560,6 +560,13 @@ SET @ddl = IF(@idx_exists = 0, 'ALTER TABLE usuarios ADD CONSTRAINT uk_usuarios_
 PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
 -- =============================================
+-- Graduate photo path column
+-- =============================================
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'ruta_foto');
+SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN ruta_foto VARCHAR(500)', 'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- =============================================
 -- Email Configuration
 -- =============================================
 CREATE TABLE IF NOT EXISTS configuracion_email (
