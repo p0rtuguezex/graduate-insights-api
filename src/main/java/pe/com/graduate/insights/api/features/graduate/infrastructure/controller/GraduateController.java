@@ -98,7 +98,7 @@ public class GraduateController {
           "Actualiza un graduado existente con la información proporcionada incluyendo el path del CV.")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Graduado actualizado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Graduado actualizado exitosamente"),
         @ApiResponse(responseCode = "400", description = "Datos inválidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
@@ -119,7 +119,7 @@ public class GraduateController {
       description = "Elimina un graduado específico por su ID")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Graduado eliminado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Graduado eliminado exitosamente"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "404", description = "Graduado no encontrado")
@@ -173,7 +173,7 @@ public class GraduateController {
       description = "Habilita la cuenta de un graduado pendiente de aprobación")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Graduado activado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Graduado activado exitosamente"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "404", description = "Graduado no encontrado"),

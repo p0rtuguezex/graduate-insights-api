@@ -96,7 +96,7 @@ public class JobsController {
           "Actualiza un trabajo existente. Los graduados solo pueden actualizar sus propios trabajos.")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Trabajo actualizado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Trabajo actualizado exitosamente"),
         @ApiResponse(responseCode = "400", description = "Datos inválidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
@@ -119,7 +119,7 @@ public class JobsController {
           "Elimina un trabajo específico por su ID. Los graduados solo pueden eliminar sus propios trabajos.")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Trabajo eliminado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Trabajo eliminado exitosamente"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "404", description = "Trabajo no encontrado")

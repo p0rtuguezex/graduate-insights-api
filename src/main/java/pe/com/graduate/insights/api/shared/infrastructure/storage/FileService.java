@@ -39,7 +39,8 @@ public class FileService implements InitializingBean {
   public void afterPropertiesSet() throws Exception {
     this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
     try {
-      Files.createDirectories(this.fileStorageLocation);
+      Files.createDirectories(this.fileStorageLocation.resolve("cv"));
+      Files.createDirectories(this.fileStorageLocation.resolve("images"));
       if (StringUtils.hasText(multipartTmpDir)) {
         Path tmpLocation = Paths.get(multipartTmpDir).toAbsolutePath().normalize();
         Files.createDirectories(tmpLocation);
@@ -48,6 +49,20 @@ public class FileService implements InitializingBean {
       throw new FileException(
           "No se pudo crear el directorio para almacenar archivos: " + uploadDir, ex);
     }
+  }
+
+  private Path getSubDirectory(String fileType) {
+    if ("PHOTO".equalsIgnoreCase(fileType)) {
+      return fileStorageLocation.resolve("images");
+    }
+    return fileStorageLocation.resolve("cv");
+  }
+
+  private Path resolveFilePath(String fileName) {
+    if (fileName.startsWith("PHOTO_")) {
+      return fileStorageLocation.resolve("images").resolve(fileName);
+    }
+    return fileStorageLocation.resolve("cv").resolve(fileName);
   }
 
   public String storeFile(MultipartFile file, String fileType) {
@@ -74,7 +89,7 @@ public class FileService implements InitializingBean {
         throw new FileException("El nombre del archivo contiene caracteres inválidos");
       }
 
-      Path targetLocation = this.fileStorageLocation.resolve(fileName);
+      Path targetLocation = getSubDirectory(fileType).resolve(fileName);
       Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
       return fileName;
@@ -86,7 +101,7 @@ public class FileService implements InitializingBean {
 
   public Resource loadFileAsResource(String fileName) {
     try {
-      Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+      Path filePath = resolveFilePath(fileName).normalize();
       Resource resource = new UrlResource(filePath.toUri());
 
       if (resource.exists()) {
@@ -102,7 +117,7 @@ public class FileService implements InitializingBean {
   public boolean deleteFile(String fileName) {
     if (fileName != null && !fileName.trim().isEmpty()) {
       try {
-        Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+        Path filePath = resolveFilePath(fileName).normalize();
         return Files.deleteIfExists(filePath);
       } catch (IOException ex) {
         throw new FileException("Error al eliminar el archivo: " + fileName, ex);
@@ -115,7 +130,7 @@ public class FileService implements InitializingBean {
     if (fileName == null || fileName.trim().isEmpty()) {
       return false;
     }
-    Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+    Path filePath = resolveFilePath(fileName).normalize();
     return Files.exists(filePath);
   }
 

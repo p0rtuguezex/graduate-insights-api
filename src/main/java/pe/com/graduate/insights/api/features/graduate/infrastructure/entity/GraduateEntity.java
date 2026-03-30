@@ -49,8 +49,17 @@ public class GraduateEntity extends Auditable {
   @Column(name = "departamento")
   private String departamento;
 
+  @Column(name = "provincia")
+  private String provincia;
+
+  @Column(name = "distrito")
+  private String distrito;
+
   @Column(name = "pais_residencia")
   private String paisResidencia;
+
+  @Column(name = "vive_en_peru")
+  private Boolean viveEnPeru = Boolean.TRUE;
 
   @Column(name = "linkedin")
   private String linkedin;

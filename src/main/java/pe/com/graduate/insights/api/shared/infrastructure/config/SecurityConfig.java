@@ -53,6 +53,8 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers("/mail/**")
                     .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/files/download/**")
+                    .permitAll()
                     // Rutas protegidas
                     .requestMatchers("/auth/me")
                     .authenticated()

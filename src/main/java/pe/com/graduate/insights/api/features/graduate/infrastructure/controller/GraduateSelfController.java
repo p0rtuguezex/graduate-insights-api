@@ -61,7 +61,7 @@ public class GraduateSelfController {
       description = "Actualiza los datos del graduado autenticado")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Perfil actualizado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Perfil actualizado exitosamente"),
         @ApiResponse(responseCode = "400", description = "Datos inválidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "404", description = "Graduado no encontrado")

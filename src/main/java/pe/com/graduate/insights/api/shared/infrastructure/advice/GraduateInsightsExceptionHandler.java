@@ -7,6 +7,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -49,9 +50,22 @@ public class GraduateInsightsExceptionHandler {
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ApiResponse<List<String>>> notFoundException(NotFoundException ex) {
-    HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
     List<String> errors = List.of(ex.getMessage());
-    return ResponseUtils.errorResponse(status, errors);
+    return ResponseUtils.errorResponse(HttpStatus.NOT_FOUND, errors);
+  }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<ApiResponse<List<String>>> handleDataIntegrityViolation(
+      DataIntegrityViolationException ex) {
+    String message = "Ya existe un registro con los datos proporcionados.";
+    String cause = ex.getMostSpecificCause().getMessage();
+    if (cause != null && cause.contains("correo")) {
+      message = "El correo electrónico ya se encuentra registrado.";
+    } else if (cause != null && cause.contains("dni")) {
+      message = "El DNI ya se encuentra registrado.";
+    }
+    List<String> errors = List.of(message);
+    return ResponseUtils.errorResponse(HttpStatus.CONFLICT, errors);
   }
 
   @ExceptionHandler(AccountPendingApprovalException.class)

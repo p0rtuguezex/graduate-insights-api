@@ -85,7 +85,7 @@ public class EventController {
       description = "Actualiza un evento existente con la información proporcionada")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Evento actualizado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Evento actualizado exitosamente"),
         @ApiResponse(responseCode = "400", description = "Datos inválidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "404", description = "Evento no encontrado")
@@ -103,7 +103,7 @@ public class EventController {
   @Operation(summary = "Eliminar evento", description = "Elimina un evento específico por su ID")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Evento eliminado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Evento eliminado exitosamente"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "404", description = "Evento no encontrado")
       })

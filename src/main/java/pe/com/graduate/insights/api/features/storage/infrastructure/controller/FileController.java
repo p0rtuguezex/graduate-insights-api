@@ -95,7 +95,7 @@ public class FileController {
       description = "Elimina un archivo del sistema utilizando su path")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Archivo eliminado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Archivo eliminado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Archivo no encontrado"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado")

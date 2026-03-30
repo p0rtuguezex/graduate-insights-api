@@ -91,7 +91,7 @@ public class EducationCenterController {
   @ApiResponses(
       value = {
         @ApiResponse(
-            responseCode = "200",
+            responseCode = "204",
             description = "Centro educativo actualizado exitosamente"),
         @ApiResponse(responseCode = "400", description = "Datos inv\u00e1lidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
@@ -114,7 +114,7 @@ public class EducationCenterController {
       description = "Elimina un centro educativo espec\u00edfico por su ID")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Centro educativo eliminado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Centro educativo eliminado exitosamente"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "404", description = "Centro educativo no encontrado")

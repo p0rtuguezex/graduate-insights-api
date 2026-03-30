@@ -173,7 +173,10 @@ public class GraduateRepositoryAdapter
     graduateRepository
         .findByIdAndUserEstado(id, ConstantsUtils.STATUS_ACTIVE)
         .ifPresentOrElse(
-            graduate -> graduateRepository.deactivateUserByGraduateId(id),
+            graduate -> {
+              graduateRepository.mangleEmailByGraduateId(id);
+              graduateRepository.deactivateUserByGraduateId(id);
+            },
             () -> {
               throw new NotFoundException(String.format(ConstantsUtils.GRADUATE_NOT_FOUND, id));
             });

@@ -74,6 +74,15 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
       "UPDATE UserEntity u SET u.estado = '0' WHERE u.id = (SELECT g.user.id FROM GraduateEntity g WHERE g.id = :graduateId)")
   void deactivateUserByGraduateId(@Param("graduateId") Long graduateId);
 
+  @Transactional
+  @Modifying
+  @Query(
+      value = "UPDATE usuarios u INNER JOIN graduados g ON g.usuario_id = u.id"
+          + " SET u.correo = CONCAT(u.correo, '_deleted_', g.id)"
+          + " WHERE g.id = :graduateId",
+      nativeQuery = true)
+  void mangleEmailByGraduateId(@Param("graduateId") Long graduateId);
+
   @Query("SELECT COUNT(g) FROM GraduateEntity g WHERE g.user.estado = :estado")
   Long countByUserEstado(@Param("estado") String estado);
 }

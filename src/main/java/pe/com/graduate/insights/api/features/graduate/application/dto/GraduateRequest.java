@@ -33,7 +33,13 @@ public class GraduateRequest extends UserRequest implements Serializable {
 
   private String departamento;
 
+  private String provincia;
+
+  private String distrito;
+
   private String paisResidencia;
+
+  private Boolean viveEnPeru;
 
   private String linkedin;
 

@@ -43,7 +43,7 @@ springdoc:
 
 app:
   file:
-    upload-dir: ${APP_FILE_UPLOAD_DIR:./uploads/cv}
+    upload-dir: ${APP_FILE_UPLOAD_DIR:./uploads}
   seed:
     admin-email: ${APP_SEED_ADMIN_EMAIL:director@university.edu}
     admin-password: ${APP_SEED_ADMIN_PASSWORD:Director123*}

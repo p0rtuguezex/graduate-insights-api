@@ -86,7 +86,7 @@ public class UserController {
       description = "Actualiza un usuario existente con la información proporcionada")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Usuario actualizado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Usuario actualizado exitosamente"),
         @ApiResponse(responseCode = "400", description = "Datos inválidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
@@ -105,7 +105,7 @@ public class UserController {
   @Operation(summary = "Eliminar usuario", description = "Elimina un usuario específico por su ID")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Usuario eliminado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Usuario eliminado exitosamente"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "404", description = "Usuario no encontrado")

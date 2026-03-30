@@ -18,7 +18,10 @@ public class GraduateResponse extends UserResponse {
   private String direccionActual;
   private String ciudad;
   private String departamento;
+  private String provincia;
+  private String distrito;
   private String paisResidencia;
+  private Boolean viveEnPeru;
   private String linkedin;
   private String portafolio;
   private Long escuelaProfesionalId;

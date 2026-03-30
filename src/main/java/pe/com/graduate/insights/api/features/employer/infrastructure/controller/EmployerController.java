@@ -89,7 +89,7 @@ public class EmployerController {
       description = "Actualiza un empleador existente con la información proporcionada")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Empleador actualizado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Empleador actualizado exitosamente"),
         @ApiResponse(responseCode = "400", description = "Datos inválidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
@@ -110,7 +110,7 @@ public class EmployerController {
       description = "Elimina un empleador específico por su ID")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Empleador eliminado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Empleador eliminado exitosamente"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "404", description = "Empleador no encontrado")

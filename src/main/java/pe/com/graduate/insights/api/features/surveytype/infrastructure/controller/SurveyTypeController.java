@@ -92,7 +92,7 @@ public class SurveyTypeController {
   @ApiResponses(
       value = {
         @ApiResponse(
-            responseCode = "200",
+            responseCode = "204",
             description = "Tipo de encuesta actualizado exitosamente"),
         @ApiResponse(responseCode = "400", description = "Datos invalidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
@@ -115,7 +115,7 @@ public class SurveyTypeController {
       description = "Elimina un tipo de encuesta especifico por su ID")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Tipo de encuesta eliminado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Tipo de encuesta eliminado exitosamente"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "404", description = "Tipo de encuesta no encontrado")

@@ -89,7 +89,7 @@ public class DirectorController {
       description = "Actualiza un director existente con la información proporcionada")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Director actualizado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Director actualizado exitosamente"),
         @ApiResponse(responseCode = "400", description = "Datos inválidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
@@ -110,7 +110,7 @@ public class DirectorController {
       description = "Elimina un director específico por su ID")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Director eliminado exitosamente"),
+        @ApiResponse(responseCode = "204", description = "Director eliminado exitosamente"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "404", description = "Director no encontrado")

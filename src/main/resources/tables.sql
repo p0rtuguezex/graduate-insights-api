@@ -92,7 +92,10 @@ CREATE TABLE IF NOT EXISTS graduados (
     direccion_actual VARCHAR(150),
     ciudad VARCHAR(80),
     departamento VARCHAR(80),
+    provincia VARCHAR(80),
+    distrito VARCHAR(80),
     pais_residencia VARCHAR(80),
+    vive_en_peru BOOLEAN DEFAULT TRUE,
     linkedin VARCHAR(255),
     portafolio VARCHAR(255),
     escuela_profesional_id BIGINT,
@@ -565,6 +568,31 @@ PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'ruta_foto');
 SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN ruta_foto VARCHAR(500)', 'SELECT 1');
 PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- =============================================
+-- Graduate residence location columns
+-- =============================================
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'provincia');
+SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN provincia VARCHAR(80)', 'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'distrito');
+SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN distrito VARCHAR(80)', 'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'graduados' AND COLUMN_NAME = 'vive_en_peru');
+SET @ddl = IF(@col_exists = 0, 'ALTER TABLE graduados ADD COLUMN vive_en_peru BOOLEAN DEFAULT TRUE', 'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- =============================================
+-- Fix: mangle email for already soft-deleted users without suffix
+-- Ensures re-registration with the same email is possible
+-- =============================================
+UPDATE usuarios u
+INNER JOIN graduados g ON g.usuario_id = u.id
+SET u.correo = CONCAT(u.correo, '_deleted_', g.id)
+WHERE u.estado = '0'
+  AND u.correo NOT LIKE '%\_deleted\_%' ESCAPE '\\';
 
 -- =============================================
 -- Email Configuration
