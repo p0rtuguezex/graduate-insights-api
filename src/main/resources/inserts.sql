@@ -65,7 +65,7 @@ ON DUPLICATE KEY UPDATE
 
 INSERT INTO universidades (id, nombre, estado, fecha_creacion, fecha_modificacion)
 VALUES
-    (1, 'Universidad Nacional San Luis Gonzaga', '1', NOW(), NOW())
+    (1, 'Universidad Nacional de Ucayali', '1', NOW(), NOW())
 ON DUPLICATE KEY UPDATE
     nombre = VALUES(nombre),
     estado = VALUES(estado),

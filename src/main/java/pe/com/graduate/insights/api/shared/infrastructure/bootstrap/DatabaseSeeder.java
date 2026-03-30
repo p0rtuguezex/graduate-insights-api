@@ -45,8 +45,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         "escuelas_profesionales",
         "tipos_grado",
         "modalidades_titulacion",
-        "idiomas_catalogo",
-        "universidades");
+        "idiomas_catalogo");
 
   private final JdbcTemplate jdbcTemplate;
   private final DataSource dataSource;
@@ -75,9 +74,10 @@ public class DatabaseSeeder implements CommandLineRunner {
   public void run(String... args) {
     seedCatalogDataIfNeeded();
     seedAcademicCatalogDataIfNeeded();
+    seedUniversitiesAlways();
     ensureAdminDirector();
     seedMockDataIfNeeded();
-    seedEducationCentersIfNeeded();
+    seedEducationCentersAlways();
     seedEventsIfNeeded();
     seedJobsIfNeeded();
     seedJobOffersIfNeeded();
@@ -164,11 +164,110 @@ public class DatabaseSeeder implements CommandLineRunner {
         ON DUPLICATE KEY UPDATE codigo = VALUES(codigo), nombre = VALUES(nombre), estado = VALUES(estado), fecha_modificacion = NOW()
         """);
 
+    // universidades se sincronizan en seedUniversitiesAlways()
+  }
+
+  private void seedUniversitiesAlways() {
+    log.info("Syncing universities catalog...");
     jdbcTemplate.execute(
         """
         INSERT INTO universidades (id, nombre, estado, fecha_creacion, fecha_modificacion)
         VALUES
-          (1, 'Universidad Nacional San Luis Gonzaga', '1', NOW(), NOW())
+          (1,  'Universidad Nacional San Luis Gonzaga', '1', NOW(), NOW()),
+          (2,  'Universidad Nacional Mayor de San Marcos', '1', NOW(), NOW()),
+          (3,  'Universidad Nacional de Ingeniería', '1', NOW(), NOW()),
+          (4,  'Universidad Nacional Agraria La Molina', '1', NOW(), NOW()),
+          (5,  'Universidad Nacional Federico Villarreal', '1', NOW(), NOW()),
+          (6,  'Universidad Nacional de Educación Enrique Guzmán y Valle', '1', NOW(), NOW()),
+          (7,  'Universidad Nacional del Callao', '1', NOW(), NOW()),
+          (8,  'Universidad Nacional de San Agustín de Arequipa', '1', NOW(), NOW()),
+          (9,  'Universidad Nacional de Trujillo', '1', NOW(), NOW()),
+          (10, 'Universidad Nacional de Piura', '1', NOW(), NOW()),
+          (11, 'Universidad Nacional de la Amazonía Peruana', '1', NOW(), NOW()),
+          (12, 'Universidad Nacional San Cristóbal de Huamanga', '1', NOW(), NOW()),
+          (13, 'Universidad Nacional del Centro del Perú', '1', NOW(), NOW()),
+          (14, 'Universidad Nacional de San Antonio Abad del Cusco', '1', NOW(), NOW()),
+          (15, 'Universidad Nacional del Altiplano', '1', NOW(), NOW()),
+          (16, 'Universidad Nacional de Cajamarca', '1', NOW(), NOW()),
+          (17, 'Universidad Nacional Hermilio Valdizán', '1', NOW(), NOW()),
+          (18, 'Universidad Nacional de San Martín', '1', NOW(), NOW()),
+          (19, 'Universidad Nacional José Faustino Sánchez Carrión', '1', NOW(), NOW()),
+          (20, 'Universidad Nacional Santiago Antúnez de Mayolo', '1', NOW(), NOW()),
+          (21, 'Universidad Nacional de Ucayali', '1', NOW(), NOW()),
+          (22, 'Universidad Nacional de Huancavelica', '1', NOW(), NOW()),
+          (23, 'Universidad Nacional Toribio Rodríguez de Mendoza de Amazonas', '1', NOW(), NOW()),
+          (24, 'Universidad Nacional de Moquegua', '1', NOW(), NOW()),
+          (25, 'Universidad Nacional de Tumbes', '1', NOW(), NOW()),
+          (26, 'Universidad Nacional Intercultural de la Amazonía', '1', NOW(), NOW()),
+          (27, 'Universidad Nacional de Barranca', '1', NOW(), NOW()),
+          (28, 'Universidad Nacional de Cañete', '1', NOW(), NOW()),
+          (29, 'Universidad Nacional de Juliaca', '1', NOW(), NOW()),
+          (30, 'Universidad Nacional de Jaén', '1', NOW(), NOW()),
+          (31, 'Universidad Nacional Autónoma de Chota', '1', NOW(), NOW()),
+          (32, 'Universidad Nacional Intercultural Fabiola Salazar Leguía de Bagua', '1', NOW(), NOW()),
+          (33, 'Universidad Nacional de Frontera', '1', NOW(), NOW()),
+          (34, 'Universidad Nacional Autónoma de Alto Amazonas', '1', NOW(), NOW()),
+          (35, 'Universidad Nacional de Tayacaja Daniel Hernández Morillo', '1', NOW(), NOW()),
+          (36, 'Universidad Nacional Amazónica de Madre de Dios', '1', NOW(), NOW()),
+          (37, 'Universidad Nacional Autónoma de Huanta', '1', NOW(), NOW()),
+          (38, 'Pontificia Universidad Católica del Perú', '1', NOW(), NOW()),
+          (39, 'Universidad Peruana Cayetano Heredia', '1', NOW(), NOW()),
+          (40, 'Universidad de Lima', '1', NOW(), NOW()),
+          (41, 'Universidad del Pacífico', '1', NOW(), NOW()),
+          (42, 'Universidad ESAN', '1', NOW(), NOW()),
+          (43, 'Universidad San Ignacio de Loyola', '1', NOW(), NOW()),
+          (44, 'Universidad Científica del Sur', '1', NOW(), NOW()),
+          (45, 'Universidad de San Martín de Porres', '1', NOW(), NOW()),
+          (46, 'Universidad Privada del Norte', '1', NOW(), NOW()),
+          (47, 'Universidad César Vallejo', '1', NOW(), NOW()),
+          (48, 'Universidad Continental', '1', NOW(), NOW()),
+          (49, 'Universidad Tecnológica del Perú', '1', NOW(), NOW()),
+          (50, 'Universidad Peruana de Ciencias Aplicadas', '1', NOW(), NOW()),
+          (51, 'Universidad Peruana Los Andes', '1', NOW(), NOW()),
+          (52, 'Universidad Andina del Cusco', '1', NOW(), NOW()),
+          (53, 'Universidad Católica de Santa María', '1', NOW(), NOW()),
+          (54, 'Universidad Católica San Pablo', '1', NOW(), NOW()),
+          (55, 'Universidad Privada San Pedro', '1', NOW(), NOW()),
+          (56, 'Universidad Privada Antenor Orrego', '1', NOW(), NOW()),
+          (57, 'Universidad Señor de Sipán', '1', NOW(), NOW()),
+          (58, 'Universidad de Chiclayo', '1', NOW(), NOW()),
+          (59, 'Universidad Alas Peruanas', '1', NOW(), NOW()),
+          (60, 'Universidad Autónoma del Perú', '1', NOW(), NOW()),
+          (61, 'Universidad Norbert Wiener', '1', NOW(), NOW()),
+          (62, 'Universidad Inca Garcilaso de la Vega', '1', NOW(), NOW()),
+          (63, 'Universidad Ricardo Palma', '1', NOW(), NOW()),
+          (64, 'Universidad Marcelino Champagnat', '1', NOW(), NOW()),
+          (65, 'Universidad Femenina del Sagrado Corazón', '1', NOW(), NOW()),
+          (66, 'Universidad Antonio Ruiz de Montoya', '1', NOW(), NOW()),
+          (67, 'Universidad Le Cordon Bleu', '1', NOW(), NOW()),
+          (68, 'Universidad Privada de Huancayo Franklin Roosevelt', '1', NOW(), NOW()),
+          (69, 'Universidad Católica Los Ángeles de Chimbote', '1', NOW(), NOW()),
+          (70, 'Universidad Privada de Tacna', '1', NOW(), NOW()),
+          (71, 'Universidad San Pedro', '1', NOW(), NOW()),
+          (72, 'Universidad de Piura', '1', NOW(), NOW()),
+          (73, 'Universidad Católica Santo Toribio de Mogrovejo', '1', NOW(), NOW()),
+          (74, 'Universidad de Huánuco', '1', NOW(), NOW()),
+          (75, 'Universidad Privada de Pucallpa', '1', NOW(), NOW()),
+          (76, 'Universidad Peruana Unión', '1', NOW(), NOW()),
+          (77, 'Universidad Adventista de la Selva', '1', NOW(), NOW()),
+          (78, 'Universidad Peruana del Oriente', '1', NOW(), NOW()),
+          (79, 'Universidad Tecnológica de los Andes', '1', NOW(), NOW()),
+          (80, 'Universidad Andina Néstor Cáceres Velásquez', '1', NOW(), NOW()),
+          (81, 'Universidad de Ciencias y Humanidades', '1', NOW(), NOW()),
+          (82, 'Universidad Privada San Carlos', '1', NOW(), NOW()),
+          (83, 'Universidad María Auxiliadora', '1', NOW(), NOW()),
+          (84, 'Universidad de Lambayeque', '1', NOW(), NOW()),
+          (85, 'Universidad Privada Sergio Bernales', '1', NOW(), NOW()),
+          (86, 'Universidad Privada Leonardo Da Vinci', '1', NOW(), NOW()),
+          (87, 'Universidad Peruana de Arte Orval', '1', NOW(), NOW()),
+          (88, 'Universidad Privada Juan Pablo II', '1', NOW(), NOW()),
+          (89, 'Universidad para el Desarrollo Andino', '1', NOW(), NOW()),
+          (90, 'Universidad Privada de Ica', '1', NOW(), NOW()),
+          (91, 'Universidad Privada Telesup', '1', NOW(), NOW()),
+          (92, 'Universidad de Las Américas', '1', NOW(), NOW()),
+          (93, 'Universidad Global del Cusco', '1', NOW(), NOW()),
+          (94, 'Universidad Interamericana para el Desarrollo', '1', NOW(), NOW()),
+          (95, 'Universidad Privada del Cusco', '1', NOW(), NOW())
         ON DUPLICATE KEY UPDATE nombre = VALUES(nombre), estado = VALUES(estado), fecha_modificacion = NOW()
         """);
   }
@@ -383,31 +482,113 @@ public class DatabaseSeeder implements CommandLineRunner {
   // CENTROS EDUCATIVOS
   // ============================================================
 
-  private void seedEducationCentersIfNeeded() {
-    Long count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM centros_educativos", Long.class);
-    if (count != null && count > 0) {
-      log.info("Education centers already present. Skipping.");
-      return;
-    }
-
-    log.info("Seeding mock education centers...");
-    jdbcTemplate.update(
-        "INSERT INTO centros_educativos (nombre, direccion, estado, fecha_creacion, fecha_modificacion) VALUES (?, ?, '1', NOW(), NOW())",
-        "Universidad Nacional San Luis Gonzaga", "Av. San Carlos 1099, Ica");
-    jdbcTemplate.update(
-        "INSERT INTO centros_educativos (nombre, direccion, estado, fecha_creacion, fecha_modificacion) VALUES (?, ?, '1', NOW(), NOW())",
-        "Instituto Superior Tecnológico Público de Ica", "Calle Bolívar 456, Ica");
-    jdbcTemplate.update(
-        "INSERT INTO centros_educativos (nombre, direccion, estado, fecha_creacion, fecha_modificacion) VALUES (?, ?, '1', NOW(), NOW())",
-        "CEBA José Carlos Mariátegui", "Av. Grau 234, Ica");
-    jdbcTemplate.update(
-        "INSERT INTO centros_educativos (nombre, direccion, estado, fecha_creacion, fecha_modificacion) VALUES (?, ?, '1', NOW(), NOW())",
-        "Instituto Superior de Educación Público de Palpa", "Jr. Lima 123, Palpa");
-    jdbcTemplate.update(
-        "INSERT INTO centros_educativos (nombre, direccion, estado, fecha_creacion, fecha_modificacion) VALUES (?, ?, '1', NOW(), NOW())",
-        "Universidad Alas Peruanas - Filial Ica", "Av. Los Maestros 300, Ica");
-
-    log.info("Education centers seeded successfully.");
+  private void seedEducationCentersAlways() {
+    log.info("Syncing education centers...");
+    jdbcTemplate.execute(
+        """
+        INSERT IGNORE INTO centros_educativos (nombre, direccion, estado, fecha_creacion, fecha_modificacion)
+        VALUES
+          ('Universidad Nacional San Luis Gonzaga', 'Ica', '1', NOW(), NOW()),
+          ('Universidad Nacional Mayor de San Marcos', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Nacional de Ingeniería', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Nacional Agraria La Molina', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Nacional Federico Villarreal', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Nacional de Educación Enrique Guzmán y Valle', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Nacional del Callao', 'Callao', '1', NOW(), NOW()),
+          ('Universidad Nacional de San Agustín de Arequipa', 'Arequipa', '1', NOW(), NOW()),
+          ('Universidad Nacional de Trujillo', 'La Libertad', '1', NOW(), NOW()),
+          ('Universidad Nacional de Piura', 'Piura', '1', NOW(), NOW()),
+          ('Universidad Nacional de la Amazonía Peruana', 'Loreto', '1', NOW(), NOW()),
+          ('Universidad Nacional San Cristóbal de Huamanga', 'Ayacucho', '1', NOW(), NOW()),
+          ('Universidad Nacional del Centro del Perú', 'Junín', '1', NOW(), NOW()),
+          ('Universidad Nacional de San Antonio Abad del Cusco', 'Cusco', '1', NOW(), NOW()),
+          ('Universidad Nacional del Altiplano', 'Puno', '1', NOW(), NOW()),
+          ('Universidad Nacional de Cajamarca', 'Cajamarca', '1', NOW(), NOW()),
+          ('Universidad Nacional Hermilio Valdizán', 'Huánuco', '1', NOW(), NOW()),
+          ('Universidad Nacional de San Martín', 'San Martín', '1', NOW(), NOW()),
+          ('Universidad Nacional José Faustino Sánchez Carrión', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Nacional Santiago Antúnez de Mayolo', 'Ancash', '1', NOW(), NOW()),
+          ('Universidad Nacional de Ucayali', 'Ucayali', '1', NOW(), NOW()),
+          ('Universidad Nacional de Huancavelica', 'Huancavelica', '1', NOW(), NOW()),
+          ('Universidad Nacional Toribio Rodríguez de Mendoza de Amazonas', 'Amazonas', '1', NOW(), NOW()),
+          ('Universidad Nacional de Moquegua', 'Moquegua', '1', NOW(), NOW()),
+          ('Universidad Nacional de Tumbes', 'Tumbes', '1', NOW(), NOW()),
+          ('Universidad Nacional Intercultural de la Amazonía', 'Ucayali', '1', NOW(), NOW()),
+          ('Universidad Nacional de Barranca', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Nacional de Cañete', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Nacional de Juliaca', 'Puno', '1', NOW(), NOW()),
+          ('Universidad Nacional de Jaén', 'Cajamarca', '1', NOW(), NOW()),
+          ('Universidad Nacional Autónoma de Chota', 'Cajamarca', '1', NOW(), NOW()),
+          ('Universidad Nacional Intercultural Fabiola Salazar Leguía de Bagua', 'Amazonas', '1', NOW(), NOW()),
+          ('Universidad Nacional de Frontera', 'Loreto', '1', NOW(), NOW()),
+          ('Universidad Nacional Autónoma de Alto Amazonas', 'Loreto', '1', NOW(), NOW()),
+          ('Universidad Nacional de Tayacaja Daniel Hernández Morillo', 'Huancavelica', '1', NOW(), NOW()),
+          ('Universidad Nacional Amazónica de Madre de Dios', 'Madre de Dios', '1', NOW(), NOW()),
+          ('Universidad Nacional Autónoma de Huanta', 'Ayacucho', '1', NOW(), NOW()),
+          ('Pontificia Universidad Católica del Perú', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Peruana Cayetano Heredia', 'Lima', '1', NOW(), NOW()),
+          ('Universidad de Lima', 'Lima', '1', NOW(), NOW()),
+          ('Universidad del Pacífico', 'Lima', '1', NOW(), NOW()),
+          ('Universidad ESAN', 'Lima', '1', NOW(), NOW()),
+          ('Universidad San Ignacio de Loyola', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Científica del Sur', 'Lima', '1', NOW(), NOW()),
+          ('Universidad de San Martín de Porres', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Privada del Norte', 'La Libertad', '1', NOW(), NOW()),
+          ('Universidad César Vallejo', 'La Libertad', '1', NOW(), NOW()),
+          ('Universidad Continental', 'Junín', '1', NOW(), NOW()),
+          ('Universidad Tecnológica del Perú', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Peruana de Ciencias Aplicadas', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Peruana Los Andes', 'Junín', '1', NOW(), NOW()),
+          ('Universidad Andina del Cusco', 'Cusco', '1', NOW(), NOW()),
+          ('Universidad Católica de Santa María', 'Arequipa', '1', NOW(), NOW()),
+          ('Universidad Católica San Pablo', 'Arequipa', '1', NOW(), NOW()),
+          ('Universidad Privada San Pedro', 'Ancash', '1', NOW(), NOW()),
+          ('Universidad Privada Antenor Orrego', 'La Libertad', '1', NOW(), NOW()),
+          ('Universidad Señor de Sipán', 'Lambayeque', '1', NOW(), NOW()),
+          ('Universidad de Chiclayo', 'Lambayeque', '1', NOW(), NOW()),
+          ('Universidad Alas Peruanas', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Autónoma del Perú', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Norbert Wiener', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Inca Garcilaso de la Vega', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Ricardo Palma', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Marcelino Champagnat', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Femenina del Sagrado Corazón', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Antonio Ruiz de Montoya', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Le Cordon Bleu', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Privada de Huancayo Franklin Roosevelt', 'Junín', '1', NOW(), NOW()),
+          ('Universidad Católica Los Ángeles de Chimbote', 'Ancash', '1', NOW(), NOW()),
+          ('Universidad Privada de Tacna', 'Tacna', '1', NOW(), NOW()),
+          ('Universidad San Pedro', 'Ancash', '1', NOW(), NOW()),
+          ('Universidad de Piura', 'Piura', '1', NOW(), NOW()),
+          ('Universidad Católica Santo Toribio de Mogrovejo', 'Lambayeque', '1', NOW(), NOW()),
+          ('Universidad de Huánuco', 'Huánuco', '1', NOW(), NOW()),
+          ('Universidad Privada de Pucallpa', 'Ucayali', '1', NOW(), NOW()),
+          ('Universidad Peruana Unión', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Adventista de la Selva', 'San Martín', '1', NOW(), NOW()),
+          ('Universidad Peruana del Oriente', 'Loreto', '1', NOW(), NOW()),
+          ('Universidad Tecnológica de los Andes', 'Apurímac', '1', NOW(), NOW()),
+          ('Universidad Andina Néstor Cáceres Velásquez', 'Puno', '1', NOW(), NOW()),
+          ('Universidad de Ciencias y Humanidades', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Privada San Carlos', 'Puno', '1', NOW(), NOW()),
+          ('Universidad María Auxiliadora', 'Lima', '1', NOW(), NOW()),
+          ('Universidad de Lambayeque', 'Lambayeque', '1', NOW(), NOW()),
+          ('Universidad Privada Sergio Bernales', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Privada Leonardo Da Vinci', 'La Libertad', '1', NOW(), NOW()),
+          ('Universidad Peruana de Arte Orval', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Privada Juan Pablo II', 'Lima', '1', NOW(), NOW()),
+          ('Universidad para el Desarrollo Andino', 'Huancavelica', '1', NOW(), NOW()),
+          ('Universidad Privada de Ica', 'Ica', '1', NOW(), NOW()),
+          ('Universidad Privada Telesup', 'Lima', '1', NOW(), NOW()),
+          ('Universidad de Las Américas', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Global del Cusco', 'Cusco', '1', NOW(), NOW()),
+          ('Universidad Interamericana para el Desarrollo', 'Lima', '1', NOW(), NOW()),
+          ('Universidad Privada del Cusco', 'Cusco', '1', NOW(), NOW()),
+          ('Instituto Superior Tecnológico Público de Ica', 'Ica', '1', NOW(), NOW()),
+          ('CEBA José Carlos Mariátegui', 'Ica', '1', NOW(), NOW()),
+          ('Instituto Superior de Educación Público de Palpa', 'Ica', '1', NOW(), NOW()),
+          ('Universidad Alas Peruanas - Filial Ica', 'Ica', '1', NOW(), NOW())
+        """);
+    log.info("Education centers synced successfully.");
   }
 
   // ============================================================

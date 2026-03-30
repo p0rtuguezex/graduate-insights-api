@@ -1,17 +1,21 @@
 package pe.com.graduate.insights.api.features.graduate.infrastructure.controller;
 
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.features.graduate.application.dto.CatalogOptionResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.FacultyCatalogResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.ProfessionalSchoolCatalogResponse;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.UniversityEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.DegreeTypeRepository;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.FacultyRepository;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.LanguageCatalogRepository;
@@ -121,5 +125,26 @@ public class GraduateCatalogController {
                         .build())
             .toList();
     return new ResponseEntity<>(result, HttpStatus.OK);
+  }
+
+  @PostMapping("/universities")
+  public ResponseEntity<CatalogOptionResponse> createUniversity(@RequestBody Map<String, String> body) {
+    String nombre = body.getOrDefault("nombre", "").trim();
+    if (nombre.isEmpty()) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    return universityRepository.findByNombreIgnoreCase(nombre)
+        .map(existing -> new ResponseEntity<>(
+            CatalogOptionResponse.builder().id(existing.getId()).nombre(existing.getNombre()).build(),
+            HttpStatus.OK))
+        .orElseGet(() -> {
+          UniversityEntity entity = new UniversityEntity();
+          entity.setNombre(nombre);
+          entity.setEstado(ConstantsUtils.STATUS_ACTIVE);
+          UniversityEntity saved = universityRepository.save(entity);
+          return new ResponseEntity<>(
+              CatalogOptionResponse.builder().id(saved.getId()).nombre(saved.getNombre()).build(),
+              HttpStatus.CREATED);
+        });
   }
 }

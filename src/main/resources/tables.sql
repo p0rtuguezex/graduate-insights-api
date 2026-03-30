@@ -607,3 +607,17 @@ CREATE TABLE IF NOT EXISTS configuracion_email (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- =============================================
+-- Unique key en centros_educativos.nombre
+-- =============================================
+SET @idx_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS
+  WHERE TABLE_SCHEMA = DATABASE()
+  AND TABLE_NAME = 'centros_educativos'
+  AND INDEX_NAME = 'uk_centros_educativos_nombre');
+SET @ddl = IF(@idx_exists = 0,
+  'ALTER TABLE centros_educativos ADD UNIQUE KEY uk_centros_educativos_nombre (nombre)',
+  'SELECT 1');
+PREPARE stmt FROM @ddl;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
