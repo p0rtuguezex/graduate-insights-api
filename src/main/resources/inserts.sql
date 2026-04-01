@@ -109,8 +109,8 @@ VALUES
 
 INSERT INTO tipos_encuesta (nombre, descripcion, activo, fecha_creacion, fecha_modificacion)
 VALUES
-    ('EMPLOYMENT', 'Encuestas relacionadas con el empleo y situación laboral de egresados', true, NOW(), NOW()),
-    ('ACADEMIC', 'Encuestas sobre formación académica y desarrollo profesional', true, NOW(), NOW()),
-    ('SATISFACTION', 'Encuestas de satisfacción y experiencia estudiantil', true, NOW(), NOW()),
-    ('ENTREPRENEURSHIP', 'Encuestas sobre emprendimiento y creación de empresas', true, NOW(), NOW());
+    ('EMPLEO', 'Encuestas relacionadas con el empleo y situación laboral de egresados', true, NOW(), NOW()),
+    ('ACADÉMICO', 'Encuestas sobre formación académica y desarrollo profesional', true, NOW(), NOW()),
+    ('SATISFACCIÓN', 'Encuestas de satisfacción y experiencia estudiantil', true, NOW(), NOW()),
+    ('EMPRENDIMIENTO', 'Encuestas sobre emprendimiento y creación de empresas', true, NOW(), NOW());
 
