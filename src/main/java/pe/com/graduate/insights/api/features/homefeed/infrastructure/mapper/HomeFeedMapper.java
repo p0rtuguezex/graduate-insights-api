@@ -27,6 +27,8 @@ public interface HomeFeedMapper {
   @Mapping(expression = "java(null)", target = "empresa")
   @Mapping(expression = "java(null)", target = "salario")
   @Mapping(expression = "java(null)", target = "ubicacion")
+  @Mapping(expression = "java(null)", target = "link")
+  @Mapping(source = "enlaceInscripcion", target = "enlaceInscripcion")
   HomeFeedResponse eventToHomeFeed(EventEntity event);
 
   @Mapping(source = "id", target = "id")
@@ -44,6 +46,8 @@ public interface HomeFeedMapper {
   @Mapping(source = "employer.razonSocial", target = "empresa")
   @Mapping(expression = "java(null)", target = "salario")
   @Mapping(expression = "java(null)", target = "ubicacion")
+  @Mapping(source = "link", target = "link")
+  @Mapping(expression = "java(null)", target = "enlaceInscripcion")
   HomeFeedResponse jobOfferToHomeFeed(JobOffersEntity jobOffer);
 }
 

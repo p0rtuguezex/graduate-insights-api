@@ -399,9 +399,11 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
             .responseRate(totalResponses > 0 ? 100.0 : 0.0);
 
     switch (question.getQuestionType()) {
+      case YES_NO:
+        applyYesNoQuestionStatistics(builder, question.getId(), totalResponses);
+        break;
       case SINGLE_CHOICE:
       case MULTIPLE_CHOICE:
-      case YES_NO:
         applyChoiceQuestionStatistics(builder, question.getId(), totalResponses);
         break;
       case SCALE:
@@ -411,6 +413,9 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
         applyNumberQuestionStatistics(builder, question.getId(), totalResponses);
         break;
       case TEXT:
+      case DATE:
+      case EMAIL:
+      case PHONE:
         applyTextQuestionStatistics(builder, question.getId());
         break;
       default:
@@ -419,6 +424,29 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     }
 
     return builder.build();
+  }
+
+  private void applyYesNoQuestionStatistics(
+      QuestionStatistics.QuestionStatisticsBuilder builder, Long questionId, Long totalResponses) {
+    List<String> textResponses =
+        surveyStatisticsRepositoryPort.findTextResponsesByQuestionId(questionId);
+
+    Map<String, Long> rawCounts = textResponses.stream()
+        .filter(r -> r != null && !r.isBlank())
+        .collect(Collectors.groupingBy(r -> r.trim().toUpperCase(), Collectors.counting()));
+
+    Map<String, Long> labeledCounts = new LinkedHashMap<>();
+    if (rawCounts.containsKey("SI"))
+      labeledCounts.put("Sí", rawCounts.get("SI"));
+    if (rawCounts.containsKey("NO"))
+      labeledCounts.put("No", rawCounts.get("NO"));
+    rawCounts.forEach((k, v) -> {
+      if (!k.equals("SI") && !k.equals("NO"))
+        labeledCounts.put(k, v);
+    });
+
+    Map<String, Double> percentages = calculatePercentages(labeledCounts, totalResponses);
+    builder.optionCounts(labeledCounts).percentages(percentages).recommendedChartType("pie");
   }
 
   private void applyChoiceQuestionStatistics(

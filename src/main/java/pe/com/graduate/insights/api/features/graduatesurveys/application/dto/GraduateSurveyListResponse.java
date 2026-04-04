@@ -19,4 +19,5 @@ public class GraduateSurveyListResponse {
   private LocalDateTime submittedAt;
   private LocalDateTime createdDate;
   private int questionCount;
+  private String status;
 }

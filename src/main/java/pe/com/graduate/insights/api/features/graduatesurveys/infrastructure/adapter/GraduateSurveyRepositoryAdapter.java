@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.features.graduatesurveys.infrastructure.adapter;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,8 +29,9 @@ public class GraduateSurveyRepositoryAdapter implements GraduateSurveyRepository
 
   @Override
   public List<GraduateSurveyListResponse> getAllSurveysForGraduate(Long graduateId) {
-    // Obtener todas las encuestas activas con sus preguntas y tipo (evita N+1)
-    var allSurveys = surveyRepository.findByStatusWithQuestionsAndType(SurveyStatus.ACTIVE);
+    // Obtener encuestas activas y cerradas con sus preguntas y tipo (evita N+1)
+    var allSurveys = surveyRepository.findByStatusInWithQuestionsAndType(
+        Arrays.asList(SurveyStatus.ACTIVE, SurveyStatus.CLOSED));
 
     // Obtener las encuestas completadas por el graduado
     var completedSurveys = graduateSurveyResponseRepository.findByGraduateId(graduateId);
@@ -63,6 +65,7 @@ public class GraduateSurveyRepositoryAdapter implements GraduateSurveyRepository
                       completedResponse.map(response -> response.getSubmittedAt()).orElse(null))
                   .createdDate(survey.getCreatedDate())
                   .questionCount(survey.getQuestions() != null ? survey.getQuestions().size() : 0)
+                  .status(survey.getStatus() != null ? survey.getStatus().name() : null)
                   .build();
             })
         .toList();

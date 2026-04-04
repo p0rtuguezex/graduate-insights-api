@@ -16,7 +16,12 @@ import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.features.joboffers.application.ports.output.JobOffersRepositoryPort;
 import pe.com.graduate.insights.api.features.joboffers.infrastructure.entity.JobOffersEntity;
+import pe.com.graduate.insights.api.features.employer.infrastructure.entity.EmployerEntity;
 import pe.com.graduate.insights.api.features.employer.infrastructure.jpa.EmployerRepository;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
+import pe.com.graduate.insights.api.features.director.infrastructure.jpa.DirectorRepository;
+import pe.com.graduate.insights.api.features.notification.infrastructure.entity.NotificationEntity;
+import pe.com.graduate.insights.api.features.notification.infrastructure.jpa.NotificationRepository;
 import pe.com.graduate.insights.api.features.joboffers.infrastructure.jpa.JobOffersRepository;
 import pe.com.graduate.insights.api.features.joboffers.infrastructure.mapper.JobOffersMapper;
 
@@ -26,6 +31,9 @@ public class JobOffersRepositoryAdapter implements JobOffersRepositoryPort {
 
   private final JobOffersRepository jobOffersRepository;
   private final EmployerRepository employerRepository;
+  private final GraduateRepository graduateRepository;
+  private final DirectorRepository directorRepository;
+  private final NotificationRepository notificationRepository;
   private final JobOffersMapper jobOffersMapper;
 
   @Override
@@ -154,6 +162,7 @@ public class JobOffersRepositoryAdapter implements JobOffersRepositoryPort {
                               jobOffersRequest.getEmployerId())));
       JobOffersEntity jobOffersEntity = jobOffersMapper.toEntity(jobOffersRequest, employer);
       jobOffersRepository.save(jobOffersEntity);
+      sendJobOfferNotifications(employer, jobOffersRequest.getTitulo());
     } else {
       // Employer solo puede crear ofertas de trabajo para sí mismo
       Long employerId = getEmployerIdByUserId(currentUserId);
@@ -169,7 +178,41 @@ public class JobOffersRepositoryAdapter implements JobOffersRepositoryPort {
       jobOffersRequest.setEmployerId(employerId);
       JobOffersEntity jobOffersEntity = jobOffersMapper.toEntity(jobOffersRequest, employer);
       jobOffersRepository.save(jobOffersEntity);
+      sendJobOfferNotifications(employer, jobOffersRequest.getTitulo());
     }
+  }
+
+  /** Crea notificaciones para todos los graduados y directores activos al publicar una oferta */
+  private void sendJobOfferNotifications(EmployerEntity employer, String titulo) {
+    String nombreEmpresa = employer.getRazonSocial() != null ? employer.getRazonSocial() : "Una empresa";
+    String mensajeGraduado = String.format("%s ha publicado una nueva oferta laboral: %s", nombreEmpresa, titulo);
+    String mensajeDirector = String.format("%s publicó una nueva oferta laboral: %s", nombreEmpresa, titulo);
+
+    // Notificar a todos los graduados activos
+    graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).forEach(graduate -> {
+      Long userId = graduate.getUser().getId();
+      NotificationEntity notification = NotificationEntity.builder()
+          .userId(userId)
+          .titulo("Nueva oferta laboral disponible")
+          .mensaje(mensajeGraduado)
+          .tipo("OFERTA_LABORAL")
+          .leido(false)
+          .build();
+      notificationRepository.save(notification);
+    });
+
+    // Notificar a todos los directores activos
+    directorRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE).forEach(director -> {
+      Long userId = director.getUser().getId();
+      NotificationEntity notification = NotificationEntity.builder()
+          .userId(userId)
+          .titulo("Nueva oferta laboral publicada")
+          .mensaje(mensajeDirector)
+          .tipo("OFERTA_LABORAL")
+          .leido(false)
+          .build();
+      notificationRepository.save(notification);
+    });
   }
 
   @Override

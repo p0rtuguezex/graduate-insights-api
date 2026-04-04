@@ -27,4 +27,6 @@ public class HomeFeedResponse {
   private String empresa;
   private String salario;
   private String ubicacion;
+  private String link;
+  private String enlaceInscripcion;
 }

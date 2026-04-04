@@ -609,6 +609,21 @@ CREATE TABLE IF NOT EXISTS configuracion_email (
 );
 
 -- =============================================
+-- Notificaciones del sistema
+-- =============================================
+CREATE TABLE IF NOT EXISTS notificaciones (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id BIGINT NOT NULL,
+    titulo VARCHAR(255) NOT NULL,
+    mensaje TEXT,
+    tipo VARCHAR(50) NOT NULL,
+    leido BOOLEAN NOT NULL DEFAULT FALSE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
+-- =============================================
 -- Unique key en centros_educativos.nombre
 -- =============================================
 SET @idx_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS

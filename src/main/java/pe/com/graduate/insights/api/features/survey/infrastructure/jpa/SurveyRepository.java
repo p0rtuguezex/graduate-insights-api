@@ -1,5 +1,6 @@
 package pe.com.graduate.insights.api.features.survey.infrastructure.jpa;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,16 @@ public interface SurveyRepository extends JpaRepository<SurveyEntity, Long> {
   @EntityGraph(attributePaths = {"surveyType", "questions"})
   @Query("SELECT s FROM SurveyEntity s WHERE s.status = :status")
   List<SurveyEntity> findByStatusWithQuestionsAndType(@Param("status") SurveyStatus status);
+
+  @EntityGraph(attributePaths = {"surveyType", "questions"})
+  @Query("SELECT s FROM SurveyEntity s WHERE s.status IN :statuses")
+  List<SurveyEntity> findByStatusInWithQuestionsAndType(
+      @Param("statuses") List<SurveyStatus> statuses);
+
+  @Query(
+      "SELECT s FROM SurveyEntity s WHERE s.endDate IS NOT NULL AND s.endDate < :today AND s.status = :status")
+  List<SurveyEntity> findActiveSurveysWithEndDateBefore(
+      @Param("today") LocalDate today, @Param("status") SurveyStatus status);
 
   Page<SurveyEntity> findByStatus(SurveyStatus status, Pageable pageable);
 

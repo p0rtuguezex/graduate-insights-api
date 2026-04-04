@@ -39,7 +39,10 @@ public class GraduateSurveyResponseRepositoryAdapter
     // Delete any existing draft for this survey+graduate before saving the completed response
     graduateSurveyResponseRepository
         .findBySurveyIdAndGraduateIdAndCompleted(request.getSurveyId(), graduateId, false)
-        .ifPresent(draft -> graduateSurveyResponseRepository.delete(draft));
+        .ifPresent(draft -> {
+          graduateSurveyResponseRepository.delete(draft);
+          graduateSurveyResponseRepository.flush();
+        });
 
     GraduateSurveyResponseEntity responseEntity = graduateSurveyResponseMapper.toEntity(request);
 
@@ -106,7 +109,10 @@ public class GraduateSurveyResponseRepositoryAdapter
             .findBySurveyIdAndGraduateIdAndCompleted(request.getSurveyId(), graduateId, false);
 
     // If a draft exists, delete it (we'll create a fresh one)
-    existingDraft.ifPresent(draft -> graduateSurveyResponseRepository.delete(draft));
+    existingDraft.ifPresent(draft -> {
+      graduateSurveyResponseRepository.delete(draft);
+      graduateSurveyResponseRepository.flush();
+    });
 
     // Create new draft response entity
     GraduateSurveyResponseEntity responseEntity = graduateSurveyResponseMapper.toEntity(request);

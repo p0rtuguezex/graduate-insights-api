@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
 import pe.com.graduate.insights.api.features.mail.application.ports.input.MailUseCase;
+import pe.com.graduate.insights.api.features.notification.infrastructure.entity.NotificationEntity;
+import pe.com.graduate.insights.api.features.notification.infrastructure.jpa.NotificationRepository;
 import pe.com.graduate.insights.api.features.survey.application.dto.SurveyRequest;
 import pe.com.graduate.insights.api.features.survey.application.dto.SurveyResponse;
 import pe.com.graduate.insights.api.features.survey.application.ports.input.SurveyUseCase;
@@ -24,6 +26,7 @@ public class SurveyUseCaseHandler implements SurveyUseCase {
 
   private final SurveyRepositoryPort surveyRepositoryPort;
   private final GraduateRepository graduateRepository;
+  private final NotificationRepository notificationRepository;
   private final MailUseCase mailUseCase;
 
   @Override
@@ -55,6 +58,34 @@ public class SurveyUseCaseHandler implements SurveyUseCase {
   public void updateStatus(Long id, String status) {
     SurveyStatus surveyStatus = SurveyStatus.valueOf(status.toUpperCase());
     surveyRepositoryPort.updateStatus(id, surveyStatus);
+
+    if (surveyStatus == SurveyStatus.ACTIVE) {
+      sendSurveyPublishedNotifications(id);
+    }
+  }
+
+  private void sendSurveyPublishedNotifications(Long surveyId) {
+    SurveyResponse survey = surveyRepositoryPort.getDomain(surveyId);
+    String mensaje = String.format("Se ha publicado una nueva encuesta: %s", survey.getTitle());
+
+    List<GraduateEntity> activeGraduates =
+        graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE);
+
+    activeGraduates.forEach(graduate -> {
+      try {
+        NotificationEntity notification = NotificationEntity.builder()
+            .userId(graduate.getUser().getId())
+            .titulo("Nueva encuesta disponible")
+            .mensaje(mensaje)
+            .tipo("ENCUESTA")
+            .leido(false)
+            .build();
+        notificationRepository.save(notification);
+      } catch (Exception e) {
+        log.error("Error al crear notificacion de encuesta para graduado {}: {}",
+            graduate.getId(), e.getMessage(), e);
+      }
+    });
   }
 
   @Override

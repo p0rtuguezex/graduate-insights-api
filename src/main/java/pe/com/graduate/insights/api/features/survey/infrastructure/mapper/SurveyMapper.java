@@ -20,6 +20,7 @@ import pe.com.graduate.insights.api.features.survey.application.dto.QuestionRequ
 import pe.com.graduate.insights.api.features.survey.application.dto.QuestionResponse;
 import pe.com.graduate.insights.api.features.survey.application.dto.SurveyRequest;
 import pe.com.graduate.insights.api.features.survey.application.dto.SurveyResponse;
+import pe.com.graduate.insights.api.features.survey.domain.model.QuestionType;
 import pe.com.graduate.insights.api.features.surveytype.infrastructure.mapper.SurveyTypeMapper;
 import pe.com.graduate.insights.api.features.survey.infrastructure.entity.QuestionEntity;
 import pe.com.graduate.insights.api.features.survey.infrastructure.entity.QuestionOptionEntity;
@@ -125,6 +126,11 @@ public interface SurveyMapper {
         // Crear nueva pregunta
         questionEntity = toEntity(questionRequest);
         questionEntity.setSurvey(entity);
+        // Auto-crear opciones por defecto para preguntas de tipo SCALE sin opciones
+        if (QuestionType.SCALE.equals(questionRequest.getQuestionType())
+            && (questionRequest.getOptions() == null || questionRequest.getOptions().isEmpty())) {
+          questionEntity.setOptions(createDefaultScaleOptions(questionEntity));
+        }
       }
       updatedQuestions.add(questionEntity);
     }
@@ -135,6 +141,19 @@ public interface SurveyMapper {
 
     // Establecer las relaciones
     linkSurveyRelations(entity);
+  }
+
+  default List<QuestionOptionEntity> createDefaultScaleOptions(QuestionEntity question) {
+    String[] labels = {"1 - Muy malo", "2 - Malo", "3 - Regular", "4 - Bueno", "5 - Muy bueno"};
+    List<QuestionOptionEntity> options = new ArrayList<>();
+    for (int i = 0; i < labels.length; i++) {
+      QuestionOptionEntity option = new QuestionOptionEntity();
+      option.setOptionText(labels[i]);
+      option.setOrderNumber(i + 1);
+      option.setQuestion(question);
+      options.add(option);
+    }
+    return options;
   }
 
   default void updateQuestionOptions(QuestionRequest request, QuestionEntity entity) {
