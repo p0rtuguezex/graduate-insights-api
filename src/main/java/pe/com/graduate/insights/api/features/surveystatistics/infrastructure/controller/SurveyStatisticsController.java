@@ -73,12 +73,19 @@ public class SurveyStatisticsController {
         surveyStatisticsUseCase.getDemographicsData(surveyId, demographic));
   }
 
-  /** Exportar datos para gráficos en formato CSV/Excel */
+  /** Exportar estadísticas de una encuesta (CSV / Excel / PDF) */
   @GetMapping("/{surveyId}/export")
   public ResponseEntity<byte[]> exportSurveyData(
       @PathVariable Long surveyId,
       @RequestParam(value = "format", defaultValue = "csv") String format) {
     return surveyStatisticsUseCase.exportSurveyData(surveyId, format);
+  }
+
+  /** Exportar reporte general de todas las encuestas (CSV / Excel / PDF) */
+  @GetMapping("/export/general")
+  public ResponseEntity<byte[]> exportGeneralReport(
+      @RequestParam(value = "format", defaultValue = "csv") String format) {
+    return surveyStatisticsUseCase.exportGeneralReport(format);
   }
 }
 

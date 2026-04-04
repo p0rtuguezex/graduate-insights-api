@@ -65,6 +65,9 @@ dependencies {
     //Poi
     implementation 'org.apache.poi:poi-ooxml:5.0.0'
 
+    //OpenPDF
+    implementation 'com.github.librepdf:openpdf:1.3.30'
+
     //swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.8.9'

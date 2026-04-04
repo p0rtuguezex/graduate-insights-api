@@ -28,4 +28,7 @@ public interface SurveyStatisticsUseCase {
 
   /** Exporta datos de encuesta en diferentes formatos */
   ResponseEntity<byte[]> exportSurveyData(Long surveyId, String format);
+
+  /** Exporta reporte general de todas las encuestas */
+  ResponseEntity<byte[]> exportGeneralReport(String format);
 }
