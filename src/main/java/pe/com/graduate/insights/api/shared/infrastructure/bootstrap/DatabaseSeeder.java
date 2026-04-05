@@ -606,7 +606,9 @@ public class DatabaseSeeder implements CommandLineRunner {
   }
 
   private void seedSurveys() {
-    if (surveyRepository.count() > 0) return;
+    if (surveyRepository.count() > 0) {
+      return;
+    }
 
     surveyTypeRepository
         .findAll()
@@ -783,11 +785,15 @@ public class DatabaseSeeder implements CommandLineRunner {
       log.warn("No director found to seed events. Skipping events.");
       return;
     }
-    if (directorId == null) return;
+    if (directorId == null) {
+      return;
+    }
 
     List<Map<String, Object>> eventTypes =
         jdbcTemplate.queryForList("SELECT id, nombre FROM tipos_evento WHERE estado = '1'");
-    if (eventTypes.isEmpty()) return;
+    if (eventTypes.isEmpty()) {
+      return;
+    }
 
     long feriaTipoId =
         (Long)
@@ -803,14 +809,14 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .findFirst()
                 .map(t -> t.get("id"))
                 .orElse(eventTypes.get(0).get("id"));
-    long workshopTipoId =
+    final long workshopTipoId =
         (Long)
             eventTypes.stream()
                 .filter(t -> "Workshop de Emprendimiento".equals(t.get("nombre")))
                 .findFirst()
                 .map(t -> t.get("id"))
                 .orElse(eventTypes.get(0).get("id"));
-    long seminarioTipoId =
+    final long seminarioTipoId =
         (Long)
             eventTypes.stream()
                 .filter(t -> "Seminario de Liderazgo".equals(t.get("nombre")))
@@ -824,7 +830,9 @@ public class DatabaseSeeder implements CommandLineRunner {
         "INSERT INTO eventos (nombre, contenido, estado, fecha_evento, enlace_inscripcion, director_id, tipo_evento_id, fecha_creacion, fecha_modificacion) "
             + "VALUES (?, ?, '1', ?, ?, ?, ?, NOW(), NOW())",
         "Feria de Empleo Ica 2024",
-        "Gran feria de empleo dirigida a egresados universitarios de la región Ica. Más de 30 empresas participantes de los sectores de tecnología, construcción, agroindustria y servicios.",
+        "Gran feria de empleo dirigida a egresados universitarios de la región Ica. "
+            + "Más de 30 empresas participantes de los sectores de tecnología, "
+            + "construcción, agroindustria y servicios.",
         java.sql.Date.valueOf(LocalDate.of(2024, 8, 15)),
         "https://egresys.ica.edu.pe/eventos/feria-empleo-2024",
         directorId,
@@ -834,7 +842,9 @@ public class DatabaseSeeder implements CommandLineRunner {
         "INSERT INTO eventos (nombre, contenido, estado, fecha_evento, enlace_inscripcion, director_id, tipo_evento_id, fecha_creacion, fecha_modificacion) "
             + "VALUES (?, ?, '1', ?, ?, ?, ?, NOW(), NOW())",
         "Conferencia de Innovación Tecnológica 2024",
-        "Conferencia magistral sobre tendencias tecnológicas: Inteligencia Artificial, Cloud Computing y Ciberseguridad. Ponentes nacionales e internacionales del sector tecnológico.",
+        "Conferencia magistral sobre tendencias tecnológicas: Inteligencia Artificial, "
+            + "Cloud Computing y Ciberseguridad. Ponentes nacionales e internacionales "
+            + "del sector tecnológico.",
         java.sql.Date.valueOf(LocalDate.of(2024, 9, 20)),
         "https://egresys.ica.edu.pe/eventos/conferencia-tech-2024",
         directorId,
@@ -844,7 +854,9 @@ public class DatabaseSeeder implements CommandLineRunner {
         "INSERT INTO eventos (nombre, contenido, estado, fecha_evento, enlace_inscripcion, director_id, tipo_evento_id, fecha_creacion, fecha_modificacion) "
             + "VALUES (?, ?, '1', ?, ?, ?, ?, NOW(), NOW())",
         "Workshop: Emprendimiento y Startups",
-        "Taller práctico de emprendimiento para egresados que desean iniciar su propio negocio. Incluye mentoría, plan de negocios y acceso a red de inversionistas ángeles de la región.",
+        "Taller práctico de emprendimiento para egresados que desean iniciar su propio negocio. "
+            + "Incluye mentoría, plan de negocios y acceso a red de inversionistas ángeles "
+            + "de la región.",
         java.sql.Date.valueOf(LocalDate.of(2024, 10, 5)),
         "https://egresys.ica.edu.pe/eventos/workshop-emprendimiento",
         directorId,
@@ -887,12 +899,14 @@ public class DatabaseSeeder implements CommandLineRunner {
     List<Map<String, Object>> graduates =
         jdbcTemplate.queryForList(
             "SELECT g.id, u.nombres FROM graduados g JOIN usuarios u ON g.usuario_id = u.id WHERE u.estado = '1' ORDER BY g.id ASC LIMIT 6");
-    if (graduates.isEmpty()) return;
+    if (graduates.isEmpty()) {
+      return;
+    }
 
     log.info("Seeding mock graduate jobs...");
 
     if (graduates.size() >= 1) {
-      Long gId = toLong(graduates.get(0).get("id"));
+      Long graduateId = toLong(graduates.get(0).get("id"));
       // Carlos Mendoza — trabaja en tecnología, trabajo actual
       jdbcTemplate.update(
           "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
@@ -901,11 +915,11 @@ public class DatabaseSeeder implements CommandLineRunner {
           "Desarrollador de Software Junior",
           "Híbrido",
           java.sql.Date.valueOf(LocalDate.of(2024, 3, 1)),
-          gId);
+          graduateId);
     }
 
     if (graduates.size() >= 2) {
-      Long gId = toLong(graduates.get(1).get("id"));
+      Long graduateId = toLong(graduates.get(1).get("id"));
       // Luis García — trabajo anterior y trabajo actual
       jdbcTemplate.update(
           "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
@@ -915,7 +929,7 @@ public class DatabaseSeeder implements CommandLineRunner {
           "Presencial",
           java.sql.Date.valueOf(LocalDate.of(2023, 1, 1)),
           java.sql.Date.valueOf(LocalDate.of(2023, 12, 31)),
-          gId);
+          graduateId);
       jdbcTemplate.update(
           "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
               + "VALUES (?, ?, ?, '1', ?, null, ?, NOW(), NOW())",
@@ -923,11 +937,11 @@ public class DatabaseSeeder implements CommandLineRunner {
           "Analista de Sistemas",
           "Presencial",
           java.sql.Date.valueOf(LocalDate.of(2024, 1, 15)),
-          gId);
+          graduateId);
     }
 
     if (graduates.size() >= 3) {
-      Long gId = toLong(graduates.get(2).get("id"));
+      Long graduateId = toLong(graduates.get(2).get("id"));
       // Andrés Quispe — freelance
       jdbcTemplate.update(
           "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
@@ -936,11 +950,11 @@ public class DatabaseSeeder implements CommandLineRunner {
           "Desarrollador Web Freelance",
           "Remoto",
           java.sql.Date.valueOf(LocalDate.of(2024, 6, 1)),
-          gId);
+          graduateId);
     }
 
     if (graduates.size() >= 4) {
-      Long gId = toLong(graduates.get(3).get("id"));
+      Long graduateId = toLong(graduates.get(3).get("id"));
       // María López — trabajo en empresa privada
       jdbcTemplate.update(
           "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
@@ -949,11 +963,11 @@ public class DatabaseSeeder implements CommandLineRunner {
           "Ingeniera de Proyectos TI",
           "Presencial",
           java.sql.Date.valueOf(LocalDate.of(2024, 2, 1)),
-          gId);
+          graduateId);
     }
 
     if (graduates.size() >= 5) {
-      Long gId = toLong(graduates.get(4).get("id"));
+      Long graduateId = toLong(graduates.get(4).get("id"));
       // Ana Castillo — trabajo anterior y actual
       jdbcTemplate.update(
           "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
@@ -963,7 +977,7 @@ public class DatabaseSeeder implements CommandLineRunner {
           "Presencial",
           java.sql.Date.valueOf(LocalDate.of(2023, 4, 1)),
           java.sql.Date.valueOf(LocalDate.of(2023, 12, 31)),
-          gId);
+          graduateId);
       jdbcTemplate.update(
           "INSERT INTO trabajos (compania, cargo, modalidad, estado, fecha_inicio, fecha_fin, graduado_id, fecha_creacion, fecha_modificacion) "
               + "VALUES (?, ?, ?, '1', ?, null, ?, NOW(), NOW())",
@@ -971,7 +985,7 @@ public class DatabaseSeeder implements CommandLineRunner {
           "Especialista en Sistemas",
           "Presencial",
           java.sql.Date.valueOf(LocalDate.of(2024, 1, 10)),
-          gId);
+          graduateId);
     }
 
     log.info("Graduate jobs seeded successfully.");
@@ -991,7 +1005,9 @@ public class DatabaseSeeder implements CommandLineRunner {
     List<Map<String, Object>> employers =
         jdbcTemplate.queryForList(
             "SELECT e.id, e.razon_social FROM empleadores e ORDER BY e.id ASC LIMIT 2");
-    if (employers.isEmpty()) return;
+    if (employers.isEmpty()) {
+      return;
+    }
 
     log.info("Seeding mock job offers...");
 
@@ -1066,7 +1082,9 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     List<Map<String, Object>> surveys =
         jdbcTemplate.queryForList("SELECT id, titulo FROM encuestas ORDER BY id ASC");
-    if (surveys.isEmpty()) return;
+    if (surveys.isEmpty()) {
+      return;
+    }
 
     log.info("Seeding mock survey questions...");
 
@@ -1254,9 +1272,15 @@ public class DatabaseSeeder implements CommandLineRunner {
   }
 
   private Long toLong(Object value) {
-    if (value instanceof Long l) return l;
-    if (value instanceof Integer i) return i.longValue();
-    if (value instanceof Number n) return n.longValue();
+    if (value instanceof Long l) {
+      return l;
+    }
+    if (value instanceof Integer i) {
+      return i.longValue();
+    }
+    if (value instanceof Number n) {
+      return n.longValue();
+    }
     return null;
   }
 }

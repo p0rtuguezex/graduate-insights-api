@@ -490,11 +490,17 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
             .collect(Collectors.groupingBy(r -> r.trim().toUpperCase(), Collectors.counting()));
 
     Map<String, Long> labeledCounts = new LinkedHashMap<>();
-    if (rawCounts.containsKey("SI")) labeledCounts.put("Sí", rawCounts.get("SI"));
-    if (rawCounts.containsKey("NO")) labeledCounts.put("No", rawCounts.get("NO"));
+    if (rawCounts.containsKey("SI")) {
+      labeledCounts.put("Sí", rawCounts.get("SI"));
+    }
+    if (rawCounts.containsKey("NO")) {
+      labeledCounts.put("No", rawCounts.get("NO"));
+    }
     rawCounts.forEach(
         (k, v) -> {
-          if (!k.equals("SI") && !k.equals("NO")) labeledCounts.put(k, v);
+          if (!k.equals("SI") && !k.equals("NO")) {
+            labeledCounts.put(k, v);
+          }
         });
 
     Map<String, Double> percentages = calculatePercentages(labeledCounts, totalResponses);
@@ -764,8 +770,8 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   // ==================== EXPORT: CSV ====================
 
   private ResponseEntity<byte[]> buildCsvReport(Long surveyId, String ts) throws Exception {
-    SurveyStatisticsResponse s = getSurveyStatistics(surveyId);
-    List<SurveyStatisticsRepositoryPort.QuestionResponseData> raw =
+    final SurveyStatisticsResponse s = getSurveyStatistics(surveyId);
+    final List<SurveyStatisticsRepositoryPort.QuestionResponseData> raw =
         surveyStatisticsRepositoryPort.findQuestionResponsesBySurveyId(surveyId);
 
     StringBuilder csv = new StringBuilder();
@@ -827,14 +833,17 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
                         .append("\n");
                   });
         }
-        if (q.getAverage() != null)
+        if (q.getAverage() != null) {
           csv.append("Promedio,").append(String.format("%.2f", q.getAverage())).append("\n");
-        if (q.getMedian() != null)
+        }
+        if (q.getMedian() != null) {
           csv.append("Mediana,").append(String.format("%.2f", q.getMedian())).append("\n");
-        if (q.getStandardDeviation() != null)
+        }
+        if (q.getStandardDeviation() != null) {
           csv.append("Desv. Estándar,")
               .append(String.format("%.2f", q.getStandardDeviation()))
               .append("\n");
+        }
         csv.append("\n");
       }
     }
@@ -865,8 +874,8 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   }
 
   private ResponseEntity<byte[]> buildGeneralCsvReport(String ts) throws Exception {
-    List<Long> allIds = surveyStatisticsRepositoryPort.findRecentSurveyIds(1000);
-    long totalGraduates = surveyStatisticsRepositoryPort.countActiveGraduates();
+    final List<Long> allIds = surveyStatisticsRepositoryPort.findRecentSurveyIds(1000);
+    final long totalGraduates = surveyStatisticsRepositoryPort.countActiveGraduates();
 
     StringBuilder csv = new StringBuilder();
     csv.append('\uFEFF');
@@ -916,14 +925,14 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   // ==================== EXPORT: EXCEL ====================
 
   private ResponseEntity<byte[]> buildExcelReport(Long surveyId, String ts) throws Exception {
-    SurveyStatisticsResponse s = getSurveyStatistics(surveyId);
-    List<SurveyStatisticsRepositoryPort.QuestionResponseData> raw =
+    final SurveyStatisticsResponse s = getSurveyStatistics(surveyId);
+    final List<SurveyStatisticsRepositoryPort.QuestionResponseData> raw =
         surveyStatisticsRepositoryPort.findQuestionResponsesBySurveyId(surveyId);
 
     try (XSSFWorkbook wb = new XSSFWorkbook()) {
-      XSSFCellStyle titleSt =
+      final XSSFCellStyle titleSt =
           xlStyle(wb, new java.awt.Color(30, 58, 95), java.awt.Color.WHITE, 18, true, true);
-      XSSFCellStyle sectionSt =
+      final XSSFCellStyle sectionSt =
           xlStyle(wb, new java.awt.Color(41, 128, 185), java.awt.Color.WHITE, 11, true, false);
       XSSFCellStyle headerSt =
           xlStyle(wb, new java.awt.Color(30, 58, 95), java.awt.Color.WHITE, 10, true, true);
@@ -945,13 +954,13 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
               10,
               false,
               false);
-      XSSFCellStyle kpi1St =
+      final XSSFCellStyle kpi1St =
           xlStyle(wb, new java.awt.Color(41, 128, 185), java.awt.Color.WHITE, 20, true, true);
-      XSSFCellStyle kpi2St =
+      final XSSFCellStyle kpi2St =
           xlStyle(wb, new java.awt.Color(39, 174, 96), java.awt.Color.WHITE, 20, true, true);
-      XSSFCellStyle kpi3St =
+      final XSSFCellStyle kpi3St =
           xlStyle(wb, new java.awt.Color(243, 156, 18), java.awt.Color.WHITE, 20, true, true);
-      XSSFCellStyle kpi4St =
+      final XSSFCellStyle kpi4St =
           xlStyle(wb, new java.awt.Color(231, 76, 60), java.awt.Color.WHITE, 20, true, true);
       XSSFCellStyle kpiLblSt =
           xlStyle(
@@ -1042,10 +1051,10 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
 
       if (s.getResponsesByGender() != null && !s.getResponsesByGender().isEmpty()) {
         row = xlSection(sh1, row, "DISTRIBUCIÓN POR GÉNERO", sectionSt, 4);
-        XSSFRow hRow = sh1.createRow(row++);
-        xlCell(hRow, 0, "Género", headerSt);
-        xlCell(hRow, 1, "Respuestas", headerSt);
-        xlCell(hRow, 2, "Porcentaje", headerSt);
+        XSSFRow headerRow = sh1.createRow(row++);
+        xlCell(headerRow, 0, "Género", headerSt);
+        xlCell(headerRow, 1, "Respuestas", headerSt);
+        xlCell(headerRow, 2, "Porcentaje", headerSt);
         long tot = s.getResponsesByGender().values().stream().mapToLong(Long::longValue).sum();
         alt = false;
         for (Map.Entry<String, Long> e : s.getResponsesByGender().entrySet()) {
@@ -1061,9 +1070,9 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
 
       if (s.getResponsesByMonth() != null && !s.getResponsesByMonth().isEmpty()) {
         row = xlSection(sh1, row, "RESPUESTAS POR MES", sectionSt, 4);
-        XSSFRow hRow = sh1.createRow(row++);
-        xlCell(hRow, 0, "Mes", headerSt);
-        xlCell(hRow, 1, "Respuestas", headerSt);
+        XSSFRow headerRow = sh1.createRow(row++);
+        xlCell(headerRow, 0, "Mes", headerSt);
+        xlCell(headerRow, 1, "Respuestas", headerSt);
         alt = false;
         for (Map.Entry<String, Long> e : s.getResponsesByMonth().entrySet()) {
           XSSFRow r = sh1.createRow(row++);
@@ -1094,34 +1103,47 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
       sh2.addMergedRegion(new CellRangeAddress(0, 0, 0, 7));
       sh2.createRow(1);
 
-      XSSFRow qHdr = sh2.createRow(2);
-      qHdr.setHeight((short) 600);
+      XSSFRow questionHeader = sh2.createRow(2);
+      questionHeader.setHeight((short) 600);
       String[] qh = {
         "Pregunta", "Tipo", "Requerida", "Respuestas", "Tasa", "Promedio", "Mediana", "Desv. Est."
       };
-      for (int i = 0; i < qh.length; i++) xlCell(qHdr, i, qh[i], headerSt);
+      for (int i = 0; i < qh.length; i++) {
+        xlCell(questionHeader, i, qh[i], headerSt);
+      }
 
       int qr = 3;
       if (s.getQuestionStatistics() != null) {
         alt = false;
         for (QuestionStatistics q : s.getQuestionStatistics()) {
           XSSFCellStyle st = alt ? altSt : valueSt;
-          XSSFRow qRow = sh2.createRow(qr++);
-          qRow.setHeight((short) 500);
-          xlCell(qRow, 0, q.getQuestionText() != null ? q.getQuestionText() : "", st);
-          xlCell(qRow, 1, rptTranslateType(q.getType()), st);
-          xlCell(qRow, 2, Boolean.TRUE.equals(q.getRequired()) ? "Sí" : "No", st);
+          XSSFRow questionRow = sh2.createRow(qr++);
+          questionRow.setHeight((short) 500);
+          xlCell(questionRow, 0, q.getQuestionText() != null ? q.getQuestionText() : "", st);
+          xlCell(questionRow, 1, rptTranslateType(q.getType()), st);
+          xlCell(questionRow, 2, Boolean.TRUE.equals(q.getRequired()) ? "Sí" : "No", st);
           xlCell(
-              qRow, 3, q.getTotalResponses() != null ? q.getTotalResponses().toString() : "0", st);
+              questionRow,
+              3,
+              q.getTotalResponses() != null ? q.getTotalResponses().toString() : "0",
+              st);
           xlCell(
-              qRow,
+              questionRow,
               4,
               q.getResponseRate() != null ? String.format("%.1f%%", q.getResponseRate()) : "0%",
               st);
-          xlCell(qRow, 5, q.getAverage() != null ? String.format("%.2f", q.getAverage()) : "-", st);
-          xlCell(qRow, 6, q.getMedian() != null ? String.format("%.2f", q.getMedian()) : "-", st);
           xlCell(
-              qRow,
+              questionRow,
+              5,
+              q.getAverage() != null ? String.format("%.2f", q.getAverage()) : "-",
+              st);
+          xlCell(
+              questionRow,
+              6,
+              q.getMedian() != null ? String.format("%.2f", q.getMedian()) : "-",
+              st);
+          xlCell(
+              questionRow,
               7,
               q.getStandardDeviation() != null
                   ? String.format("%.2f", q.getStandardDeviation())
@@ -1168,25 +1190,27 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
       XSSFRow rawHdr = sh3.createRow(2);
       rawHdr.setHeight((short) 600);
       String[] rh = {"Pregunta", "Tipo", "Respuesta", "Graduado", "Fecha", "Género"};
-      for (int i = 0; i < rh.length; i++) xlCell(rawHdr, i, rh[i], headerSt);
+      for (int i = 0; i < rh.length; i++) {
+        xlCell(rawHdr, i, rh[i], headerSt);
+      }
 
       int rr = 3;
       alt = false;
       for (SurveyStatisticsRepositoryPort.QuestionResponseData rd : raw) {
         XSSFCellStyle st = alt ? altSt : valueSt;
-        XSSFRow rRow = sh3.createRow(rr++);
-        xlCell(rRow, 0, rd.questionText() != null ? rd.questionText() : "", st);
-        xlCell(rRow, 1, rptTranslateType(rd.questionType()), st);
-        xlCell(rRow, 2, rptGetAnswer(rd), st);
-        xlCell(rRow, 3, rd.graduateFullName() != null ? rd.graduateFullName() : "", st);
+        XSSFRow responseRow = sh3.createRow(rr++);
+        xlCell(responseRow, 0, rd.questionText() != null ? rd.questionText() : "", st);
+        xlCell(responseRow, 1, rptTranslateType(rd.questionType()), st);
+        xlCell(responseRow, 2, rptGetAnswer(rd), st);
+        xlCell(responseRow, 3, rd.graduateFullName() != null ? rd.graduateFullName() : "", st);
         xlCell(
-            rRow,
+            responseRow,
             4,
             rd.submittedAt() != null
                 ? rd.submittedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
                 : "",
             st);
-        xlCell(rRow, 5, rptTranslateGender(rd.gender()), st);
+        xlCell(responseRow, 5, rptTranslateGender(rd.gender()), st);
         alt = !alt;
       }
 
@@ -1203,13 +1227,13 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   }
 
   private ResponseEntity<byte[]> buildGeneralExcelReport(String ts) throws Exception {
-    List<Long> allIds = surveyStatisticsRepositoryPort.findRecentSurveyIds(1000);
-    long totalGraduates = surveyStatisticsRepositoryPort.countActiveGraduates();
+    final List<Long> allIds = surveyStatisticsRepositoryPort.findRecentSurveyIds(1000);
+    final long totalGraduates = surveyStatisticsRepositoryPort.countActiveGraduates();
 
     try (XSSFWorkbook wb = new XSSFWorkbook()) {
-      XSSFCellStyle titleSt =
+      final XSSFCellStyle titleSt =
           xlStyle(wb, new java.awt.Color(30, 58, 95), java.awt.Color.WHITE, 18, true, true);
-      XSSFCellStyle sectionSt =
+      final XSSFCellStyle sectionSt =
           xlStyle(wb, new java.awt.Color(41, 128, 185), java.awt.Color.WHITE, 11, true, false);
       XSSFCellStyle headerSt =
           xlStyle(wb, new java.awt.Color(30, 58, 95), java.awt.Color.WHITE, 10, true, true);
@@ -1244,11 +1268,11 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
       sh.setColumnWidth(8, 4500);
       sh.setColumnWidth(9, 4500);
 
-      XSSFRow tR = sh.createRow(0);
-      tR.setHeight((short) 900);
-      XSSFCell tC = tR.createCell(0);
-      tC.setCellValue("REPORTE GENERAL DE ENCUESTAS — EgreSys");
-      tC.setCellStyle(titleSt);
+      XSSFRow titleRow = sh.createRow(0);
+      titleRow.setHeight((short) 900);
+      XSSFCell titleCell = titleRow.createCell(0);
+      titleCell.setCellValue("REPORTE GENERAL DE ENCUESTAS — EgreSys");
+      titleCell.setCellStyle(titleSt);
       sh.addMergedRegion(new CellRangeAddress(0, 0, 0, 9));
 
       sh.createRow(1);
@@ -1272,8 +1296,8 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
       sh.createRow(row++);
       row = xlSection(sh, row, "DETALLE POR ENCUESTA", sectionSt, 10);
 
-      XSSFRow hRow = sh.createRow(row++);
-      hRow.setHeight((short) 600);
+      XSSFRow headerRow = sh.createRow(row++);
+      headerRow.setHeight((short) 600);
       String[] cols = {
         "ID",
         "Título",
@@ -1286,7 +1310,9 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
         "Tasa Resp.",
         "Completitud"
       };
-      for (int i = 0; i < cols.length; i++) xlCell(hRow, i, cols[i], headerSt);
+      for (int i = 0; i < cols.length; i++) {
+        xlCell(headerRow, i, cols[i], headerSt);
+      }
 
       boolean alt = false;
       for (Long id : allIds) {
@@ -1326,8 +1352,8 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   // ==================== EXPORT: PDF ====================
 
   private ResponseEntity<byte[]> buildPdfReport(Long surveyId, String ts) throws Exception {
-    SurveyStatisticsResponse s = getSurveyStatistics(surveyId);
-    List<SurveyStatisticsRepositoryPort.QuestionResponseData> raw =
+    final SurveyStatisticsResponse s = getSurveyStatistics(surveyId);
+    final List<SurveyStatisticsRepositoryPort.QuestionResponseData> raw =
         surveyStatisticsRepositoryPort.findQuestionResponsesBySurveyId(surveyId);
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -1337,34 +1363,34 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
         new RptPageEvent("EgreSys — " + (s.getSurveyTitle() != null ? s.getSurveyTitle() : "")));
     doc.open();
 
-    Color NAVY = new Color(30, 58, 95);
-    Color BLUE = new Color(41, 128, 185);
-    Color GREEN = new Color(39, 174, 96);
-    Color ORANGE = new Color(243, 156, 18);
-    Color RED = new Color(231, 76, 60);
-    Color LIGHT = new Color(235, 242, 250);
-    Color WHITE = Color.WHITE;
-    Color GRAY = new Color(248, 249, 250);
-    Color BORDER = new Color(200, 210, 220);
-    Color DARK = new Color(50, 50, 50);
-    Color MUTED = new Color(100, 100, 100);
+    final Color navy = new Color(30, 58, 95);
+    final Color blue = new Color(41, 128, 185);
+    final Color green = new Color(39, 174, 96);
+    final Color orange = new Color(243, 156, 18);
+    final Color red = new Color(231, 76, 60);
+    final Color light = new Color(235, 242, 250);
+    final Color white = Color.WHITE;
+    final Color gray = new Color(248, 249, 250);
+    final Color border = new Color(200, 210, 220);
+    final Color dark = new Color(50, 50, 50);
+    final Color muted = new Color(100, 100, 100);
 
-    Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, WHITE);
-    Font subtitleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 13, WHITE);
-    Font sectionFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, NAVY);
-    Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, WHITE);
-    Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, DARK);
-    Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 10, DARK);
-    Font smallFont = FontFactory.getFont(FontFactory.HELVETICA, 8, MUTED);
-    Font smallBoldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, MUTED);
-    Font kpiFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22, WHITE);
-    Font kpiLblFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, WHITE);
+    final Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, white);
+    final Font subtitleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 13, white);
+    final Font sectionFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, navy);
+    Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, white);
+    Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, dark);
+    Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 10, dark);
+    Font smallFont = FontFactory.getFont(FontFactory.HELVETICA, 8, muted);
+    Font smallBoldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, muted);
+    final Font kpiFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22, white);
+    final Font kpiLblFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, white);
 
     // Banner
     PdfPTable banner = new PdfPTable(1);
     banner.setWidthPercentage(100);
     PdfPCell bannerCell = new PdfPCell();
-    bannerCell.setBackgroundColor(NAVY);
+    bannerCell.setBackgroundColor(navy);
     bannerCell.setPaddingTop(22);
     bannerCell.setPaddingBottom(22);
     bannerCell.setPaddingLeft(20);
@@ -1379,7 +1405,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     banner.addCell(bannerCell);
     doc.add(banner);
 
-    pdfSection(doc, "INFORMACIÓN GENERAL", sectionFont, BLUE);
+    pdfSection(doc, "INFORMACIÓN GENERAL", sectionFont, blue);
     PdfPTable infoTbl = new PdfPTable(2);
     infoTbl.setWidthPercentage(100);
     infoTbl.setWidths(new float[] {1.5f, 3f});
@@ -1393,19 +1419,19 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
       {"Total de Preguntas", String.valueOf(s.getTotalQuestions())},
     };
     for (int i = 0; i < info.length; i++) {
-      pdfCell(infoTbl, info[i][0], boldFont, i % 2 == 0 ? LIGHT : GRAY, BORDER, true);
+      pdfCell(infoTbl, info[i][0], boldFont, i % 2 == 0 ? light : gray, border, true);
       pdfCell(
           infoTbl,
           info[i][1],
           normalFont,
-          i % 2 == 0 ? WHITE : new Color(252, 252, 252),
-          BORDER,
+          i % 2 == 0 ? white : new Color(252, 252, 252),
+          border,
           false);
     }
     doc.add(infoTbl);
 
     doc.add(Chunk.NEWLINE);
-    pdfSection(doc, "MÉTRICAS CLAVE", sectionFont, BLUE);
+    pdfSection(doc, "MÉTRICAS CLAVE", sectionFont, blue);
     PdfPTable kpiTbl = new PdfPTable(4);
     kpiTbl.setWidthPercentage(100);
     kpiTbl.setSpacingBefore(5);
@@ -1413,104 +1439,108 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
         kpiTbl,
         String.valueOf(s.getTotalResponses()),
         "Total Respuestas",
-        BLUE,
+        blue,
         kpiFont,
         kpiLblFont);
     pdfKpi(
         kpiTbl,
         String.format("%.1f%%", s.getResponseRate()),
         "Tasa de Respuesta",
-        GREEN,
+        green,
         kpiFont,
         kpiLblFont);
     pdfKpi(
         kpiTbl,
         String.format("%.1f%%", s.getCompletionRate()),
         "Completitud",
-        ORANGE,
+        orange,
         kpiFont,
         kpiLblFont);
-    pdfKpi(kpiTbl, String.valueOf(s.getPendingResponses()), "Pendientes", RED, kpiFont, kpiLblFont);
+    pdfKpi(kpiTbl, String.valueOf(s.getPendingResponses()), "Pendientes", red, kpiFont, kpiLblFont);
     doc.add(kpiTbl);
 
     if (s.getResponsesByGender() != null && !s.getResponsesByGender().isEmpty()) {
       doc.add(Chunk.NEWLINE);
-      pdfSection(doc, "DISTRIBUCIÓN POR GÉNERO", sectionFont, BLUE);
-      PdfPTable gTbl = new PdfPTable(3);
-      gTbl.setWidthPercentage(55);
-      gTbl.setHorizontalAlignment(Element.ALIGN_LEFT);
-      gTbl.setSpacingBefore(5);
-      for (String h : new String[] {"Género", "Respuestas", "Porcentaje"})
-        pdfHeaderCell(gTbl, h, headerFont, NAVY);
+      pdfSection(doc, "DISTRIBUCIÓN POR GÉNERO", sectionFont, blue);
+      PdfPTable genderTable = new PdfPTable(3);
+      genderTable.setWidthPercentage(55);
+      genderTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+      genderTable.setSpacingBefore(5);
+      for (String h : new String[] {"Género", "Respuestas", "Porcentaje"}) {
+        pdfHeaderCell(genderTable, h, headerFont, navy);
+      }
       long tot = s.getResponsesByGender().values().stream().mapToLong(Long::longValue).sum();
       boolean alt = false;
       for (Map.Entry<String, Long> e : s.getResponsesByGender().entrySet()) {
-        Color bg = alt ? LIGHT : WHITE;
-        pdfCell(gTbl, rptTranslateGender(e.getKey()), normalFont, bg, BORDER, false);
-        pdfCell(gTbl, String.valueOf(e.getValue()), normalFont, bg, BORDER, false);
+        Color bg = alt ? light : white;
+        pdfCell(genderTable, rptTranslateGender(e.getKey()), normalFont, bg, border, false);
+        pdfCell(genderTable, String.valueOf(e.getValue()), normalFont, bg, border, false);
         pdfCell(
-            gTbl,
+            genderTable,
             tot > 0 ? String.format("%.1f%%", e.getValue() * 100.0 / tot) : "0%",
             normalFont,
             bg,
-            BORDER,
+            border,
             false);
         alt = !alt;
       }
-      doc.add(gTbl);
+      doc.add(genderTable);
     }
 
     if (s.getResponsesByMonth() != null && !s.getResponsesByMonth().isEmpty()) {
       doc.add(Chunk.NEWLINE);
-      pdfSection(doc, "RESPUESTAS POR MES", sectionFont, BLUE);
-      PdfPTable mTbl = new PdfPTable(2);
-      mTbl.setWidthPercentage(45);
-      mTbl.setHorizontalAlignment(Element.ALIGN_LEFT);
-      mTbl.setSpacingBefore(5);
-      for (String h : new String[] {"Mes", "Respuestas"}) pdfHeaderCell(mTbl, h, headerFont, NAVY);
+      pdfSection(doc, "RESPUESTAS POR MES", sectionFont, blue);
+      PdfPTable monthTable = new PdfPTable(2);
+      monthTable.setWidthPercentage(45);
+      monthTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+      monthTable.setSpacingBefore(5);
+      for (String h : new String[] {"Mes", "Respuestas"}) {
+        pdfHeaderCell(monthTable, h, headerFont, navy);
+      }
       boolean alt = false;
       for (Map.Entry<String, Long> e : s.getResponsesByMonth().entrySet()) {
-        Color bg = alt ? LIGHT : WHITE;
-        pdfCell(mTbl, rptTranslateMonth(e.getKey()), normalFont, bg, BORDER, false);
-        pdfCell(mTbl, String.valueOf(e.getValue()), normalFont, bg, BORDER, false);
+        Color bg = alt ? light : white;
+        pdfCell(monthTable, rptTranslateMonth(e.getKey()), normalFont, bg, border, false);
+        pdfCell(monthTable, String.valueOf(e.getValue()), normalFont, bg, border, false);
         alt = !alt;
       }
-      doc.add(mTbl);
+      doc.add(monthTable);
     }
 
     if (s.getQuestionStatistics() != null && !s.getQuestionStatistics().isEmpty()) {
       doc.newPage();
-      pdfSection(doc, "ANÁLISIS POR PREGUNTA", sectionFont, BLUE);
+      pdfSection(doc, "ANÁLISIS POR PREGUNTA", sectionFont, blue);
       for (int qi = 0; qi < s.getQuestionStatistics().size(); qi++) {
         QuestionStatistics q = s.getQuestionStatistics().get(qi);
-        Paragraph qTitle = new Paragraph();
-        qTitle.add(
+        Paragraph questionTitle = new Paragraph();
+        questionTitle.add(
             new Chunk(
                 (qi + 1) + ". " + (q.getQuestionText() != null ? q.getQuestionText() : ""),
                 boldFont));
-        qTitle.setSpacingBefore(12);
-        qTitle.setSpacingAfter(4);
-        doc.add(qTitle);
+        questionTitle.setSpacingBefore(12);
+        questionTitle.setSpacingAfter(4);
+        doc.add(questionTitle);
 
         PdfPTable metaTbl = new PdfPTable(4);
         metaTbl.setWidthPercentage(100);
-        for (String lbl : new String[] {"Tipo", "Requerida", "Respuestas", "Tasa"})
-          pdfHeaderCell(metaTbl, lbl, smallBoldFont, LIGHT);
-        pdfDataCell(metaTbl, rptTranslateType(q.getType()), normalFont, WHITE, BORDER);
+        for (String lbl : new String[] {"Tipo", "Requerida", "Respuestas", "Tasa"}) {
+          pdfHeaderCell(metaTbl, lbl, smallBoldFont, light);
+        }
+        pdfDataCell(metaTbl, rptTranslateType(q.getType()), normalFont, white, border);
         pdfDataCell(
-            metaTbl, Boolean.TRUE.equals(q.getRequired()) ? "Sí" : "No", normalFont, WHITE, BORDER);
+            metaTbl, Boolean.TRUE.equals(q.getRequired()) ? "Sí" : "No", normalFont, white, border);
         pdfDataCell(
             metaTbl,
             q.getTotalResponses() != null ? q.getTotalResponses().toString() : "0",
             normalFont,
-            WHITE,
-            BORDER);
+            white,
+            border);
         pdfDataCell(
             metaTbl,
             q.getResponseRate() != null ? String.format("%.1f%%", q.getResponseRate()) : "0%",
             normalFont,
-            WHITE,
-            BORDER);
+            white,
+            border);
         doc.add(metaTbl);
 
         if (q.getOptionCounts() != null && !q.getOptionCounts().isEmpty()) {
@@ -1519,16 +1549,17 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
           optTbl.setWidths(new float[] {3f, 1f, 1.2f});
           optTbl.setHorizontalAlignment(Element.ALIGN_LEFT);
           optTbl.setSpacingBefore(4);
-          for (String h : new String[] {"Opción", "Cantidad", "Porcentaje"})
-            pdfHeaderCell(optTbl, h, headerFont, BLUE);
+          for (String h : new String[] {"Opción", "Cantidad", "Porcentaje"}) {
+            pdfHeaderCell(optTbl, h, headerFont, blue);
+          }
           boolean alt = false;
           for (Map.Entry<String, Long> e : q.getOptionCounts().entrySet()) {
             double pct =
                 q.getPercentages() != null ? q.getPercentages().getOrDefault(e.getKey(), 0.0) : 0.0;
-            Color bg = alt ? LIGHT : WHITE;
-            pdfCell(optTbl, e.getKey(), normalFont, bg, BORDER, false);
-            pdfCell(optTbl, String.valueOf(e.getValue()), normalFont, bg, BORDER, false);
-            pdfCell(optTbl, String.format("%.1f%%", pct), normalFont, bg, BORDER, false);
+            Color bg = alt ? light : white;
+            pdfCell(optTbl, e.getKey(), normalFont, bg, border, false);
+            pdfCell(optTbl, String.valueOf(e.getValue()), normalFont, bg, border, false);
+            pdfCell(optTbl, String.format("%.1f%%", pct), normalFont, bg, border, false);
             alt = !alt;
           }
           doc.add(optTbl);
@@ -1544,7 +1575,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
             c.setBackgroundColor(new Color(220, 235, 245));
             c.setPadding(4);
             c.setHorizontalAlignment(Element.ALIGN_CENTER);
-            c.setBorderColor(BORDER);
+            c.setBorderColor(border);
             statsTbl.addCell(c);
           }
           for (Double v :
@@ -1553,7 +1584,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
                 new PdfPCell(new Phrase(v != null ? String.format("%.2f", v) : "—", boldFont));
             c.setPadding(4);
             c.setHorizontalAlignment(Element.ALIGN_CENTER);
-            c.setBorderColor(BORDER);
+            c.setBorderColor(border);
             statsTbl.addCell(c);
           }
           doc.add(statsTbl);
@@ -1570,8 +1601,8 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   }
 
   private ResponseEntity<byte[]> buildGeneralPdfReport(String ts) throws Exception {
-    List<Long> allIds = surveyStatisticsRepositoryPort.findRecentSurveyIds(1000);
-    long totalGraduates = surveyStatisticsRepositoryPort.countActiveGraduates();
+    final List<Long> allIds = surveyStatisticsRepositoryPort.findRecentSurveyIds(1000);
+    final long totalGraduates = surveyStatisticsRepositoryPort.countActiveGraduates();
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     Document doc = new Document(PageSize.A4.rotate(), 40, 40, 75, 55);
@@ -1579,26 +1610,26 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     writer.setPageEvent(new RptPageEvent("EgreSys — Reporte General de Encuestas"));
     doc.open();
 
-    Color NAVY = new Color(30, 58, 95);
-    Color BLUE = new Color(41, 128, 185);
-    Color LIGHT = new Color(235, 242, 250);
-    Color WHITE = Color.WHITE;
-    Color BORDER = new Color(200, 210, 220);
-    Color DARK = new Color(50, 50, 50);
+    final Color navy = new Color(30, 58, 95);
+    final Color blue = new Color(41, 128, 185);
+    final Color light = new Color(235, 242, 250);
+    final Color white = Color.WHITE;
+    final Color border = new Color(200, 210, 220);
+    final Color dark = new Color(50, 50, 50);
 
-    Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, WHITE);
-    Font subtitleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, WHITE);
-    Font sectionFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, NAVY);
-    Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9, WHITE);
-    Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9, DARK);
-    Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 9, DARK);
+    final Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, white);
+    final Font subtitleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, white);
+    final Font sectionFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, navy);
+    Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9, white);
+    Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9, dark);
+    Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 9, dark);
     Font smallFont = FontFactory.getFont(FontFactory.HELVETICA, 8, new Color(100, 100, 100));
 
     // Banner
     PdfPTable banner = new PdfPTable(1);
     banner.setWidthPercentage(100);
     PdfPCell bannerCell = new PdfPCell();
-    bannerCell.setBackgroundColor(NAVY);
+    bannerCell.setBackgroundColor(navy);
     bannerCell.setPaddingTop(20);
     bannerCell.setPaddingBottom(20);
     bannerCell.setPaddingLeft(20);
@@ -1619,7 +1650,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     banner.addCell(bannerCell);
     doc.add(banner);
 
-    pdfSection(doc, "DETALLE POR ENCUESTA", sectionFont, BLUE);
+    pdfSection(doc, "DETALLE POR ENCUESTA", sectionFont, blue);
 
     PdfPTable tbl = new PdfPTable(9);
     tbl.setWidthPercentage(100);
@@ -1629,47 +1660,47 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
         new String[] {
           "ID", "Título", "Estado", "Tipo", "Inicio", "Fin", "Preg.", "Resp.", "Tasa Resp."
         }) {
-      pdfHeaderCell(tbl, h, headerFont, NAVY);
+      pdfHeaderCell(tbl, h, headerFont, navy);
     }
 
     boolean alt = false;
     for (Long id : allIds) {
       try {
         SurveyStatisticsResponse s = getSurveyStatistics(id);
-        Color bg = alt ? LIGHT : WHITE;
-        pdfCell(tbl, String.valueOf(s.getSurveyId()), normalFont, bg, BORDER, false);
+        Color bg = alt ? light : white;
+        pdfCell(tbl, String.valueOf(s.getSurveyId()), normalFont, bg, border, false);
         pdfCell(
             tbl,
             s.getSurveyTitle() != null ? s.getSurveyTitle() : "",
             normalFont,
             bg,
-            BORDER,
+            border,
             false);
-        pdfCell(tbl, rptTranslateStatus(s.getStatus()), normalFont, bg, BORDER, false);
+        pdfCell(tbl, rptTranslateStatus(s.getStatus()), normalFont, bg, border, false);
         pdfCell(
             tbl,
             s.getSurveyType() != null ? s.getSurveyType().getName() : "N/A",
             normalFont,
             bg,
-            BORDER,
+            border,
             false);
         pdfCell(
             tbl,
             s.getStartDate() != null ? s.getStartDate().toString() : "",
             normalFont,
             bg,
-            BORDER,
+            border,
             false);
         pdfCell(
             tbl,
             s.getEndDate() != null ? s.getEndDate().toString() : "",
             normalFont,
             bg,
-            BORDER,
+            border,
             false);
-        pdfCell(tbl, String.valueOf(s.getTotalQuestions()), normalFont, bg, BORDER, false);
-        pdfCell(tbl, String.valueOf(s.getTotalResponses()), normalFont, bg, BORDER, false);
-        pdfCell(tbl, String.format("%.1f%%", s.getResponseRate()), normalFont, bg, BORDER, false);
+        pdfCell(tbl, String.valueOf(s.getTotalQuestions()), normalFont, bg, border, false);
+        pdfCell(tbl, String.valueOf(s.getTotalResponses()), normalFont, bg, border, false);
+        pdfCell(tbl, String.format("%.1f%%", s.getResponseRate()), normalFont, bg, border, false);
         alt = !alt;
       } catch (Exception e) {
         log.warn("Skipping survey {} in general PDF report: {}", id, e.getMessage());
@@ -1720,6 +1751,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
         footer.writeSelectedRows(
             0, -1, document.left(), document.bottom() - 5, writer.getDirectContent());
       } catch (Exception ignored) {
+        /* ignored */
       }
     }
   }
@@ -1773,7 +1805,8 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     tbl.addCell(c);
   }
 
-  private void pdfKpi(PdfPTable tbl, String val, String lbl, Color color, Font vFont, Font lFont) {
+  private void pdfKpi(
+      PdfPTable tbl, String val, String lbl, Color color, Font valueFont, Font labelFont) {
     PdfPCell c = new PdfPCell();
     c.setBackgroundColor(color);
     c.setBorder(Rectangle.NO_BORDER);
@@ -1783,8 +1816,8 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     c.setPaddingRight(8);
     Paragraph p = new Paragraph();
     p.setAlignment(Element.ALIGN_CENTER);
-    p.add(new Chunk(val + "\n", vFont));
-    p.add(new Chunk(lbl, lFont));
+    p.add(new Chunk(val + "\n", valueFont));
+    p.add(new Chunk(lbl, labelFont));
     c.addElement(p);
     tbl.addCell(c);
   }
@@ -1806,9 +1839,13 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
     XSSFFont font = wb.createFont();
     font.setBold(bold);
     font.setFontHeightInPoints((short) size);
-    if (fg != null) font.setColor(new XSSFColor(fg, null));
+    if (fg != null) {
+      font.setColor(new XSSFColor(fg, null));
+    }
     st.setFont(font);
-    if (center) st.setAlignment(HorizontalAlignment.CENTER);
+    if (center) {
+      st.setAlignment(HorizontalAlignment.CENTER);
+    }
     st.setVerticalAlignment(VerticalAlignment.CENTER);
     st.setWrapText(true);
     st.setBorderBottom(BorderStyle.THIN);
@@ -1842,7 +1879,9 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   // ==================== SHARED HELPERS ====================
 
   private String rptTranslateStatus(SurveyStatus status) {
-    if (status == null) return "N/A";
+    if (status == null) {
+      return "N/A";
+    }
     switch (status) {
       case ACTIVE:
         return "Activa";
@@ -1861,7 +1900,9 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
 
   private String rptTranslateType(
       pe.com.graduate.insights.api.features.survey.domain.model.QuestionType type) {
-    if (type == null) return "";
+    if (type == null) {
+      return "";
+    }
     switch (type) {
       case YES_NO:
         return "Sí/No";
@@ -1887,7 +1928,9 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   }
 
   private String rptTranslateGender(String gender) {
-    if (gender == null) return "N/A";
+    if (gender == null) {
+      return "N/A";
+    }
     switch (gender.toLowerCase()) {
       case "m":
       case "masculino":
@@ -1906,7 +1949,9 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   }
 
   private String rptTranslateMonth(String month) {
-    if (month == null) return "";
+    if (month == null) {
+      return "";
+    }
     switch (month.toUpperCase()) {
       case "JANUARY":
         return "Enero";
@@ -1938,17 +1983,25 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
   }
 
   private String rptGetAnswer(SurveyStatisticsRepositoryPort.QuestionResponseData r) {
-    if (r.textResponse() != null && !r.textResponse().isBlank()) return r.textResponse();
-    if (r.numericResponse() != null) return r.numericResponse().toString();
-    if (r.selectedOptionTexts() != null && !r.selectedOptionTexts().isEmpty())
+    if (r.textResponse() != null && !r.textResponse().isBlank()) {
+      return r.textResponse();
+    }
+    if (r.numericResponse() != null) {
+      return r.numericResponse().toString();
+    }
+    if (r.selectedOptionTexts() != null && !r.selectedOptionTexts().isEmpty()) {
       return String.join("; ", r.selectedOptionTexts());
+    }
     return "";
   }
 
   private String csvEsc(String v) {
-    if (v == null) return "";
-    if (v.contains(",") || v.contains("\"") || v.contains("\n"))
+    if (v == null) {
+      return "";
+    }
+    if (v.contains(",") || v.contains("\"") || v.contains("\n")) {
       return "\"" + v.replace("\"", "\"\"") + "\"";
+    }
     return v;
   }
 
@@ -1960,7 +2013,7 @@ public class SurveyStatisticsUseCaseHandler implements SurveyStatisticsUseCase {
         String[] words =
             response
                 .toLowerCase()
-                .replaceAll("[^a-z\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1\u00fc\\s]", "")
+                .replaceAll("[^a-záéíóúñü\\s]", "")
                 .split("\\s+");
 
         for (String word : words) {
