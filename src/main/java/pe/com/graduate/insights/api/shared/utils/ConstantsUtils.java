@@ -2,7 +2,7 @@ package pe.com.graduate.insights.api.shared.utils;
 
 public class ConstantsUtils {
 
-    private ConstantsUtils() {}
+  private ConstantsUtils() {}
 
   public static final String USER_NOT_FOUND = "Usuario no encontrado con id: %s";
   public static final String USER_NOT_FOUND_BY_EMAIL = "Usuario no encontrado con email: %s";

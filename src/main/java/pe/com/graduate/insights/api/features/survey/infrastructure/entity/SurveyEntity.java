@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pe.com.graduate.insights.api.features.surveytype.infrastructure.entity.SurveyTypeEntity;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.entities.Auditable;
-import pe.com.graduate.insights.api.features.survey.infrastructure.entity.SurveyStatus;
 
 @Entity
 @Table(name = "encuestas")
@@ -57,4 +56,3 @@ public class SurveyEntity extends Auditable {
   @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<QuestionEntity> questions;
 }
-

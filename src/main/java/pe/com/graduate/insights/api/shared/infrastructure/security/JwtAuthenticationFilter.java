@@ -130,4 +130,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         .orElse(null);
   }
 }
-

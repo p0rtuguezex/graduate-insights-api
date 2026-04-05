@@ -29,5 +29,3 @@ public interface JobRepositoryPort {
 
   List<KeyValueResponse> getListByGraduate(Long graduateId);
 }
-
-

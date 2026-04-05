@@ -2,9 +2,9 @@ package pe.com.graduate.insights.api.features.userrole.application.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pe.com.graduate.insights.api.shared.security.UserRole;
 import pe.com.graduate.insights.api.features.userrole.application.ports.input.UserRoleUseCase;
 import pe.com.graduate.insights.api.features.userrole.application.ports.output.UserRoleRepositoryPort;
+import pe.com.graduate.insights.api.shared.security.UserRole;
 
 @Service
 @RequiredArgsConstructor
@@ -27,4 +27,3 @@ public class UserRoleUseCaseHandler implements UserRoleUseCase {
     return userRoleRepositoryPort.getUserRoleAuthority(userId);
   }
 }
-

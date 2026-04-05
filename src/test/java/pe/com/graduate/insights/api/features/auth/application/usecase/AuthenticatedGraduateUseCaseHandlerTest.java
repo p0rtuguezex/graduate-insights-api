@@ -37,7 +37,8 @@ class AuthenticatedGraduateUseCaseHandlerTest {
     when(currentUserUseCase.getCurrentUser(authentication)).thenReturn(user);
     when(graduateIdentityRepositoryPort.getActiveGraduateIdByUserId(7L)).thenReturn(99L);
 
-    Long graduateId = authenticatedGraduateUseCaseHandler.getAuthenticatedGraduateId(authentication);
+    Long graduateId =
+        authenticatedGraduateUseCaseHandler.getAuthenticatedGraduateId(authentication);
 
     assertEquals(99L, graduateId);
     verify(currentUserUseCase).getCurrentUser(authentication);

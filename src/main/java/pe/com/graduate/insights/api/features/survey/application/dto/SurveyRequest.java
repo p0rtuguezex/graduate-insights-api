@@ -47,4 +47,3 @@ public class SurveyRequest implements Serializable {
   @Size(min = 1, message = "Debe incluir al menos una pregunta")
   private List<QuestionRequest> questions;
 }
-

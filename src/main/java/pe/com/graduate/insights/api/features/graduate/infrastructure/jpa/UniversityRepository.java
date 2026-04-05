@@ -7,5 +7,6 @@ import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.Univ
 
 public interface UniversityRepository extends JpaRepository<UniversityEntity, Long> {
   List<UniversityEntity> findAllByEstadoOrderByNombreAsc(String estado);
+
   Optional<UniversityEntity> findByNombreIgnoreCase(String nombre);
 }

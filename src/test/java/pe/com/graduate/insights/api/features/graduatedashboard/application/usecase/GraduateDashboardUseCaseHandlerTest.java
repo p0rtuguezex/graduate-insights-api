@@ -11,14 +11,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import pe.com.graduate.insights.api.features.joboffers.application.dto.JobOffersResponse;
-import pe.com.graduate.insights.api.features.jobs.application.dto.JobResponse;
-import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
+import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateReadUseCase;
 import pe.com.graduate.insights.api.features.graduatedashboard.application.dto.GraduateDashboardResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyListResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.ports.input.GraduateSurveyUseCase;
+import pe.com.graduate.insights.api.features.joboffers.application.dto.JobOffersResponse;
 import pe.com.graduate.insights.api.features.joboffers.application.ports.output.JobOffersRepositoryPort;
+import pe.com.graduate.insights.api.features.jobs.application.dto.JobResponse;
 import pe.com.graduate.insights.api.features.jobs.application.ports.output.JobRepositoryPort;
+import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
 @ExtendWith(MockitoExtension.class)
 class GraduateDashboardUseCaseHandlerTest {
@@ -26,6 +28,7 @@ class GraduateDashboardUseCaseHandlerTest {
   @Mock private GraduateSurveyUseCase graduateSurveyUseCase;
   @Mock private JobRepositoryPort jobRepositoryPort;
   @Mock private JobOffersRepositoryPort jobOffersRepositoryPort;
+  @Mock private GraduateReadUseCase graduateReadUseCase;
 
   @InjectMocks private GraduateDashboardUseCaseHandler useCaseHandler;
 
@@ -34,20 +37,27 @@ class GraduateDashboardUseCaseHandlerTest {
     Long graduateId = 10L;
 
     GraduateSurveyListResponse completedSurvey =
-      GraduateSurveyListResponse.builder().surveyId(1L).completed(true).build();
+        GraduateSurveyListResponse.builder().surveyId(1L).completed(true).build();
     GraduateSurveyListResponse pendingSurvey =
-      GraduateSurveyListResponse.builder().surveyId(2L).completed(false).build();
+        GraduateSurveyListResponse.builder().surveyId(2L).completed(false).build();
     when(graduateSurveyUseCase.getAllSurveysForGraduate(graduateId))
         .thenReturn(List.of(completedSurvey, pendingSurvey));
 
-    JobResponse activeJob = JobResponse.builder().estado(ConstantsUtils.STATUS_ACTIVE).fechaFin("").build();
+    JobResponse activeJob =
+        JobResponse.builder().estado(ConstantsUtils.STATUS_ACTIVE).fechaFin("").build();
     JobResponse inactiveJob = JobResponse.builder().estado("inactive").fechaFin("").build();
     Page<JobResponse> jobsPage = new PageImpl<>(List.of(activeJob, inactiveJob));
-    when(jobRepositoryPort.getPaginationByGraduate(org.mockito.ArgumentMatchers.eq(""), org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq(graduateId)))
+    when(jobRepositoryPort.getPaginationByGraduate(
+            org.mockito.ArgumentMatchers.eq(""),
+            org.mockito.ArgumentMatchers.any(),
+            org.mockito.ArgumentMatchers.eq(graduateId)))
         .thenReturn(jobsPage);
 
     JobOffersResponse offer = JobOffersResponse.builder().jobOffersId(99L).build();
     when(jobOffersRepositoryPort.getRecentActiveOffers(3)).thenReturn(List.of(offer));
+
+    when(graduateReadUseCase.getDomain(graduateId))
+        .thenReturn(GraduateResponse.builder().build());
 
     GraduateDashboardResponse response = useCaseHandler.getDashboard(graduateId);
 
@@ -68,9 +78,15 @@ class GraduateDashboardUseCaseHandlerTest {
     Long graduateId = 20L;
 
     when(graduateSurveyUseCase.getAllSurveysForGraduate(graduateId)).thenReturn(List.of());
-    when(jobRepositoryPort.getPaginationByGraduate(org.mockito.ArgumentMatchers.eq(""), org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq(graduateId)))
+    when(jobRepositoryPort.getPaginationByGraduate(
+            org.mockito.ArgumentMatchers.eq(""),
+            org.mockito.ArgumentMatchers.any(),
+            org.mockito.ArgumentMatchers.eq(graduateId)))
         .thenReturn(Page.empty());
     when(jobOffersRepositoryPort.getRecentActiveOffers(3)).thenReturn(List.of());
+
+    when(graduateReadUseCase.getDomain(graduateId))
+        .thenReturn(GraduateResponse.builder().build());
 
     GraduateDashboardResponse response = useCaseHandler.getDashboard(graduateId);
 
@@ -80,5 +96,3 @@ class GraduateDashboardUseCaseHandlerTest {
     assertEquals(0, response.getJobStats().getActiveJobs());
   }
 }
-
-

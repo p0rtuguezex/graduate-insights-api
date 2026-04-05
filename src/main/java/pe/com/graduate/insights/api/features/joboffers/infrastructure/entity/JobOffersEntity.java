@@ -11,8 +11,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import pe.com.graduate.insights.api.shared.infrastructure.repository.entities.Auditable;
 import pe.com.graduate.insights.api.features.employer.infrastructure.entity.EmployerEntity;
+import pe.com.graduate.insights.api.shared.infrastructure.repository.entities.Auditable;
 
 @Getter
 @Setter
@@ -36,6 +36,3 @@ public class JobOffersEntity extends Auditable {
   @JoinColumn(name = "empleador_id")
   private EmployerEntity employer;
 }
-
-
-

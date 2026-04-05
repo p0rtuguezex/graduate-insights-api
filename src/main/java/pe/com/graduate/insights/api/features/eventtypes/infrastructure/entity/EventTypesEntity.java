@@ -22,5 +22,3 @@ public class EventTypesEntity extends Auditable {
   private String nombre;
   private String estado;
 }
-
-

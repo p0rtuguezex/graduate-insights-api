@@ -11,4 +11,3 @@ public enum QuestionType {
   PHONE, // Respuesta de texto libre
   YES_NO // Pregunta de Sí/No
 }
-

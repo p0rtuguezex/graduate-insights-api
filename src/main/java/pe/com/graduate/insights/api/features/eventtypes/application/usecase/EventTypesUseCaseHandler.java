@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.eventtypes.application.dto.EventTypesRequest;
 import pe.com.graduate.insights.api.features.eventtypes.application.dto.EventTypesResponse;
 import pe.com.graduate.insights.api.features.eventtypes.application.ports.input.EventTypesUseCase;
 import pe.com.graduate.insights.api.features.eventtypes.application.ports.output.EventTypesRepositoryPort;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Service
 @RequiredArgsConstructor

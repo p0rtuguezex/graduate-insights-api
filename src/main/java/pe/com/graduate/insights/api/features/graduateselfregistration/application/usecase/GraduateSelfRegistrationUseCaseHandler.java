@@ -3,10 +3,8 @@ package pe.com.graduate.insights.api.features.graduateselfregistration.applicati
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pe.com.graduate.insights.api.features.graduateselfregistration.application.dto.GraduateSelfRegistrationRequest;
-import pe.com.graduate.insights.api.features.graduateselfregistration.application.ports.input
-    .GraduateSelfRegistrationUseCase;
-import pe.com.graduate.insights.api.features.graduateselfregistration.application.ports.output
-    .GraduateSelfRegistrationRepositoryPort;
+import pe.com.graduate.insights.api.features.graduateselfregistration.application.ports.input.GraduateSelfRegistrationUseCase;
+import pe.com.graduate.insights.api.features.graduateselfregistration.application.ports.output.GraduateSelfRegistrationRepositoryPort;
 
 @Service
 @RequiredArgsConstructor

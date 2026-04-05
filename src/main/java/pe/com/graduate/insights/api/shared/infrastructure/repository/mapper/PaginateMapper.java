@@ -25,5 +25,3 @@ public interface PaginateMapper {
     return number + 1;
   }
 }
-
-

@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.shared.models.response.ApiResponseWrapper;
 import pe.com.graduate.insights.api.features.auth.application.dto.LoginRequest;
 import pe.com.graduate.insights.api.features.auth.application.ports.input.LoginUseCase;
+import pe.com.graduate.insights.api.shared.models.response.ApiResponseWrapper;
 
 @RestController
 @RequestMapping("/auth")
@@ -53,4 +53,3 @@ public class AuthController {
     return ResponseEntity.ok(response);
   }
 }
-

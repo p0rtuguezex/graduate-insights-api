@@ -9,4 +9,3 @@ public interface UserRoleUseCase {
 
   String getUserRoleAuthority(Long userId);
 }
-

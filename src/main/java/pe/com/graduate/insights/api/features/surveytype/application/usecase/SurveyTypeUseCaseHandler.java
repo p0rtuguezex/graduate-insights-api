@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.surveytype.application.dto.SurveyTypeRequest;
 import pe.com.graduate.insights.api.features.surveytype.application.dto.SurveyTypeResponse;
 import pe.com.graduate.insights.api.features.surveytype.application.ports.input.SurveyTypeUseCase;
 import pe.com.graduate.insights.api.features.surveytype.application.ports.output.SurveyTypeRepositoryPort;
 import pe.com.graduate.insights.api.features.surveytype.domain.exception.SurveyTypeException;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -66,4 +66,3 @@ public class SurveyTypeUseCaseHandler implements SurveyTypeUseCase {
     }
   }
 }
-

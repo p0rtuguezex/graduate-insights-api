@@ -18,4 +18,3 @@ public class QuestionResponse {
   private boolean required;
   private List<QuestionOptionResponse> options;
 }
-

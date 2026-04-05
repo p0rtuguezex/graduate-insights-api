@@ -17,9 +17,7 @@ public class NotificationRepositoryAdapter implements NotificationRepositoryPort
 
   @Override
   public List<NotificationResponse> getByUserId(Long userId) {
-    return notificationRepository
-        .findByUserIdOrderByCreatedDateDesc(userId)
-        .stream()
+    return notificationRepository.findByUserIdOrderByCreatedDateDesc(userId).stream()
         .map(notificationMapper::toResponse)
         .toList();
   }

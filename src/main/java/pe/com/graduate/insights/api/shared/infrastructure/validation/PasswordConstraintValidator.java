@@ -18,4 +18,3 @@ public class PasswordConstraintValidator
     return Pattern.compile(PASSWORD_PATTERN).matcher(password).matches();
   }
 }
-

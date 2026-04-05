@@ -6,10 +6,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.eventtypes.application.dto.EventTypesRequest;
 import pe.com.graduate.insights.api.features.eventtypes.application.dto.EventTypesResponse;
 import pe.com.graduate.insights.api.features.eventtypes.infrastructure.entity.EventTypesEntity;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Mapper(componentModel = "spring")
 public interface EventTypesMapper {
@@ -37,7 +37,3 @@ public interface EventTypesMapper {
   void updateEventTypesEntity(
       EventTypesRequest eventTypesRequest, @MappingTarget EventTypesEntity eventTypesEntity);
 }
-
-
-
-

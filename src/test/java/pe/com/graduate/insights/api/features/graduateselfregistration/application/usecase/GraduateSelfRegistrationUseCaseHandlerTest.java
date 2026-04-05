@@ -8,8 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pe.com.graduate.insights.api.features.graduateselfregistration.application.dto.GraduateSelfRegistrationRequest;
-import pe.com.graduate.insights.api.features.graduateselfregistration.application.ports.output
-    .GraduateSelfRegistrationRepositoryPort;
+import pe.com.graduate.insights.api.features.graduateselfregistration.application.ports.output.GraduateSelfRegistrationRepositoryPort;
 
 @ExtendWith(MockitoExtension.class)
 class GraduateSelfRegistrationUseCaseHandlerTest {

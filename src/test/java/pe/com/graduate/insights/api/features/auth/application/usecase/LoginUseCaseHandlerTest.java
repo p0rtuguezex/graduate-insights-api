@@ -9,9 +9,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pe.com.graduate.insights.api.features.auth.domain.model.AuthPrincipal;
 import pe.com.graduate.insights.api.features.auth.application.ports.output.AuthRepositoryPort;
 import pe.com.graduate.insights.api.features.auth.application.ports.output.TokenGeneratorPort;
+import pe.com.graduate.insights.api.features.auth.domain.model.AuthPrincipal;
 
 @ExtendWith(MockitoExtension.class)
 class LoginUseCaseHandlerTest {
@@ -28,14 +28,14 @@ class LoginUseCaseHandlerTest {
     String expectedToken = "jwt-token";
 
     AuthPrincipal user =
-      AuthPrincipal.builder()
-        .id(1L)
-        .username(email)
-        .firstName("Test")
-        .lastName("User")
-        .email(email)
-        .verified(true)
-        .build();
+        AuthPrincipal.builder()
+            .id(1L)
+            .username(email)
+            .firstName("Test")
+            .lastName("User")
+            .email(email)
+            .verified(true)
+            .build();
 
     when(authRepositoryPort.login(email, password)).thenReturn(user);
     when(tokenGeneratorPort.generateToken(user.username())).thenReturn(expectedToken);
@@ -47,5 +47,3 @@ class LoginUseCaseHandlerTest {
     verify(tokenGeneratorPort).generateToken(user.username());
   }
 }
-
-

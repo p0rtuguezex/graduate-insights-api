@@ -8,8 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pe.com.graduate.insights.api.features.surveytype.application.dto.SurveyTypeResponse;
 import pe.com.graduate.insights.api.features.survey.domain.model.SurveyStatus;
+import pe.com.graduate.insights.api.features.surveytype.application.dto.SurveyTypeResponse;
 
 @Data
 @Builder

@@ -6,10 +6,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.surveytype.application.dto.SurveyTypeRequest;
 import pe.com.graduate.insights.api.features.surveytype.application.dto.SurveyTypeResponse;
 import pe.com.graduate.insights.api.features.surveytype.infrastructure.entity.SurveyTypeEntity;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Mapper(componentModel = "spring")
 public interface SurveyTypeMapper {
@@ -36,7 +36,3 @@ public interface SurveyTypeMapper {
   @Mapping(source = "name", target = "value")
   KeyValueResponse toKeyValueResponse(SurveyTypeEntity surveyTypeEntity);
 }
-
-
-
-

@@ -23,5 +23,3 @@ public class EducationCenterEntity extends Auditable {
   private String nombre;
   private String direccion;
 }
-
-

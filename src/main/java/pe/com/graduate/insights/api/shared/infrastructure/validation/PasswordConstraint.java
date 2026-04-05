@@ -20,4 +20,3 @@ public @interface PasswordConstraint {
 
   Class<? extends Payload>[] payload() default {};
 }
-

@@ -32,6 +32,3 @@ public interface EducationCenterMapper {
       EducationCenterRequest educationCenterRequest,
       @MappingTarget EducationCenterEntity educationCenterEntity);
 }
-
-
-

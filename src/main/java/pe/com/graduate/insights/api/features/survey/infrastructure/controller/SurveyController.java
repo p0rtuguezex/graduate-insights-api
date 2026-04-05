@@ -28,9 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.features.survey.application.dto.SurveyRequest;
 import pe.com.graduate.insights.api.features.survey.application.dto.SurveyResponse;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 import pe.com.graduate.insights.api.features.survey.application.ports.input.SurveyUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/survey")
@@ -207,15 +207,11 @@ public class SurveyController {
           "Envia una notificacion por correo electronico a todos los graduados activos sobre una encuesta publicada")
   @ApiResponses(
       value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Notificaciones enviadas exitosamente"),
+        @ApiResponse(responseCode = "200", description = "Notificaciones enviadas exitosamente"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "404", description = "Encuesta no encontrada"),
-        @ApiResponse(
-            responseCode = "422",
-            description = "La encuesta no esta activa")
+        @ApiResponse(responseCode = "422", description = "La encuesta no esta activa")
       })
   @PostMapping("/{id}/notify")
   public ResponseEntity<pe.com.graduate.insights.api.shared.models.response.ApiResponse<Void>>
@@ -249,6 +245,3 @@ public class SurveyController {
     return ResponseUtils.successResponse(surveys);
   }
 }
-
-
-

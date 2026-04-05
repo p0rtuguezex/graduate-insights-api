@@ -72,6 +72,3 @@ public interface JobOffersRepository extends JpaRepository<JobOffersEntity, Long
   List<JobOffersEntity> findRecentActiveOffers(
       @Param("estado") String estado, @Param("userEstado") String userEstado, Pageable pageable);
 }
-
-
-

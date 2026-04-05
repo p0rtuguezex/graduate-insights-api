@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.shared.models.response.ApiResponseWrapper;
 import pe.com.graduate.insights.api.features.graduateselfregistration.application.dto.GraduateSelfRegistrationRequest;
 import pe.com.graduate.insights.api.features.graduateselfregistration.application.ports.input.GraduateSelfRegistrationUseCase;
+import pe.com.graduate.insights.api.shared.models.response.ApiResponseWrapper;
 
 @RestController
 @RequestMapping("/graduate")
@@ -30,4 +30,3 @@ public class RegisterGraduateController {
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 }
-

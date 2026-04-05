@@ -7,18 +7,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import pe.com.graduate.insights.api.shared.exception.NotFoundException;
-import pe.com.graduate.insights.api.features.survey.domain.exception.SurveyException;
-import pe.com.graduate.insights.api.features.survey.domain.model.SurveyStatus;
 import pe.com.graduate.insights.api.features.survey.application.dto.SurveyRequest;
 import pe.com.graduate.insights.api.features.survey.application.dto.SurveyResponse;
-import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.features.survey.application.ports.output.SurveyRepositoryPort;
+import pe.com.graduate.insights.api.features.survey.domain.exception.SurveyException;
+import pe.com.graduate.insights.api.features.survey.domain.model.SurveyStatus;
 import pe.com.graduate.insights.api.features.survey.infrastructure.entity.SurveyEntity;
-import pe.com.graduate.insights.api.features.surveytype.infrastructure.entity.SurveyTypeEntity;
 import pe.com.graduate.insights.api.features.survey.infrastructure.jpa.SurveyRepository;
-import pe.com.graduate.insights.api.features.surveytype.infrastructure.jpa.SurveyTypeRepository;
 import pe.com.graduate.insights.api.features.survey.infrastructure.mapper.SurveyMapper;
+import pe.com.graduate.insights.api.features.surveytype.infrastructure.entity.SurveyTypeEntity;
+import pe.com.graduate.insights.api.features.surveytype.infrastructure.jpa.SurveyTypeRepository;
+import pe.com.graduate.insights.api.shared.exception.NotFoundException;
+import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -143,13 +143,7 @@ public class SurveyRepositoryAdapter implements SurveyRepositoryPort {
 
   private pe.com.graduate.insights.api.features.survey.infrastructure.entity.SurveyStatus
       toEntityStatus(SurveyStatus status) {
-    return pe.com.graduate.insights.api.features.survey.infrastructure.entity.SurveyStatus
-        .valueOf(status.name());
+    return pe.com.graduate.insights.api.features.survey.infrastructure.entity.SurveyStatus.valueOf(
+        status.name());
   }
 }
-
-
-
-
-
-

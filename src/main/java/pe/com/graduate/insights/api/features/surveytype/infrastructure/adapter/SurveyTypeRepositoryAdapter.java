@@ -5,14 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import pe.com.graduate.insights.api.shared.exception.NotFoundException;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.surveytype.application.dto.SurveyTypeRequest;
 import pe.com.graduate.insights.api.features.surveytype.application.dto.SurveyTypeResponse;
 import pe.com.graduate.insights.api.features.surveytype.application.ports.output.SurveyTypeRepositoryPort;
 import pe.com.graduate.insights.api.features.surveytype.infrastructure.entity.SurveyTypeEntity;
 import pe.com.graduate.insights.api.features.surveytype.infrastructure.jpa.SurveyTypeRepository;
 import pe.com.graduate.insights.api.features.surveytype.infrastructure.mapper.SurveyTypeMapper;
+import pe.com.graduate.insights.api.shared.exception.NotFoundException;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Repository
 @RequiredArgsConstructor
@@ -35,7 +35,7 @@ public class SurveyTypeRepositoryAdapter implements SurveyTypeRepositoryPort {
     SurveyTypeEntity entity =
         surveyTypeRepository
             .findById(id)
-        .orElseThrow(() -> new NotFoundException(SURVEY_TYPE_NOT_FOUND_MESSAGE + id));
+            .orElseThrow(() -> new NotFoundException(SURVEY_TYPE_NOT_FOUND_MESSAGE + id));
     return surveyTypeMapper.toDomain(entity);
   }
 
@@ -44,7 +44,7 @@ public class SurveyTypeRepositoryAdapter implements SurveyTypeRepositoryPort {
     SurveyTypeEntity entity =
         surveyTypeRepository
             .findById(id)
-        .orElseThrow(() -> new NotFoundException(SURVEY_TYPE_NOT_FOUND_MESSAGE + id));
+            .orElseThrow(() -> new NotFoundException(SURVEY_TYPE_NOT_FOUND_MESSAGE + id));
     surveyTypeMapper.updateEntity(entity, request);
     surveyTypeRepository.save(entity);
   }
@@ -54,7 +54,7 @@ public class SurveyTypeRepositoryAdapter implements SurveyTypeRepositoryPort {
     SurveyTypeEntity entity =
         surveyTypeRepository
             .findById(id)
-        .orElseThrow(() -> new NotFoundException(SURVEY_TYPE_NOT_FOUND_MESSAGE + id));
+            .orElseThrow(() -> new NotFoundException(SURVEY_TYPE_NOT_FOUND_MESSAGE + id));
     surveyTypeRepository.delete(entity);
   }
 
@@ -88,9 +88,3 @@ public class SurveyTypeRepositoryAdapter implements SurveyTypeRepositoryPort {
     return surveyTypeRepository.existsByNameIgnoreCaseAndIdNot(name, id);
   }
 }
-
-
-
-
-
-

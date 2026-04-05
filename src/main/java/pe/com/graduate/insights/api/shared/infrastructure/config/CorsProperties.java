@@ -80,4 +80,3 @@ public class CorsProperties {
         .collect(Collectors.toList());
   }
 }
-

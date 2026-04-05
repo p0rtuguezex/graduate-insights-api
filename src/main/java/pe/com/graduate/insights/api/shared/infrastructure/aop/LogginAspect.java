@@ -27,7 +27,7 @@ public class LogginAspect {
 
   @Pointcut(
       "within(pe.com.graduate.insights.api.shared.infrastructure.controller..*) || "
-        + "within(pe.com.graduate.insights.api.shared.infrastructure.storage..*) ||"
+          + "within(pe.com.graduate.insights.api.shared.infrastructure.storage..*) ||"
           + "within(pe.com.graduate.insights.api.shared.infrastructure.repository.adapter..*) ||"
           + "within(pe.com.graduate.insights.api.features..infrastructure.adapter..*)")
   public void controllerServiceRepositoryLayer() {}
@@ -70,4 +70,3 @@ public class LogginAspect {
     }
   }
 }
-

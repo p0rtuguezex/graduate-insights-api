@@ -28,4 +28,3 @@ public interface JobOffersUseCase {
   Page<JobOffersResponse> getPaginationByRole(
       String search, Pageable pageable, boolean isDirector, Long currentUserId);
 }
-

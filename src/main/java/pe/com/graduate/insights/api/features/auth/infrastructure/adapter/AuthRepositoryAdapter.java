@@ -10,11 +10,11 @@ import pe.com.graduate.insights.api.features.auth.application.ports.output.AuthR
 import pe.com.graduate.insights.api.features.auth.domain.exception.AccountPendingApprovalException;
 import pe.com.graduate.insights.api.features.auth.domain.exception.InvalidCredentialsException;
 import pe.com.graduate.insights.api.features.auth.domain.model.AuthPrincipal;
-import pe.com.graduate.insights.api.features.userrole.application.ports.output.UserRoleRepositoryPort;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
-import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
+import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
 import pe.com.graduate.insights.api.features.user.infrastructure.jpa.UserRepository;
+import pe.com.graduate.insights.api.features.userrole.application.ports.output.UserRoleRepositoryPort;
 import pe.com.graduate.insights.api.shared.security.UserRole;
 import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
@@ -91,5 +91,3 @@ public class AuthRepositoryAdapter implements AuthRepositoryPort {
         .build();
   }
 }
-
-

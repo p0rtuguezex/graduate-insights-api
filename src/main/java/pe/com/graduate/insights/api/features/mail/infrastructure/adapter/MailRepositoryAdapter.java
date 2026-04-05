@@ -16,9 +16,9 @@ import pe.com.graduate.insights.api.features.mail.application.dto.MailRequest;
 import pe.com.graduate.insights.api.features.mail.application.dto.ValidateCodeRequest;
 import pe.com.graduate.insights.api.features.mail.application.ports.output.MailRepositoryPort;
 import pe.com.graduate.insights.api.features.mail.domain.exception.MailException;
-import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
 import pe.com.graduate.insights.api.features.user.infrastructure.jpa.UserRepository;
+import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.shared.utils.GraduateUtils;
 
@@ -30,6 +30,7 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
   private final PasswordEncoder passwordEncoder;
   private final EmailConfigRepository emailConfigRepository;
   private final UserRepository userRepository;
+
   @Qualifier("mailExecutor")
   private final TaskExecutor mailExecutor;
 
@@ -80,8 +81,7 @@ public class MailRepositoryAdapter implements MailRepositoryPort {
         () -> sendViaResend(config, mailRequest.getEmail(), subjectToSend, templateToSend));
   }
 
-  private void sendViaResend(
-      EmailConfigEntity config, String to, String subject, String htmlBody) {
+  private void sendViaResend(EmailConfigEntity config, String to, String subject, String htmlBody) {
     try {
       Resend resend = new Resend(config.getApiKey());
       CreateEmailOptions params =

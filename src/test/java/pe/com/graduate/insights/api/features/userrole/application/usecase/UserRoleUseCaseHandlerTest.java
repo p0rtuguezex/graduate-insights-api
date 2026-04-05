@@ -9,8 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pe.com.graduate.insights.api.shared.security.UserRole;
 import pe.com.graduate.insights.api.features.userrole.application.ports.output.UserRoleRepositoryPort;
+import pe.com.graduate.insights.api.shared.security.UserRole;
 
 @ExtendWith(MockitoExtension.class)
 class UserRoleUseCaseHandlerTest {
@@ -39,4 +39,3 @@ class UserRoleUseCaseHandlerTest {
     verify(userRoleRepositoryPort).getUserRoleDisplayName(9L);
   }
 }
-

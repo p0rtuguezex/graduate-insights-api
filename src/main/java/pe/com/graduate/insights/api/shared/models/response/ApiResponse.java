@@ -67,7 +67,7 @@ public class ApiResponse<T> {
   public static <T> ApiResponse<T> success(T data, Paginate paginate) {
     return ApiResponse.<T>builder()
         .success(true)
-      .message(SUCCESS_MESSAGE)
+        .message(SUCCESS_MESSAGE)
         .data(data)
         .paginate(paginate)
         .build();

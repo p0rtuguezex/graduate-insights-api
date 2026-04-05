@@ -60,4 +60,3 @@ public class CorsConfig {
     return values;
   }
 }
-

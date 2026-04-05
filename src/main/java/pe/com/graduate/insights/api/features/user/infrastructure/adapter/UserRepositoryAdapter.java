@@ -9,15 +9,15 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.features.user.application.dto.ProfileUpdateRequest;
 import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
 import pe.com.graduate.insights.api.features.user.application.dto.UserResponse;
-import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.features.user.application.ports.output.UserRepositoryPort;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
 import pe.com.graduate.insights.api.features.user.infrastructure.jpa.UserRepository;
 import pe.com.graduate.insights.api.features.user.infrastructure.mapper.UserMapper;
+import pe.com.graduate.insights.api.shared.exception.NotFoundException;
+import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -112,8 +112,3 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
             });
   }
 }
-
-
-
-
-

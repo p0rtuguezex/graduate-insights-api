@@ -9,18 +9,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pe.com.graduate.insights.api.shared.exception.NotFoundException;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyResponseRequest;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.ports.output.GraduateSurveyResponseRepositoryPort;
 import pe.com.graduate.insights.api.features.graduatesurveys.domain.model.GraduateQuestionResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.domain.model.GraduateSurveyResponse;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
 import pe.com.graduate.insights.api.features.graduatesurveys.infrastructure.entity.GraduateSurveyResponseEntity;
-import pe.com.graduate.insights.api.features.survey.infrastructure.entity.QuestionOptionEntity;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
 import pe.com.graduate.insights.api.features.graduatesurveys.infrastructure.jpa.GraduateSurveyResponseRepository;
-import pe.com.graduate.insights.api.features.survey.infrastructure.jpa.QuestionOptionRepository;
 import pe.com.graduate.insights.api.features.graduatesurveys.infrastructure.mapper.GraduateSurveyResponseMapper;
+import pe.com.graduate.insights.api.features.survey.infrastructure.entity.QuestionOptionEntity;
+import pe.com.graduate.insights.api.features.survey.infrastructure.jpa.QuestionOptionRepository;
+import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 
 @Slf4j
 @Component
@@ -39,10 +39,11 @@ public class GraduateSurveyResponseRepositoryAdapter
     // Delete any existing draft for this survey+graduate before saving the completed response
     graduateSurveyResponseRepository
         .findBySurveyIdAndGraduateIdAndCompleted(request.getSurveyId(), graduateId, false)
-        .ifPresent(draft -> {
-          graduateSurveyResponseRepository.delete(draft);
-          graduateSurveyResponseRepository.flush();
-        });
+        .ifPresent(
+            draft -> {
+              graduateSurveyResponseRepository.delete(draft);
+              graduateSurveyResponseRepository.flush();
+            });
 
     GraduateSurveyResponseEntity responseEntity = graduateSurveyResponseMapper.toEntity(request);
 
@@ -105,14 +106,15 @@ public class GraduateSurveyResponseRepositoryAdapter
 
     // Check if an incomplete draft already exists for this survey+graduate
     Optional<GraduateSurveyResponseEntity> existingDraft =
-        graduateSurveyResponseRepository
-            .findBySurveyIdAndGraduateIdAndCompleted(request.getSurveyId(), graduateId, false);
+        graduateSurveyResponseRepository.findBySurveyIdAndGraduateIdAndCompleted(
+            request.getSurveyId(), graduateId, false);
 
     // If a draft exists, delete it (we'll create a fresh one)
-    existingDraft.ifPresent(draft -> {
-      graduateSurveyResponseRepository.delete(draft);
-      graduateSurveyResponseRepository.flush();
-    });
+    existingDraft.ifPresent(
+        draft -> {
+          graduateSurveyResponseRepository.delete(draft);
+          graduateSurveyResponseRepository.flush();
+        });
 
     // Create new draft response entity
     GraduateSurveyResponseEntity responseEntity = graduateSurveyResponseMapper.toEntity(request);
@@ -174,26 +176,26 @@ public class GraduateSurveyResponseRepositoryAdapter
   }
 
   /**
-   * Batch-loads all question option entities referenced by the request,
-   * avoiding N+1 queries when processing individual question responses.
+   * Batch-loads all question option entities referenced by the request, avoiding N+1 queries when
+   * processing individual question responses.
    */
   private Map<Long, QuestionOptionEntity> loadOptionsMap(GraduateSurveyResponseRequest request) {
     if (request.getResponses() == null) {
       return Map.of();
     }
 
-    List<Long> allOptionIds = request.getResponses().stream()
-        .filter(r -> r.getSelectedOptionIds() != null)
-        .flatMap(r -> r.getSelectedOptionIds().stream())
-        .distinct()
-        .toList();
+    List<Long> allOptionIds =
+        request.getResponses().stream()
+            .filter(r -> r.getSelectedOptionIds() != null)
+            .flatMap(r -> r.getSelectedOptionIds().stream())
+            .distinct()
+            .toList();
 
     if (allOptionIds.isEmpty()) {
       return Map.of();
     }
 
-    return questionOptionRepository.findAllById(allOptionIds)
-        .stream()
+    return questionOptionRepository.findAllById(allOptionIds).stream()
         .collect(Collectors.toMap(QuestionOptionEntity::getId, Function.identity()));
   }
 
@@ -214,7 +216,8 @@ public class GraduateSurveyResponseRepositoryAdapter
   }
 
   private GraduateQuestionResponse toQuestionDomain(
-      pe.com.graduate.insights.api.features.graduatesurveys.infrastructure.entity.GraduateQuestionResponseEntity
+      pe.com.graduate.insights.api.features.graduatesurveys.infrastructure.entity
+              .GraduateQuestionResponseEntity
           response) {
     Long questionId = response.getQuestion() != null ? response.getQuestion().getId() : null;
     List<Long> selectedOptionIds =

@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.features.employer.application.dto.EmployerRequest;
+import pe.com.graduate.insights.api.features.employer.application.ports.input.EmployerUseCase;
 import pe.com.graduate.insights.api.shared.models.response.ApiResponse;
 import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
-import pe.com.graduate.insights.api.features.employer.application.ports.input.EmployerUseCase;
 
 @RestController
 @RequestMapping("/employer")
@@ -26,6 +26,3 @@ public class RegisterEmployerController {
     return ResponseUtils.sucessCreateResponse();
   }
 }
-
-
-

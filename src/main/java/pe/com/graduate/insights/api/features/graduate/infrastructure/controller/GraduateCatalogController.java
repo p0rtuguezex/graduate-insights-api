@@ -41,7 +41,12 @@ public class GraduateCatalogController {
   public ResponseEntity<List<FacultyCatalogResponse>> listFaculties() {
     List<FacultyCatalogResponse> result =
         facultyRepository.findAllByEstadoOrderByNombreAsc(ConstantsUtils.STATUS_ACTIVE).stream()
-            .map(faculty -> FacultyCatalogResponse.builder().id(faculty.getId()).nombre(faculty.getNombre()).build())
+            .map(
+                faculty ->
+                    FacultyCatalogResponse.builder()
+                        .id(faculty.getId())
+                        .nombre(faculty.getNombre())
+                        .build())
             .toList();
     return new ResponseEntity<>(result, HttpStatus.OK);
   }
@@ -51,18 +56,19 @@ public class GraduateCatalogController {
       @RequestParam(value = "facultyId", required = false) Long facultyId) {
     List<ProfessionalSchoolCatalogResponse> result =
         (facultyId == null
-                ? professionalSchoolRepository.findAllByEstadoOrderByNombreAsc(ConstantsUtils.STATUS_ACTIVE)
+                ? professionalSchoolRepository.findAllByEstadoOrderByNombreAsc(
+                    ConstantsUtils.STATUS_ACTIVE)
                 : professionalSchoolRepository.findAllByFacultadIdAndEstadoOrderByNombreAsc(
                     facultyId, ConstantsUtils.STATUS_ACTIVE))
             .stream()
-            .map(
-                school ->
-                    ProfessionalSchoolCatalogResponse.builder()
-                        .id(school.getId())
-                        .facultadId(school.getFacultadId())
-                        .nombre(school.getNombre())
-                        .build())
-            .toList();
+                .map(
+                    school ->
+                        ProfessionalSchoolCatalogResponse.builder()
+                            .id(school.getId())
+                            .facultadId(school.getFacultadId())
+                            .nombre(school.getNombre())
+                            .build())
+                .toList();
 
     return new ResponseEntity<>(result, HttpStatus.OK);
   }
@@ -85,7 +91,9 @@ public class GraduateCatalogController {
   @GetMapping("/titulation-modes")
   public ResponseEntity<List<CatalogOptionResponse>> listTitulationModes() {
     List<CatalogOptionResponse> result =
-        titulationModeRepository.findAllByEstadoOrderByNombreAsc(ConstantsUtils.STATUS_ACTIVE).stream()
+        titulationModeRepository
+            .findAllByEstadoOrderByNombreAsc(ConstantsUtils.STATUS_ACTIVE)
+            .stream()
             .map(
                 item ->
                     CatalogOptionResponse.builder()
@@ -100,7 +108,9 @@ public class GraduateCatalogController {
   @GetMapping("/languages")
   public ResponseEntity<List<CatalogOptionResponse>> listLanguages() {
     List<CatalogOptionResponse> result =
-        languageCatalogRepository.findAllByEstadoOrderByNombreAsc(ConstantsUtils.STATUS_ACTIVE).stream()
+        languageCatalogRepository
+            .findAllByEstadoOrderByNombreAsc(ConstantsUtils.STATUS_ACTIVE)
+            .stream()
             .map(
                 item ->
                     CatalogOptionResponse.builder()
@@ -128,23 +138,34 @@ public class GraduateCatalogController {
   }
 
   @PostMapping("/universities")
-  public ResponseEntity<CatalogOptionResponse> createUniversity(@RequestBody Map<String, String> body) {
+  public ResponseEntity<CatalogOptionResponse> createUniversity(
+      @RequestBody Map<String, String> body) {
     String nombre = body.getOrDefault("nombre", "").trim();
     if (nombre.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-    return universityRepository.findByNombreIgnoreCase(nombre)
-        .map(existing -> new ResponseEntity<>(
-            CatalogOptionResponse.builder().id(existing.getId()).nombre(existing.getNombre()).build(),
-            HttpStatus.OK))
-        .orElseGet(() -> {
-          UniversityEntity entity = new UniversityEntity();
-          entity.setNombre(nombre);
-          entity.setEstado(ConstantsUtils.STATUS_ACTIVE);
-          UniversityEntity saved = universityRepository.save(entity);
-          return new ResponseEntity<>(
-              CatalogOptionResponse.builder().id(saved.getId()).nombre(saved.getNombre()).build(),
-              HttpStatus.CREATED);
-        });
+    return universityRepository
+        .findByNombreIgnoreCase(nombre)
+        .map(
+            existing ->
+                new ResponseEntity<>(
+                    CatalogOptionResponse.builder()
+                        .id(existing.getId())
+                        .nombre(existing.getNombre())
+                        .build(),
+                    HttpStatus.OK))
+        .orElseGet(
+            () -> {
+              UniversityEntity entity = new UniversityEntity();
+              entity.setNombre(nombre);
+              entity.setEstado(ConstantsUtils.STATUS_ACTIVE);
+              UniversityEntity saved = universityRepository.save(entity);
+              return new ResponseEntity<>(
+                  CatalogOptionResponse.builder()
+                      .id(saved.getId())
+                      .nombre(saved.getNombre())
+                      .build(),
+                  HttpStatus.CREATED);
+            });
   }
 }

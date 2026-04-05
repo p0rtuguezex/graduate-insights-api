@@ -31,4 +31,3 @@ public class QuestionRequest {
       message = "Debe incluir al menos dos opciones para preguntas de opcion multiple o unica")
   private List<QuestionOptionRequest> options;
 }
-

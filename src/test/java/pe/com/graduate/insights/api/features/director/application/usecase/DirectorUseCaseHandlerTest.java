@@ -10,9 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.director.application.dto.DirectorResponse;
 import pe.com.graduate.insights.api.features.director.application.ports.output.DirectorRepositoryPort;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @ExtendWith(MockitoExtension.class)
 class DirectorUseCaseHandlerTest {
@@ -43,4 +43,3 @@ class DirectorUseCaseHandlerTest {
     verify(directorRepositoryPort).getDomain(5L);
   }
 }
-

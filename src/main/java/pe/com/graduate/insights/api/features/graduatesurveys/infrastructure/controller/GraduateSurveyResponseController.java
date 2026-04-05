@@ -16,18 +16,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.shared.models.response.ApiResponse;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 import pe.com.graduate.insights.api.features.auth.application.ports.input.AuthenticatedGraduateUseCase;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyResponseRequest;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.ports.input.GraduateSurveyResponseUseCase;
 import pe.com.graduate.insights.api.features.graduatesurveys.domain.model.GraduateSurveyResponse;
+import pe.com.graduate.insights.api.shared.models.response.ApiResponse;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/survey-responses")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('GRADUATE')")
-@Tag(name = "Respuestas de Encuestas", description = "APIs para gestion de respuestas de encuestas de graduados")
+@Tag(
+    name = "Respuestas de Encuestas",
+    description = "APIs para gestion de respuestas de encuestas de graduados")
 public class GraduateSurveyResponseController {
 
   private final GraduateSurveyResponseUseCase graduateSurveyResponseUseCase;

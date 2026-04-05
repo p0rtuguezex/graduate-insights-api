@@ -48,4 +48,3 @@ public class GraduateSurveyResponseEntity extends Auditable {
   @Column(name = "completada")
   private boolean completed;
 }
-

@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.features.jobs.application.dto.JobRequest;
 import pe.com.graduate.insights.api.features.jobs.application.dto.JobResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 import pe.com.graduate.insights.api.features.jobs.application.ports.input.JobUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
 import pe.com.graduate.insights.api.shared.infrastructure.security.CurrentUserProvider;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/jobs")
@@ -185,7 +185,3 @@ public class JobsController {
     return new ResponseEntity<>(jobList, HttpStatus.OK);
   }
 }
-
-
-
-

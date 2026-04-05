@@ -19,4 +19,3 @@ public class JwtTokenGeneratorAdapter implements TokenGeneratorPort {
     return jwtService.generateToken(userDetails);
   }
 }
-

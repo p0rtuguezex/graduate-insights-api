@@ -7,16 +7,16 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import pe.com.graduate.insights.api.shared.exception.NotFoundException;
-import pe.com.graduate.insights.api.features.survey.infrastructure.entity.SurveyStatus;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyDetailResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyListResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.QuestionDetailResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.SurveyTypeResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.ports.output.GraduateSurveyRepositoryPort;
 import pe.com.graduate.insights.api.features.graduatesurveys.infrastructure.jpa.GraduateSurveyResponseRepository;
+import pe.com.graduate.insights.api.features.survey.infrastructure.entity.SurveyStatus;
 import pe.com.graduate.insights.api.features.survey.infrastructure.jpa.SurveyRepository;
 import pe.com.graduate.insights.api.features.survey.infrastructure.mapper.SurveyMapper;
+import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 
 @Slf4j
 @Component
@@ -30,8 +30,9 @@ public class GraduateSurveyRepositoryAdapter implements GraduateSurveyRepository
   @Override
   public List<GraduateSurveyListResponse> getAllSurveysForGraduate(Long graduateId) {
     // Obtener encuestas activas y cerradas con sus preguntas y tipo (evita N+1)
-    var allSurveys = surveyRepository.findByStatusInWithQuestionsAndType(
-        Arrays.asList(SurveyStatus.ACTIVE, SurveyStatus.CLOSED));
+    var allSurveys =
+        surveyRepository.findByStatusInWithQuestionsAndType(
+            Arrays.asList(SurveyStatus.ACTIVE, SurveyStatus.CLOSED));
 
     // Obtener las encuestas completadas por el graduado
     var completedSurveys = graduateSurveyResponseRepository.findByGraduateId(graduateId);
@@ -107,8 +108,8 @@ public class GraduateSurveyRepositoryAdapter implements GraduateSurveyRepository
                           .questionId(question.getId())
                           .questionText(question.getQuestionText())
                           .questionType(
-                              pe.com.graduate.insights.api.features.survey.domain.model
-                                  .QuestionType.valueOf(question.getQuestionType().name()))
+                              pe.com.graduate.insights.api.features.survey.domain.model.QuestionType
+                                  .valueOf(question.getQuestionType().name()))
                           .required(question.isRequired())
                           .options(
                               question.getOptions() != null
@@ -170,7 +171,3 @@ public class GraduateSurveyRepositoryAdapter implements GraduateSurveyRepository
     return responseBuilder.build();
   }
 }
-
-
-
-

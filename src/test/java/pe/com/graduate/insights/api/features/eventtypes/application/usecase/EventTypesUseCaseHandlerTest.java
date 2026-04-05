@@ -10,9 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.eventtypes.application.dto.EventTypesResponse;
 import pe.com.graduate.insights.api.features.eventtypes.application.ports.output.EventTypesRepositoryPort;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @ExtendWith(MockitoExtension.class)
 class EventTypesUseCaseHandlerTest {
@@ -43,4 +43,3 @@ class EventTypesUseCaseHandlerTest {
     verify(eventTypesRepositoryPort).getDomain(10L);
   }
 }
-

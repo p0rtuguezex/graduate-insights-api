@@ -22,21 +22,23 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
 
   Optional<GraduateEntity> findByUserIdAndUserEstado(Long userId, String estado);
 
-  @EntityGraph(attributePaths = {
-      "user",
-      "grados", "grados.titulation",
-      "idiomas",
-      "formacionesComplementarias",
-      "trayectoriasLaborales"
-  })
+  @EntityGraph(
+      attributePaths = {
+        "user",
+        "grados",
+        "grados.titulation",
+        "idiomas",
+        "formacionesComplementarias",
+        "trayectoriasLaborales"
+      })
   Optional<GraduateEntity> findByIdAndUserEstado(Long id, String estado);
 
   Page<GraduateEntity> findAllByUserEstado(String status, Pageable pageable);
 
+  List<GraduateEntity> findAllByUserEstado(String status);
+
   Page<GraduateEntity> findAllByUserEstadoAndValidated(
       String status, Boolean validated, Pageable pageable);
-
-  List<GraduateEntity> findAllByUserEstado(String status);
 
   @Query(
       "SELECT g FROM GraduateEntity g "
@@ -50,22 +52,22 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
           + " LOWER(g.user.celular) LIKE LOWER(CONCAT('%', :search, '%')) OR "
           + " LOWER(g.codigoUniversitario) LIKE LOWER(CONCAT('%', :search, '%'))"
           + ")")
-    Page<GraduateEntity> findAllByUserEstadoSearch(String search, String status, Pageable pageable);
+  Page<GraduateEntity> findAllByUserEstadoSearch(String search, String status, Pageable pageable);
 
-    @Query(
+  @Query(
       "SELECT g FROM GraduateEntity g "
-        + "WHERE g.user.estado = :status "
-        + "AND g.validated = :validated "
-        + "AND ("
-        + " LOWER(g.user.nombres) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-        + " LOWER(g.user.correo) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-        + " LOWER(g.user.apellidos) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-        + " LOWER(g.user.genero) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-        + " LOWER(g.user.dni) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-        + " LOWER(g.user.celular) LIKE LOWER(CONCAT('%', :search, '%')) OR "
-        + " LOWER(g.codigoUniversitario) LIKE LOWER(CONCAT('%', :search, '%'))"
-        + ")")
-    Page<GraduateEntity> findAllByUserEstadoAndValidatedSearch(
+          + "WHERE g.user.estado = :status "
+          + "AND g.validated = :validated "
+          + "AND ("
+          + " LOWER(g.user.nombres) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(g.user.correo) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(g.user.apellidos) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(g.user.genero) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(g.user.dni) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(g.user.celular) LIKE LOWER(CONCAT('%', :search, '%')) OR "
+          + " LOWER(g.codigoUniversitario) LIKE LOWER(CONCAT('%', :search, '%'))"
+          + ")")
+  Page<GraduateEntity> findAllByUserEstadoAndValidatedSearch(
       String search, String status, Boolean validated, Pageable pageable);
 
   @Transactional
@@ -77,15 +79,13 @@ public interface GraduateRepository extends JpaRepository<GraduateEntity, Long> 
   @Transactional
   @Modifying
   @Query(
-      value = "UPDATE usuarios u INNER JOIN graduados g ON g.usuario_id = u.id"
-          + " SET u.correo = CONCAT(u.correo, '_deleted_', g.id)"
-          + " WHERE g.id = :graduateId",
+      value =
+          "UPDATE usuarios u INNER JOIN graduados g ON g.usuario_id = u.id"
+              + " SET u.correo = CONCAT(u.correo, '_deleted_', g.id)"
+              + " WHERE g.id = :graduateId",
       nativeQuery = true)
   void mangleEmailByGraduateId(@Param("graduateId") Long graduateId);
 
   @Query("SELECT COUNT(g) FROM GraduateEntity g WHERE g.user.estado = :estado")
   Long countByUserEstado(@Param("estado") String estado);
 }
-
-
-

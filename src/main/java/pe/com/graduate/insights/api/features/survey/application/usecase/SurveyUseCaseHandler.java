@@ -71,21 +71,26 @@ public class SurveyUseCaseHandler implements SurveyUseCase {
     List<GraduateEntity> activeGraduates =
         graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE);
 
-    activeGraduates.forEach(graduate -> {
-      try {
-        NotificationEntity notification = NotificationEntity.builder()
-            .userId(graduate.getUser().getId())
-            .titulo("Nueva encuesta disponible")
-            .mensaje(mensaje)
-            .tipo("ENCUESTA")
-            .leido(false)
-            .build();
-        notificationRepository.save(notification);
-      } catch (Exception e) {
-        log.error("Error al crear notificacion de encuesta para graduado {}: {}",
-            graduate.getId(), e.getMessage(), e);
-      }
-    });
+    activeGraduates.forEach(
+        graduate -> {
+          try {
+            NotificationEntity notification =
+                NotificationEntity.builder()
+                    .userId(graduate.getUser().getId())
+                    .titulo("Nueva encuesta disponible")
+                    .mensaje(mensaje)
+                    .tipo("ENCUESTA")
+                    .leido(false)
+                    .build();
+            notificationRepository.save(notification);
+          } catch (Exception e) {
+            log.error(
+                "Error al crear notificacion de encuesta para graduado {}: {}",
+                graduate.getId(),
+                e.getMessage(),
+                e);
+          }
+        });
   }
 
   @Override
@@ -105,14 +110,18 @@ public class SurveyUseCaseHandler implements SurveyUseCase {
 
     if (survey.getStatus() != SurveyStatus.ACTIVE) {
       throw new SurveyException(
-          String.format("La encuesta con ID %d no esta activa. Solo se pueden notificar encuestas activas.", surveyId));
+          String.format(
+              "La encuesta con ID %d no esta activa. Solo se pueden notificar encuestas activas.",
+              surveyId));
     }
 
     List<GraduateEntity> activeGraduates =
         graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE);
 
-    log.info("Enviando notificacion de encuesta '{}' a {} graduados activos",
-        survey.getTitle(), activeGraduates.size());
+    log.info(
+        "Enviando notificacion de encuesta '{}' a {} graduados activos",
+        survey.getTitle(),
+        activeGraduates.size());
 
     for (GraduateEntity graduate : activeGraduates) {
       try {
@@ -120,21 +129,26 @@ public class SurveyUseCaseHandler implements SurveyUseCase {
         String name = graduate.getUser().getNombres();
         sendSurveyNotificationEmail(email, name, survey.getTitle(), survey.getDescription());
       } catch (Exception e) {
-        log.error("Error al enviar notificacion de encuesta al graduado con ID {}: {}",
-            graduate.getId(), e.getMessage(), e);
+        log.error(
+            "Error al enviar notificacion de encuesta al graduado con ID {}: {}",
+            graduate.getId(),
+            e.getMessage(),
+            e);
       }
     }
   }
 
   private void sendSurveyNotificationEmail(
       String toEmail, String userName, String surveyTitle, String surveyDescription) {
-    String htmlBody = ConstantsUtils.TEMPLATE_EMAIL_SURVEY_NOTIFICATION
-        .replace("{{user}}", userName != null ? userName : "Graduado")
-        .replace("{{surveyTitle}}", surveyTitle != null ? surveyTitle : "")
-        .replace("{{surveyDescription}}", surveyDescription != null ? surveyDescription : "Sin descripcion")
-        .replace("{{appUrl}}", "https://graduate.local");
+    String htmlBody =
+        ConstantsUtils.TEMPLATE_EMAIL_SURVEY_NOTIFICATION
+            .replace("{{user}}", userName != null ? userName : "Graduado")
+            .replace("{{surveyTitle}}", surveyTitle != null ? surveyTitle : "")
+            .replace(
+                "{{surveyDescription}}",
+                surveyDescription != null ? surveyDescription : "Sin descripcion")
+            .replace("{{appUrl}}", "https://graduate.local");
 
     mailUseCase.sendGenericEmail(toEmail, ConstantsUtils.SUBJECT_SURVEY_NOTIFICATION, htmlBody);
   }
 }
-

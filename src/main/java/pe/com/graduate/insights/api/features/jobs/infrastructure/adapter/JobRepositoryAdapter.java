@@ -8,16 +8,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import pe.com.graduate.insights.api.shared.exception.NotFoundException;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
 import pe.com.graduate.insights.api.features.jobs.application.dto.JobRequest;
 import pe.com.graduate.insights.api.features.jobs.application.dto.JobResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
-import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 import pe.com.graduate.insights.api.features.jobs.application.ports.output.JobRepositoryPort;
 import pe.com.graduate.insights.api.features.jobs.infrastructure.entity.JobEntity;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
 import pe.com.graduate.insights.api.features.jobs.infrastructure.jpa.JobRepository;
 import pe.com.graduate.insights.api.features.jobs.infrastructure.mapper.JobMapper;
+import pe.com.graduate.insights.api.shared.exception.NotFoundException;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
+import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -159,11 +159,3 @@ public class JobRepositoryAdapter implements JobRepositoryPort {
         .toList();
   }
 }
-
-
-
-
-
-
-
-

@@ -27,14 +27,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.shared.security.UserRole;
+import pe.com.graduate.insights.api.features.auth.application.ports.input.CurrentUserUseCase;
 import pe.com.graduate.insights.api.features.joboffers.application.dto.JobOffersRequest;
 import pe.com.graduate.insights.api.features.joboffers.application.dto.JobOffersResponse;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
-import pe.com.graduate.insights.api.features.auth.application.ports.input.CurrentUserUseCase;
 import pe.com.graduate.insights.api.features.joboffers.application.ports.input.JobOffersUseCase;
 import pe.com.graduate.insights.api.features.userrole.application.ports.input.UserRoleUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.shared.security.UserRole;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/job-offers")
@@ -46,12 +46,12 @@ public class JobOffersController {
   private final JobOffersUseCase jobOffersUseCase;
   private final PaginateMapper paginateMapper;
   private final CurrentUserUseCase currentUserUseCase;
-    private final UserRoleUseCase userRoleUseCase;
+  private final UserRoleUseCase userRoleUseCase;
 
   private boolean isUserDirector() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     var user = currentUserUseCase.getCurrentUser(authentication);
-        UserRole userRole = userRoleUseCase.getUserRole(user.id());
+    UserRole userRole = userRoleUseCase.getUserRole(user.id());
     return userRole == UserRole.DIRECTOR;
   }
 
@@ -205,7 +205,3 @@ public class JobOffersController {
         jobOffersPage.getContent(), paginateMapper.toDomain(jobOffersPage));
   }
 }
-
-
-
-

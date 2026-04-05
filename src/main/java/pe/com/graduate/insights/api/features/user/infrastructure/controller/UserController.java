@@ -27,9 +27,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
 import pe.com.graduate.insights.api.features.user.application.dto.UserResponse;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 import pe.com.graduate.insights.api.features.user.application.ports.input.UserUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/user")
@@ -169,6 +169,3 @@ public class UserController {
     return ResponseUtils.successResponse(userUseCase.getList());
   }
 }
-
-
-

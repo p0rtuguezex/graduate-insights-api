@@ -23,23 +23,23 @@ import pe.com.graduate.insights.api.features.graduate.application.ports.output.G
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateReadRepositoryPort;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateWriteRepositoryPort;
 import pe.com.graduate.insights.api.features.graduate.domain.exception.GraduateException;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateComplementaryTrainingEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateDegreeEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateLanguageEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateTitulationEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateWorkTrajectoryEntity;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.mapper.GraduateMapper;
 import pe.com.graduate.insights.api.features.graduateselfregistration.application.dto.GraduateSelfRegistrationRequest;
 import pe.com.graduate.insights.api.features.graduateselfregistration.application.ports.output.GraduateSelfRegistrationRepositoryPort;
 import pe.com.graduate.insights.api.features.mail.application.dto.MailRequest;
 import pe.com.graduate.insights.api.features.mail.application.ports.output.MailRepositoryPort;
 import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
-import pe.com.graduate.insights.api.shared.exception.NotFoundException;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateComplementaryTrainingEntity;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateDegreeEntity;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateLanguageEntity;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateTitulationEntity;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateWorkTrajectoryEntity;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
 import pe.com.graduate.insights.api.features.user.infrastructure.jpa.UserRepository;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.mapper.GraduateMapper;
 import pe.com.graduate.insights.api.features.user.infrastructure.mapper.UserMapper;
+import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
@@ -47,8 +47,7 @@ import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 @Component
 @RequiredArgsConstructor
 public class GraduateRepositoryAdapter
-    implements
-        GraduateSelfRegistrationRepositoryPort,
+    implements GraduateSelfRegistrationRepositoryPort,
         GraduateIdentityRepositoryPort,
         GraduateReadRepositoryPort,
         GraduateWriteRepositoryPort {
@@ -77,7 +76,7 @@ public class GraduateRepositoryAdapter
               userEntity.setContrasena(passwordEncoder.encode(userEntity.getContrasena()));
               userEntity = userRepository.save(userEntity);
               GraduateEntity graduateEntity = graduateMapper.toEntity(graduateRequest, userEntity);
-                applyAcademicCollections(graduateRequest, graduateEntity);
+              applyAcademicCollections(graduateRequest, graduateEntity);
               graduateEntity.setValidated(
                   graduateRequest.getValidated() != null
                       ? graduateRequest.getValidated()
@@ -324,8 +323,8 @@ public class GraduateRepositoryAdapter
 
     GraduateTitulationRequest titulationRequest = request.getTitulacion();
     if (titulationRequest != null
-      && (titulationRequest.getModalidadTitulacionId() != null
-        || StringUtils.isNotBlank(titulationRequest.getModalidadOtro()))) {
+        && (titulationRequest.getModalidadTitulacionId() != null
+            || StringUtils.isNotBlank(titulationRequest.getModalidadOtro()))) {
       GraduateTitulationEntity titulation = new GraduateTitulationEntity();
       titulation.setGrado(entity);
       titulation.setModalidadTitulacionId(titulationRequest.getModalidadTitulacionId());
@@ -336,7 +335,8 @@ public class GraduateRepositoryAdapter
     return entity;
   }
 
-  private GraduateLanguageEntity mapLanguage(GraduateLanguageRequest request, GraduateEntity graduateEntity) {
+  private GraduateLanguageEntity mapLanguage(
+      GraduateLanguageRequest request, GraduateEntity graduateEntity) {
     GraduateLanguageEntity entity = new GraduateLanguageEntity();
     entity.setGraduate(graduateEntity);
     entity.setIdiomaId(request.getIdiomaId());
@@ -370,6 +370,3 @@ public class GraduateRepositoryAdapter
     return entity;
   }
 }
-
-
-

@@ -9,10 +9,10 @@ import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateLa
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateWorkTrajectoryRequest;
-import pe.com.graduate.insights.api.features.graduate.domain.exception.GraduateException;
 import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateWriteUseCase;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateFileStoragePort;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateWriteRepositoryPort;
+import pe.com.graduate.insights.api.features.graduate.domain.exception.GraduateException;
 
 @Service
 @RequiredArgsConstructor
@@ -121,7 +121,8 @@ public class GraduateWriteUseCaseHandler implements GraduateWriteUseCase {
 
   private void validateLanguageLevel(GraduateLanguageRequest language, int languageIndex) {
     if (StringUtils.isBlank(language.getNivel())) {
-      throw new GraduateException(String.format("El nivel del idioma %d es obligatorio", languageIndex));
+      throw new GraduateException(
+          String.format("El nivel del idioma %d es obligatorio", languageIndex));
     }
   }
 
@@ -147,7 +148,8 @@ public class GraduateWriteUseCaseHandler implements GraduateWriteUseCase {
       if (training != null && hasComplementaryTrainingData(training)) {
         if (StringUtils.isBlank(training.getNombreCurso())) {
           throw new GraduateException(
-              String.format("El nombre del curso de la formacion %d es obligatorio", trainingIndex));
+              String.format(
+                  "El nombre del curso de la formacion %d es obligatorio", trainingIndex));
         }
 
         if (training.getFechaInicio() != null

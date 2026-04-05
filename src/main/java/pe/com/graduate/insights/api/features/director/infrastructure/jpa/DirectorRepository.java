@@ -47,6 +47,3 @@ public interface DirectorRepository extends JpaRepository<DirectorEntity, Long> 
       "UPDATE UserEntity u SET u.estado = '0' WHERE u.id = (SELECT g.user.id FROM DirectorEntity g WHERE g.id = :directorId)")
   void deactivateUserByDirectorId(@Param("directorId") Long directorId);
 }
-
-
-

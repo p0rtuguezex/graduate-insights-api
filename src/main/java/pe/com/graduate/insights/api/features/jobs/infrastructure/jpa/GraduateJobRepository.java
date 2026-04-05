@@ -39,5 +39,3 @@ public interface GraduateJobRepository extends JpaRepository<JobEntity, Long> {
   @Query("UPDATE JobEntity j SET j.estado = '0' WHERE j.id = :jobId")
   void deactivateJob(@Param("jobId") Long jobId);
 }
-
-

@@ -20,18 +20,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import pe.com.graduate.insights.api.features.auth.domain.exception.AccountPendingApprovalException;
-import pe.com.graduate.insights.api.features.director.domain.exception.DirectorException;
-import pe.com.graduate.insights.api.features.educationcenter.domain.exception.EducationCenterException;
-import pe.com.graduate.insights.api.features.eventtypes.domain.exception.EventTypesException;
-import pe.com.graduate.insights.api.features.emailconfig.domain.exception.EmailConfigException;
-import pe.com.graduate.insights.api.features.mail.domain.exception.MailException;
-import pe.com.graduate.insights.api.features.storage.domain.exception.FileException;
-import pe.com.graduate.insights.api.features.graduate.domain.exception.GraduateException;
 import pe.com.graduate.insights.api.features.auth.domain.exception.InvalidCodeException;
 import pe.com.graduate.insights.api.features.auth.domain.exception.InvalidCredentialsException;
-import pe.com.graduate.insights.api.shared.exception.NotFoundException;
-import pe.com.graduate.insights.api.features.survey.domain.exception.SurveyException;
+import pe.com.graduate.insights.api.features.director.domain.exception.DirectorException;
+import pe.com.graduate.insights.api.features.educationcenter.domain.exception.EducationCenterException;
+import pe.com.graduate.insights.api.features.emailconfig.domain.exception.EmailConfigException;
+import pe.com.graduate.insights.api.features.eventtypes.domain.exception.EventTypesException;
+import pe.com.graduate.insights.api.features.graduate.domain.exception.GraduateException;
 import pe.com.graduate.insights.api.features.graduatesurveys.domain.exception.SurveyResponseValidationException;
+import pe.com.graduate.insights.api.features.mail.domain.exception.MailException;
+import pe.com.graduate.insights.api.features.storage.domain.exception.FileException;
+import pe.com.graduate.insights.api.features.survey.domain.exception.SurveyException;
+import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.shared.models.response.ApiResponse;
 import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
@@ -142,6 +142,3 @@ public class GraduateInsightsExceptionHandler {
     return ResponseUtils.errorResponse(HttpStatus.UNAUTHORIZED, errors);
   }
 }
-
-
-

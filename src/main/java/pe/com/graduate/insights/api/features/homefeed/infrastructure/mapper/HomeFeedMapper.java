@@ -3,8 +3,8 @@ package pe.com.graduate.insights.api.features.homefeed.infrastructure.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import pe.com.graduate.insights.api.features.homefeed.application.dto.HomeFeedResponse;
 import pe.com.graduate.insights.api.features.event.infrastructure.entity.EventEntity;
+import pe.com.graduate.insights.api.features.homefeed.application.dto.HomeFeedResponse;
 import pe.com.graduate.insights.api.features.joboffers.infrastructure.entity.JobOffersEntity;
 
 @Mapper(componentModel = "spring")
@@ -50,7 +50,3 @@ public interface HomeFeedMapper {
   @Mapping(expression = "java(null)", target = "enlaceInscripcion")
   HomeFeedResponse jobOfferToHomeFeed(JobOffersEntity jobOffer);
 }
-
-
-
-

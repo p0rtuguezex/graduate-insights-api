@@ -30,4 +30,3 @@ public abstract class Auditable {
     this.modifiedDate = LocalDateTime.now();
   }
 }
-
