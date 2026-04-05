@@ -32,6 +32,8 @@ jacocoTestReport {
     dependsOn test
     reports {
         html.required = true
+        xml.required = true
+        xml.outputLocation = layout.buildDirectory.file("reports/jacoco/test/jacocoTestReport.xml")
     }
     afterEvaluate {
         def jtrFiles = files(classDirectories.files.collect{
