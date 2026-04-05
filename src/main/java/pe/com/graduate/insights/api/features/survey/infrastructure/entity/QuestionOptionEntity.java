@@ -35,4 +35,3 @@ public class QuestionOptionEntity extends Auditable {
   @JoinColumn(name = "pregunta_id")
   private QuestionEntity question;
 }
-

@@ -12,10 +12,10 @@ import pe.com.graduate.insights.api.features.educationcenter.application.dto.Edu
 import pe.com.graduate.insights.api.features.educationcenter.application.dto.EducationCenterResponse;
 import pe.com.graduate.insights.api.features.educationcenter.application.ports.output.EducationCenterRepositoryPort;
 import pe.com.graduate.insights.api.features.educationcenter.domain.exception.EducationCenterException;
-import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.features.educationcenter.infrastructure.entity.EducationCenterEntity;
 import pe.com.graduate.insights.api.features.educationcenter.infrastructure.jpa.EducationCenterRepository;
 import pe.com.graduate.insights.api.features.educationcenter.infrastructure.mapper.EducationCenterMapper;
+import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
 @Component
@@ -107,5 +107,3 @@ public class EducationCenterRepositoryAdapter implements EducationCenterReposito
                     String.format(ConstantsUtils.EDUCATION_CENTER_NOT_FOUND_ID, id)));
   }
 }
-
-

@@ -63,6 +63,3 @@ public interface JobRepository extends JpaRepository<JobEntity, Long> {
           + ")")
   Page<JobEntity> findAllByEstadoAndSearch(String search, String status, Pageable pageable);
 }
-
-
-

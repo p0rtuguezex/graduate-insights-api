@@ -15,10 +15,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 import pe.com.graduate.insights.api.features.auth.application.ports.input.AuthenticatedGraduateUseCase;
 import pe.com.graduate.insights.api.features.graduatedashboard.application.dto.GraduateDashboardResponse;
 import pe.com.graduate.insights.api.features.graduatedashboard.application.ports.input.GraduateDashboardUseCase;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/graduate-dashboard")
@@ -63,5 +63,3 @@ public class GraduateDashboardController {
     return authenticatedGraduateUseCase.getAuthenticatedGraduateId(authentication);
   }
 }
-
-

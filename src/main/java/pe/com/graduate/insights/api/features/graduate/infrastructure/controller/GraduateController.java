@@ -30,11 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateCreatedResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateReadUseCase;
 import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateWriteUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/graduate")
@@ -80,16 +80,17 @@ public class GraduateController {
         @ApiResponse(responseCode = "409", description = "Graduado ya existe")
       })
   @PostMapping
-    public ResponseEntity<
-                    pe.com.graduate.insights.api.shared.models.response.ApiResponse<GraduateCreatedResponse>>
+  public ResponseEntity<
+          pe.com.graduate.insights.api.shared.models.response.ApiResponse<GraduateCreatedResponse>>
       saveGraduate(
           @Parameter(description = "Datos del graduado", required = true) @Valid @RequestBody
               GraduateRequest graduateRequest) {
-        Long graduateId = graduateWriteUseCase.save(graduateRequest);
-        GraduateCreatedResponse response = GraduateCreatedResponse.builder().graduateId(graduateId).build();
-        return new ResponseEntity<>(
-                new pe.com.graduate.insights.api.shared.models.response.ApiResponse<>(response),
-                HttpStatus.CREATED);
+    Long graduateId = graduateWriteUseCase.save(graduateRequest);
+    GraduateCreatedResponse response =
+        GraduateCreatedResponse.builder().graduateId(graduateId).build();
+    return new ResponseEntity<>(
+        new pe.com.graduate.insights.api.shared.models.response.ApiResponse<>(response),
+        HttpStatus.CREATED);
   }
 
   @Operation(
@@ -203,5 +204,3 @@ public class GraduateController {
     return new ResponseEntity<>(graduateReadUseCase.getList(), HttpStatus.OK);
   }
 }
-
-

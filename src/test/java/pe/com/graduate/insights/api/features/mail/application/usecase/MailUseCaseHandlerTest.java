@@ -40,7 +40,11 @@ class MailUseCaseHandlerTest {
   @Test
   void changePasswordShouldDelegateToRepositoryPort() {
     ChangePasswordRequest request =
-        ChangePasswordRequest.builder().email("user@example.com").code("123456").newPassword("Password1!").build();
+        ChangePasswordRequest.builder()
+            .email("user@example.com")
+            .code("123456")
+            .newPassword("Password1!")
+            .build();
 
     mailUseCaseHandler.changePassword(request);
 

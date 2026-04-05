@@ -31,6 +31,8 @@ public interface SurveyRepository extends JpaRepository<SurveyEntity, Long> {
   // Métodos para estado de encuesta
   List<SurveyEntity> findByStatus(SurveyStatus status);
 
+  Page<SurveyEntity> findByStatus(SurveyStatus status, Pageable pageable);
+
   @EntityGraph(attributePaths = {"surveyType", "questions"})
   @Query("SELECT s FROM SurveyEntity s WHERE s.status = :status")
   List<SurveyEntity> findByStatusWithQuestionsAndType(@Param("status") SurveyStatus status);
@@ -44,8 +46,6 @@ public interface SurveyRepository extends JpaRepository<SurveyEntity, Long> {
       "SELECT s FROM SurveyEntity s WHERE s.endDate IS NOT NULL AND s.endDate < :today AND s.status = :status")
   List<SurveyEntity> findActiveSurveysWithEndDateBefore(
       @Param("today") LocalDate today, @Param("status") SurveyStatus status);
-
-  Page<SurveyEntity> findByStatus(SurveyStatus status, Pageable pageable);
 
   Page<SurveyEntity> findByStatusAndTitleContainingIgnoreCase(
       SurveyStatus status, String search, Pageable pageable);
@@ -64,4 +64,3 @@ public interface SurveyRepository extends JpaRepository<SurveyEntity, Long> {
 
   List<SurveyEntity> findByEndDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }
-

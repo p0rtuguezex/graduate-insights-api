@@ -6,4 +6,3 @@ import pe.com.graduate.insights.api.features.survey.infrastructure.entity.Questi
 
 @Repository
 public interface QuestionOptionRepository extends JpaRepository<QuestionOptionEntity, Long> {}
-

@@ -8,9 +8,9 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pe.com.graduate.insights.api.features.employer.application.dto.EmployerRequest;
 import pe.com.graduate.insights.api.features.employer.application.dto.EmployerResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.employer.infrastructure.entity.EmployerEntity;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Mapper(componentModel = "spring")
 public interface EmployerMapper {

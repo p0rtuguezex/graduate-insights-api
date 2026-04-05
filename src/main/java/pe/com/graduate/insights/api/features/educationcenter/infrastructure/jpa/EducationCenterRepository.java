@@ -35,6 +35,3 @@ public interface EducationCenterRepository extends JpaRepository<EducationCenter
   @Query("UPDATE EducationCenterEntity e SET e.estado = '0' WHERE e.id = :educationCenterId")
   void deactivateEducationCenter(@Param("educationCenterId") Long educationCenterId);
 }
-
-
-

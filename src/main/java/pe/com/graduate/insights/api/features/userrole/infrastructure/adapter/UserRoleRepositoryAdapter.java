@@ -2,10 +2,10 @@ package pe.com.graduate.insights.api.features.userrole.infrastructure.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import pe.com.graduate.insights.api.features.userrole.application.ports.output.UserRoleRepositoryPort;
 import pe.com.graduate.insights.api.features.director.infrastructure.jpa.DirectorRepository;
 import pe.com.graduate.insights.api.features.employer.infrastructure.jpa.EmployerRepository;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.jpa.GraduateRepository;
+import pe.com.graduate.insights.api.features.userrole.application.ports.output.UserRoleRepositoryPort;
 import pe.com.graduate.insights.api.shared.security.UserRole;
 import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
@@ -44,6 +44,3 @@ public class UserRoleRepositoryAdapter implements UserRoleRepositoryPort {
     return getUserRole(userId).getAuthority();
   }
 }
-
-
-

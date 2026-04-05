@@ -15,8 +15,8 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
-import pe.com.graduate.insights.api.shared.infrastructure.repository.entities.Auditable;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
+import pe.com.graduate.insights.api.shared.infrastructure.repository.entities.Auditable;
 
 @Getter
 @Setter
@@ -92,8 +92,7 @@ public class GraduateEntity extends Auditable {
   private Set<GraduateLanguageEntity> idiomas = new HashSet<>();
 
   @OneToMany(mappedBy = "graduate", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<GraduateComplementaryTrainingEntity> formacionesComplementarias =
-      new HashSet<>();
+  private Set<GraduateComplementaryTrainingEntity> formacionesComplementarias = new HashSet<>();
 
   @OneToMany(mappedBy = "graduate", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<GraduateWorkTrajectoryEntity> trayectoriasLaborales = new HashSet<>();

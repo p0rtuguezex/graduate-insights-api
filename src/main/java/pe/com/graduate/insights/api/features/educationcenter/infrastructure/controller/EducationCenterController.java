@@ -25,17 +25,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 import pe.com.graduate.insights.api.features.educationcenter.application.dto.EducationCenterRequest;
 import pe.com.graduate.insights.api.features.educationcenter.application.dto.EducationCenterResponse;
 import pe.com.graduate.insights.api.features.educationcenter.application.ports.input.EducationCenterUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/education_center")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('DIRECTOR')")
-@Tag(name = "Centros Educativos", description = "APIs para gesti\u00f3n de centros educativos")
+@Tag(name = "Centros Educativos", description = "APIs para gestión de centros educativos")
 public class EducationCenterController {
 
   private final EducationCenterUseCase educationCenterUseCase;
@@ -43,7 +43,7 @@ public class EducationCenterController {
 
   @Operation(
       summary = "Obtener centro educativo por ID",
-      description = "Obtiene un centro educativo espec\u00edfico por su ID")
+      description = "Obtiene un centro educativo específico por su ID")
   @ApiResponses(
       value = {
         @ApiResponse(
@@ -65,11 +65,11 @@ public class EducationCenterController {
 
   @Operation(
       summary = "Crear nuevo centro educativo",
-      description = "Crea un nuevo centro educativo con la informaci\u00f3n proporcionada")
+      description = "Crea un nuevo centro educativo con la información proporcionada")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "201", description = "Centro educativo creado exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Datos inv\u00e1lidos"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "409", description = "Centro educativo ya existe")
@@ -87,13 +87,13 @@ public class EducationCenterController {
 
   @Operation(
       summary = "Actualizar centro educativo",
-      description = "Actualiza un centro educativo existente con la informaci\u00f3n proporcionada")
+      description = "Actualiza un centro educativo existente con la información proporcionada")
   @ApiResponses(
       value = {
         @ApiResponse(
             responseCode = "204",
             description = "Centro educativo actualizado exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Datos inv\u00e1lidos"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Acceso denegado"),
         @ApiResponse(responseCode = "404", description = "Centro educativo no encontrado")
@@ -111,7 +111,7 @@ public class EducationCenterController {
 
   @Operation(
       summary = "Eliminar centro educativo",
-      description = "Elimina un centro educativo espec\u00edfico por su ID")
+      description = "Elimina un centro educativo específico por su ID")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "204", description = "Centro educativo eliminado exitosamente"),
@@ -130,7 +130,7 @@ public class EducationCenterController {
 
   @Operation(
       summary = "Listar centros educativos paginados",
-      description = "Obtiene una lista paginada de centros educativos con b\u00fasqueda opcional")
+      description = "Obtiene una lista paginada de centros educativos con búsqueda opcional")
   @ApiResponses(
       value = {
         @ApiResponse(
@@ -145,13 +145,13 @@ public class EducationCenterController {
           pe.com.graduate.insights.api.shared.models.response.ApiResponse<
               List<EducationCenterResponse>>>
       getListEducationCenterPaginate(
-          @Parameter(description = "T\u00e9rmino de b\u00fasqueda", example = "universidad")
+          @Parameter(description = "Término de búsqueda", example = "universidad")
               @RequestParam(value = "search", defaultValue = "")
               String search,
-          @Parameter(description = "N\u00famero de p\u00e1gina", example = "1")
+          @Parameter(description = "Número de página", example = "1")
               @RequestParam(value = "page", defaultValue = "1")
               String page,
-          @Parameter(description = "Tama\u00f1o de p\u00e1gina", example = "10")
+          @Parameter(description = "Tamaño de página", example = "10")
               @RequestParam(value = "size", defaultValue = "10")
               String size) {
     Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
@@ -164,7 +164,7 @@ public class EducationCenterController {
 
   @Operation(
       summary = "Listar todos los centros educativos",
-      description = "Obtiene una lista completa de centros educativos sin paginaci\u00f3n")
+      description = "Obtiene una lista completa de centros educativos sin paginación")
   @ApiResponses(
       value = {
         @ApiResponse(
@@ -182,6 +182,3 @@ public class EducationCenterController {
     return ResponseUtils.successResponse(educationCenterUseCase.getList());
   }
 }
-
-
-

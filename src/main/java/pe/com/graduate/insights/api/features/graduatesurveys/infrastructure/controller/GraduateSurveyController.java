@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.shared.models.response.ApiResponseWrapper;
 import pe.com.graduate.insights.api.features.auth.application.ports.input.AuthenticatedGraduateUseCase;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyDetailResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyListResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.ports.input.GraduateSurveyUseCase;
+import pe.com.graduate.insights.api.shared.models.response.ApiResponseWrapper;
 
 @RestController
 @RequestMapping("/graduate-surveys")

@@ -6,11 +6,11 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
+import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
 import pe.com.graduate.insights.api.features.jobs.application.dto.JobRequest;
 import pe.com.graduate.insights.api.features.jobs.application.dto.JobResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
-import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
 import pe.com.graduate.insights.api.features.jobs.infrastructure.entity.JobEntity;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Mapper(componentModel = "spring")
 public interface JobMapper {
@@ -53,9 +53,3 @@ public interface JobMapper {
   @Mapping(target = "graduate", ignore = true)
   void updateJobEntity(JobRequest jobRequest, @MappingTarget JobEntity jobEntity);
 }
-
-
-
-
-
-

@@ -23,4 +23,3 @@ public class ValidateCodeRequest {
     this.type = RESET_PASSWORD;
   }
 }
-

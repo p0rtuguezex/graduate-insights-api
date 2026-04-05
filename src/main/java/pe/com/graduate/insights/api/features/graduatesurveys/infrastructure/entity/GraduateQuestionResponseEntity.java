@@ -51,4 +51,3 @@ public class GraduateQuestionResponseEntity extends Auditable {
   @Column(name = "respuesta_numerica")
   private Integer numericResponse;
 }
-

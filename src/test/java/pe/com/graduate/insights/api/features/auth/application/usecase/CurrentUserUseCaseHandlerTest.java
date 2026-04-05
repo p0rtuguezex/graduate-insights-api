@@ -11,8 +11,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import pe.com.graduate.insights.api.features.auth.application.ports.output.AuthRepositoryPort;
-import pe.com.graduate.insights.api.features.auth.domain.model.AuthenticatedUser;
 import pe.com.graduate.insights.api.features.auth.domain.model.AuthPrincipal;
+import pe.com.graduate.insights.api.features.auth.domain.model.AuthenticatedUser;
 
 @ExtendWith(MockitoExtension.class)
 class CurrentUserUseCaseHandlerTest {
@@ -45,5 +45,3 @@ class CurrentUserUseCaseHandlerTest {
     verify(authRepositoryPort).getCurrentUser(authentication);
   }
 }
-
-

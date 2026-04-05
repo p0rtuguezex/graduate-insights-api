@@ -6,11 +6,11 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
+import pe.com.graduate.insights.api.features.employer.infrastructure.entity.EmployerEntity;
 import pe.com.graduate.insights.api.features.joboffers.application.dto.JobOffersRequest;
 import pe.com.graduate.insights.api.features.joboffers.application.dto.JobOffersResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
-import pe.com.graduate.insights.api.features.employer.infrastructure.entity.EmployerEntity;
 import pe.com.graduate.insights.api.features.joboffers.infrastructure.entity.JobOffersEntity;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Mapper(componentModel = "spring")
 public interface JobOffersMapper {
@@ -58,9 +58,3 @@ public interface JobOffersMapper {
   void updateJobOffersEntity(
       JobOffersRequest jobOffersRequest, @MappingTarget JobOffersEntity jobOffersEntity);
 }
-
-
-
-
-
-

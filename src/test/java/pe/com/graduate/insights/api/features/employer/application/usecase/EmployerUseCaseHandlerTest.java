@@ -11,8 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pe.com.graduate.insights.api.features.employer.application.dto.EmployerResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.employer.application.ports.output.EmployerRepositoryPort;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @ExtendWith(MockitoExtension.class)
 class EmployerUseCaseHandlerTest {
@@ -43,5 +43,3 @@ class EmployerUseCaseHandlerTest {
     verify(employerRepositoryPort).getDomain(6L);
   }
 }
-
-

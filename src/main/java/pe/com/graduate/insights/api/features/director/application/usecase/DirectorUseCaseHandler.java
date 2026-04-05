@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.director.application.dto.DirectorRequest;
 import pe.com.graduate.insights.api.features.director.application.dto.DirectorResponse;
 import pe.com.graduate.insights.api.features.director.application.ports.input.DirectorUseCase;
 import pe.com.graduate.insights.api.features.director.application.ports.output.DirectorRepositoryPort;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -47,4 +47,3 @@ public class DirectorUseCaseHandler implements DirectorUseCase {
     directorRepositoryPort.delete(id);
   }
 }
-

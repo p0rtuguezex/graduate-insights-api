@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.features.mail.application.dto.ChangePasswordRequest;
 import pe.com.graduate.insights.api.features.mail.application.dto.MailRequest;
 import pe.com.graduate.insights.api.features.mail.application.dto.ValidateCodeRequest;
+import pe.com.graduate.insights.api.features.mail.application.ports.input.MailUseCase;
 import pe.com.graduate.insights.api.shared.models.response.ApiResponse;
 import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
-import pe.com.graduate.insights.api.features.mail.application.ports.input.MailUseCase;
 
 @RestController
 @RequestMapping("/mail")
@@ -41,5 +41,3 @@ public class MailController {
     return ResponseUtils.successResponse();
   }
 }
-
-

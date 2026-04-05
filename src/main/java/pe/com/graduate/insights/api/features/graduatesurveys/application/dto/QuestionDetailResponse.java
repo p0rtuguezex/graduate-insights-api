@@ -24,4 +24,3 @@ public class QuestionDetailResponse {
   private Integer numericResponse;
   private boolean answered;
 }
-

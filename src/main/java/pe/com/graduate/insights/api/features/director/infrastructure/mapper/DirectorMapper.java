@@ -6,12 +6,12 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
-import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.director.application.dto.DirectorRequest;
 import pe.com.graduate.insights.api.features.director.application.dto.DirectorResponse;
 import pe.com.graduate.insights.api.features.director.infrastructure.entity.DirectorEntity;
+import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Mapper(componentModel = "spring")
 public interface DirectorMapper {
@@ -57,8 +57,3 @@ public interface DirectorMapper {
   void updateDirectorEntity(
       DirectorRequest directorRequest, @MappingTarget DirectorEntity directorEntity);
 }
-
-
-
-
-

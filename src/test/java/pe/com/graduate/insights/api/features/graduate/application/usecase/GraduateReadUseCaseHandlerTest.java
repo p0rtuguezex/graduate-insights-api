@@ -15,8 +15,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateReadRepositoryPort;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @ExtendWith(MockitoExtension.class)
 class GraduateReadUseCaseHandlerTest {
@@ -61,4 +61,3 @@ class GraduateReadUseCaseHandlerTest {
     verify(graduateReadRepositoryPort).getList();
   }
 }
-

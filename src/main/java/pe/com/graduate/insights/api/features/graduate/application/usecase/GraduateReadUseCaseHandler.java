@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateReadUseCase;
 import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateReadRepositoryPort;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +27,7 @@ public class GraduateReadUseCaseHandler implements GraduateReadUseCase {
   }
 
   @Override
-  public Page<GraduateResponse> getPagination(
-      String search, Pageable pageable, Boolean validated) {
+  public Page<GraduateResponse> getPagination(String search, Pageable pageable, Boolean validated) {
     return graduateReadRepositoryPort.getPagination(search, pageable, validated);
   }
 

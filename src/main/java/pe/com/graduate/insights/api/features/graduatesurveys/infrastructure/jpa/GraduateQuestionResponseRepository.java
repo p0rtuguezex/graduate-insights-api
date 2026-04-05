@@ -66,4 +66,3 @@ public interface GraduateQuestionResponseRepository
       nativeQuery = true)
   List<Object[]> debugNumericResponsesByQuestionId(@Param("questionId") Long questionId);
 }
-

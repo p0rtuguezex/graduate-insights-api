@@ -64,6 +64,3 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
   @Query("UPDATE UserEntity u SET u.verificado= true WHERE u.id = :userId AND u.estado='1'")
   void updateVerifiedTrueByUserId(@Param("userId") Long userId);
 }
-
-
-

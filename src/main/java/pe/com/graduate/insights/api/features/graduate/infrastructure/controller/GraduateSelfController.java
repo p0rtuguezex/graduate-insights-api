@@ -29,7 +29,9 @@ import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 @RequestMapping("/graduate/me")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('GRADUATE')")
-@Tag(name = "Perfil del Graduado", description = "APIs para que el graduado gestione su propio perfil")
+@Tag(
+    name = "Perfil del Graduado",
+    description = "APIs para que el graduado gestione su propio perfil")
 public class GraduateSelfController {
 
   private final GraduateReadUseCase graduateReadUseCase;
@@ -68,8 +70,7 @@ public class GraduateSelfController {
       })
   @PutMapping
   public ResponseEntity<pe.com.graduate.insights.api.shared.models.response.ApiResponse<Void>>
-      updateMyProfile(
-          @Valid @RequestBody GraduateRequest graduateRequest) {
+      updateMyProfile(@Valid @RequestBody GraduateRequest graduateRequest) {
     Long graduateId = getAuthenticatedGraduateId();
     graduateWriteUseCase.update(graduateRequest, graduateId);
     return ResponseUtils.successUpdateResponse();

@@ -12,9 +12,9 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
+import pe.com.graduate.insights.api.features.director.infrastructure.entity.DirectorEntity;
 import pe.com.graduate.insights.api.features.eventtypes.infrastructure.entity.EventTypesEntity;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.entities.Auditable;
-import pe.com.graduate.insights.api.features.director.infrastructure.entity.DirectorEntity;
 
 @Getter
 @Setter
@@ -44,6 +44,3 @@ public class EventEntity extends Auditable {
   @JoinColumn(name = "tipo_evento_id", nullable = false)
   private EventTypesEntity eventType;
 }
-
-
-

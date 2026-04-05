@@ -11,8 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pe.com.graduate.insights.api.features.educationcenter.application.dto.EducationCenterResponse;
-import pe.com.graduate.insights.api.features.educationcenter.application.ports.output
-    .EducationCenterRepositoryPort;
+import pe.com.graduate.insights.api.features.educationcenter.application.ports.output.EducationCenterRepositoryPort;
 
 @ExtendWith(MockitoExtension.class)
 class EducationCenterUseCaseHandlerTest {

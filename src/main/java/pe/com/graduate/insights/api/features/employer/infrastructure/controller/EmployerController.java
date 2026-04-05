@@ -28,10 +28,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pe.com.graduate.insights.api.features.employer.application.dto.EmployerRequest;
 import pe.com.graduate.insights.api.features.employer.application.dto.EmployerResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 import pe.com.graduate.insights.api.features.employer.application.ports.input.EmployerUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/employer")
@@ -172,7 +172,3 @@ public class EmployerController {
     return new ResponseEntity<>(employerUseCase.getList(), HttpStatus.OK);
   }
 }
-
-
-
-

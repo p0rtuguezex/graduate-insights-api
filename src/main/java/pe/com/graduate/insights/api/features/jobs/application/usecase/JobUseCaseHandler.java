@@ -6,15 +6,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pe.com.graduate.insights.api.features.jobs.domain.exception.JobException;
-import pe.com.graduate.insights.api.shared.security.UserContext;
+import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateIdentityRepositoryPort;
 import pe.com.graduate.insights.api.features.jobs.application.dto.JobRequest;
 import pe.com.graduate.insights.api.features.jobs.application.dto.JobResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
-import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
-import pe.com.graduate.insights.api.features.graduate.application.ports.output.GraduateIdentityRepositoryPort;
 import pe.com.graduate.insights.api.features.jobs.application.ports.input.JobUseCase;
 import pe.com.graduate.insights.api.features.jobs.application.ports.output.JobRepositoryPort;
+import pe.com.graduate.insights.api.features.jobs.domain.exception.JobException;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
+import pe.com.graduate.insights.api.shared.security.UserContext;
+import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -96,6 +96,3 @@ public class JobUseCaseHandler implements JobUseCase {
     }
   }
 }
-
-
-

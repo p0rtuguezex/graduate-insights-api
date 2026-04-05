@@ -11,8 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pe.com.graduate.insights.api.features.event.application.dto.EventResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.event.application.ports.output.EventRepositoryPort;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @ExtendWith(MockitoExtension.class)
 class EventUseCaseHandlerTest {
@@ -43,5 +43,3 @@ class EventUseCaseHandlerTest {
     verify(eventRepositoryPort).getDomain(11L);
   }
 }
-
-

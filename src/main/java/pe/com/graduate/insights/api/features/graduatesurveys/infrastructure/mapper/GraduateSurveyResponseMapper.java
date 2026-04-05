@@ -42,9 +42,9 @@ public interface GraduateSurveyResponseMapper {
   default void linkQuestionResponseRelations(
       GraduateSurveyResponseRequest request, @MappingTarget GraduateSurveyResponseEntity response) {
     if (response.getResponses() != null) {
-      response.getResponses().forEach(questionResponse -> questionResponse.setGraduateSurveyResponse(response));
+      response
+          .getResponses()
+          .forEach(questionResponse -> questionResponse.setGraduateSurveyResponse(response));
     }
   }
 }
-
-

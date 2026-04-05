@@ -17,9 +17,9 @@ class ArchitectureTest {
   private static final String INFRASTRUCTURE_CONTROLLER_PACKAGE = "..infrastructure.controller..";
   private static final String SHARED_REPOSITORY_INFRA_PACKAGE =
       "pe.com.graduate.insights.api.shared.infrastructure.repository..";
-    private static final String SHARED_INFRASTRUCTURE_REPOSITORY_ADAPTER_PACKAGE =
+  private static final String SHARED_INFRASTRUCTURE_REPOSITORY_ADAPTER_PACKAGE =
       "..infrastructure.repository.adapter..";
-    private static final String FEATURE_INFRASTRUCTURE_ADAPTER_PACKAGE =
+  private static final String FEATURE_INFRASTRUCTURE_ADAPTER_PACKAGE =
       "..features..infrastructure.adapter..";
 
   private static JavaClasses importedClasses;
@@ -35,56 +35,56 @@ class ArchitectureTest {
   @Test
   void domainMustNotDependOnInfrastructure() {
     freeze(
-        noClasses()
-          .that()
-          .resideInAnyPackage("..domain..")
-          .should()
-          .dependOnClassesThat()
-          .resideInAnyPackage("..infrastructure.."))
-      .check(importedClasses);
+            noClasses()
+                .that()
+                .resideInAnyPackage("..domain..")
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage("..infrastructure.."))
+        .check(importedClasses);
   }
 
   @Test
   void portsMustNotDependOnControllersOrRepositoryAdapters() {
     freeze(
-        noClasses()
-          .that()
-          .resideInAnyPackage("..application.ports..")
-          .should()
-          .dependOnClassesThat()
-          .resideInAnyPackage(
-              INFRASTRUCTURE_CONTROLLER_PACKAGE,
-              "..features..infrastructure.controller..",
-                SHARED_INFRASTRUCTURE_REPOSITORY_ADAPTER_PACKAGE,
-                FEATURE_INFRASTRUCTURE_ADAPTER_PACKAGE,
-              "..features..infrastructure.repository.adapter.."))
-      .check(importedClasses);
+            noClasses()
+                .that()
+                .resideInAnyPackage("..application.ports..")
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage(
+                    INFRASTRUCTURE_CONTROLLER_PACKAGE,
+                    "..features..infrastructure.controller..",
+                    SHARED_INFRASTRUCTURE_REPOSITORY_ADAPTER_PACKAGE,
+                    FEATURE_INFRASTRUCTURE_ADAPTER_PACKAGE,
+                    "..features..infrastructure.repository.adapter.."))
+        .check(importedClasses);
   }
 
   @Test
   void controllersMustNotAccessJpaRepositoriesDirectly() {
     freeze(
-        noClasses()
-          .that()
-          .resideInAnyPackage(INFRASTRUCTURE_CONTROLLER_PACKAGE)
-          .should()
-          .dependOnClassesThat()
-          .resideInAnyPackage("..infrastructure.repository.jpa.."))
-      .check(importedClasses);
+            noClasses()
+                .that()
+                .resideInAnyPackage(INFRASTRUCTURE_CONTROLLER_PACKAGE)
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage("..infrastructure.repository.jpa.."))
+        .check(importedClasses);
   }
 
   @Test
   void repositoryAdaptersMustNotDependOnControllers() {
     freeze(
-        noClasses()
-          .that()
-          .resideInAnyPackage(
-              SHARED_INFRASTRUCTURE_REPOSITORY_ADAPTER_PACKAGE,
-              FEATURE_INFRASTRUCTURE_ADAPTER_PACKAGE)
-          .should()
-          .dependOnClassesThat()
-          .resideInAnyPackage(INFRASTRUCTURE_CONTROLLER_PACKAGE))
-      .check(importedClasses);
+            noClasses()
+                .that()
+                .resideInAnyPackage(
+                    SHARED_INFRASTRUCTURE_REPOSITORY_ADAPTER_PACKAGE,
+                    FEATURE_INFRASTRUCTURE_ADAPTER_PACKAGE)
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage(INFRASTRUCTURE_CONTROLLER_PACKAGE))
+        .check(importedClasses);
   }
 
   @Test
@@ -104,14 +104,14 @@ class ArchitectureTest {
     freeze(
             noClasses()
                 .that()
-              .resideInAnyPackage(
-                SHARED_INFRASTRUCTURE_REPOSITORY_ADAPTER_PACKAGE,
-                FEATURE_INFRASTRUCTURE_ADAPTER_PACKAGE)
+                .resideInAnyPackage(
+                    SHARED_INFRASTRUCTURE_REPOSITORY_ADAPTER_PACKAGE,
+                    FEATURE_INFRASTRUCTURE_ADAPTER_PACKAGE)
                 .should()
                 .dependOnClassesThat()
-              .resideInAnyPackage(
-                SHARED_INFRASTRUCTURE_REPOSITORY_ADAPTER_PACKAGE,
-                FEATURE_INFRASTRUCTURE_ADAPTER_PACKAGE))
+                .resideInAnyPackage(
+                    SHARED_INFRASTRUCTURE_REPOSITORY_ADAPTER_PACKAGE,
+                    FEATURE_INFRASTRUCTURE_ADAPTER_PACKAGE))
         .check(importedClasses);
   }
 
@@ -143,7 +143,8 @@ class ArchitectureTest {
     freeze(
             noClasses()
                 .should()
-                .resideInAnyPackage("pe.com.graduate.insights.api.shared.infrastructure.controller.."))
+                .resideInAnyPackage(
+                    "pe.com.graduate.insights.api.shared.infrastructure.controller.."))
         .check(importedClasses);
   }
 
@@ -152,11 +153,11 @@ class ArchitectureTest {
     freeze(
             noClasses()
                 .that()
-              .haveNameMatching(
-                ".*\\.(AccountPendingApprovalException|DirectorException|EducationCenterException|"
-                  + "EventException|EventTypesException|FileException|GraduateException|"
-                  + "InvalidCodeException|InvalidCredentialsException|JobException|"
-                  + "MailException|SurveyException|SurveyTypeException)$")
+                .haveNameMatching(
+                    ".*\\.(AccountPendingApprovalException|DirectorException|EducationCenterException|"
+                        + "EventException|EventTypesException|FileException|GraduateException|"
+                        + "InvalidCodeException|InvalidCredentialsException|JobException|"
+                        + "MailException|SurveyException|SurveyTypeException)$")
                 .should()
                 .resideInAnyPackage("pe.com.graduate.insights.api.shared.exception.."))
         .check(importedClasses);

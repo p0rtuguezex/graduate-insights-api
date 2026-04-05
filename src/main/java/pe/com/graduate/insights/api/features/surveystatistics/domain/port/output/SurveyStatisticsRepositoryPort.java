@@ -24,7 +24,8 @@ public interface SurveyStatisticsRepositoryPort {
 
   List<QuestionResponseData> findQuestionResponsesBySurveyId(Long surveyId);
 
-  List<QuestionResponseData> findQuestionResponsesBySurveyIdAndQuestionId(Long surveyId, Long questionId);
+  List<QuestionResponseData> findQuestionResponsesBySurveyIdAndQuestionId(
+      Long surveyId, Long questionId);
 
   Long countQuestionResponsesByQuestionId(Long questionId);
 
@@ -34,7 +35,13 @@ public interface SurveyStatisticsRepositoryPort {
 
   Map<String, Long> countResponsesByOptionForQuestion(Long questionId);
 
-  record SurveyResponseData(LocalDateTime submittedAt, Integer graduationYear, String gender, String graduateFullName, String departamento, Boolean hasCurrentJob) {}
+  record SurveyResponseData(
+      LocalDateTime submittedAt,
+      Integer graduationYear,
+      String gender,
+      String graduateFullName,
+      String departamento,
+      Boolean hasCurrentJob) {}
 
   record QuestionResponseData(
       Long questionId,

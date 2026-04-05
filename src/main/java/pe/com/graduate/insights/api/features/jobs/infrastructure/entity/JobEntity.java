@@ -12,8 +12,8 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
-import pe.com.graduate.insights.api.shared.infrastructure.repository.entities.Auditable;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
+import pe.com.graduate.insights.api.shared.infrastructure.repository.entities.Auditable;
 
 @Getter
 @Setter
@@ -47,6 +47,3 @@ public class JobEntity extends Auditable {
     return compania + " - " + cargo;
   }
 }
-
-
-

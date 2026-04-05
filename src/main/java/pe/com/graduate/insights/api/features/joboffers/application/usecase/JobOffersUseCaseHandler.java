@@ -68,4 +68,3 @@ public class JobOffersUseCaseHandler implements JobOffersUseCase {
     return jobOffersRepositoryPort.getPaginationByRole(search, pageable, isDirector, currentUserId);
   }
 }
-

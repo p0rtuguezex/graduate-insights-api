@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 import pe.com.graduate.insights.api.features.surveytype.application.dto.SurveyTypeRequest;
 import pe.com.graduate.insights.api.features.surveytype.application.dto.SurveyTypeResponse;
 import pe.com.graduate.insights.api.features.surveytype.application.ports.input.SurveyTypeUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/survey-types")
@@ -199,6 +199,3 @@ public class SurveyTypeController {
     return ResponseUtils.successResponse(surveyTypeUseCase.getActiveTypes());
   }
 }
-
-
-

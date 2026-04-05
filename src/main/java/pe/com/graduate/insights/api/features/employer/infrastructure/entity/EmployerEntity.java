@@ -12,8 +12,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import pe.com.graduate.insights.api.shared.infrastructure.repository.entities.Auditable;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
+import pe.com.graduate.insights.api.shared.infrastructure.repository.entities.Auditable;
 
 @Getter
 @Setter
@@ -40,6 +40,3 @@ public class EmployerEntity extends Auditable {
   @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false, unique = true)
   private UserEntity user;
 }
-
-
-

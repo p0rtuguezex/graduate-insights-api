@@ -26,12 +26,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 import pe.com.graduate.insights.api.features.eventtypes.application.dto.EventTypesRequest;
 import pe.com.graduate.insights.api.features.eventtypes.application.dto.EventTypesResponse;
 import pe.com.graduate.insights.api.features.eventtypes.application.ports.input.EventTypesUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/event_types")
@@ -175,5 +175,3 @@ public class EventTypesController {
     return new ResponseEntity<>(eventTypesUseCase.getList(), HttpStatus.OK);
   }
 }
-
-

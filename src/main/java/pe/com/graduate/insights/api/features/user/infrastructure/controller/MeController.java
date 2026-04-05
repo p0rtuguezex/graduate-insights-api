@@ -19,15 +19,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.features.user.application.dto.ProfileUpdateRequest;
-import pe.com.graduate.insights.api.features.user.application.dto.SelfPasswordChangeRequest;
-import pe.com.graduate.insights.api.shared.models.response.ApiResponseWrapper;
-import pe.com.graduate.insights.api.features.user.application.dto.UserDataResponse;
-import pe.com.graduate.insights.api.features.user.application.dto.UserResponse;
 import pe.com.graduate.insights.api.features.auth.application.ports.input.CurrentUserUseCase;
 import pe.com.graduate.insights.api.features.auth.domain.model.AuthenticatedUser;
+import pe.com.graduate.insights.api.features.user.application.dto.ProfileUpdateRequest;
+import pe.com.graduate.insights.api.features.user.application.dto.SelfPasswordChangeRequest;
+import pe.com.graduate.insights.api.features.user.application.dto.UserDataResponse;
+import pe.com.graduate.insights.api.features.user.application.dto.UserResponse;
 import pe.com.graduate.insights.api.features.user.application.ports.input.UserUseCase;
 import pe.com.graduate.insights.api.features.userrole.application.ports.input.UserRoleUseCase;
+import pe.com.graduate.insights.api.shared.models.response.ApiResponseWrapper;
 
 @RestController
 @RequestMapping("/auth")
@@ -126,4 +126,3 @@ public class MeController {
     return currentUserUseCase.getCurrentUser(authentication);
   }
 }
-

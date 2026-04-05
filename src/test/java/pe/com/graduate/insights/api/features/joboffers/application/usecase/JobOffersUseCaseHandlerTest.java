@@ -59,4 +59,3 @@ class JobOffersUseCaseHandlerTest {
     verify(jobOffersRepositoryPort).getPaginationByRole("dev", pageable, false, 9L);
   }
 }
-

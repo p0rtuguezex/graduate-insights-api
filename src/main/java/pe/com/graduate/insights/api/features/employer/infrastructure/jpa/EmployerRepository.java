@@ -47,6 +47,3 @@ public interface EmployerRepository extends JpaRepository<EmployerEntity, Long> 
       "UPDATE UserEntity u SET u.estado = '0' WHERE u.id = (SELECT g.user.id FROM EmployerEntity g WHERE g.id = :employerId)")
   void deactivateUserByEmployerId(@Param("employerId") Long employerId);
 }
-
-
-

@@ -11,9 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pe.com.graduate.insights.api.features.userrole.application.ports.input.UserRoleUseCase;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
 import pe.com.graduate.insights.api.features.user.infrastructure.jpa.UserRepository;
+import pe.com.graduate.insights.api.features.userrole.application.ports.input.UserRoleUseCase;
 
 @Configuration
 @RequiredArgsConstructor
@@ -31,7 +31,7 @@ public class ApplicationConfig {
               .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
       // Establecer el rol del usuario
-        user.setUserRole(userRoleUseCase.getUserRole(user.getId()));
+      user.setUserRole(userRoleUseCase.getUserRole(user.getId()));
 
       return user;
     };
@@ -56,5 +56,3 @@ public class ApplicationConfig {
     return new BCryptPasswordEncoder();
   }
 }
-
-

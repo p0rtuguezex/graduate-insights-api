@@ -9,4 +9,3 @@ public interface UserRoleRepositoryPort {
 
   String getUserRoleAuthority(Long userId);
 }
-

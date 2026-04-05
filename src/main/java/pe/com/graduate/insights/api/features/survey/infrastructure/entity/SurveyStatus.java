@@ -7,4 +7,3 @@ public enum SurveyStatus {
   CLOSED, // Cerrada - Ya no acepta respuestas
   COMPLETED // Completada - Finalizada y procesada
 }
-

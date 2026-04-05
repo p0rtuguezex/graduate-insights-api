@@ -4,9 +4,4 @@ import lombok.Builder;
 
 @Builder
 public record AuthenticatedUser(
-    Long id,
-    String firstName,
-    String lastName,
-    String email,
-    String genero,
-    boolean verified) {}
+    Long id, String firstName, String lastName, String email, String genero, boolean verified) {}

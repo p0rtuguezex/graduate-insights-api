@@ -47,6 +47,3 @@ public interface UserMapper {
   @Mapping(target = "contrasena", ignore = true)
   void updateProfile(ProfileUpdateRequest request, @MappingTarget UserEntity userEntity);
 }
-
-
-

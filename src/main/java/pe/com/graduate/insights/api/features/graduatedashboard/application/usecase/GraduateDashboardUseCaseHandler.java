@@ -6,10 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
-import pe.com.graduate.insights.api.features.graduatedashboard.application.dto.GraduateDashboardResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
 import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateReadUseCase;
+import pe.com.graduate.insights.api.features.graduatedashboard.application.dto.GraduateDashboardResponse;
 import pe.com.graduate.insights.api.features.graduatedashboard.application.ports.input.GraduateDashboardUseCase;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.dto.GraduateSurveyListResponse;
 import pe.com.graduate.insights.api.features.graduatesurveys.application.ports.input.GraduateSurveyUseCase;
@@ -17,6 +16,7 @@ import pe.com.graduate.insights.api.features.joboffers.application.dto.JobOffers
 import pe.com.graduate.insights.api.features.joboffers.application.ports.output.JobOffersRepositoryPort;
 import pe.com.graduate.insights.api.features.jobs.application.dto.JobResponse;
 import pe.com.graduate.insights.api.features.jobs.application.ports.output.JobRepositoryPort;
+import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -32,12 +32,13 @@ public class GraduateDashboardUseCaseHandler implements GraduateDashboardUseCase
 
   @Override
   public GraduateDashboardResponse getDashboard(Long graduateId) {
-    List<GraduateSurveyListResponse> surveys = graduateSurveyUseCase.getAllSurveysForGraduate(graduateId);
+    List<GraduateSurveyListResponse> surveys =
+        graduateSurveyUseCase.getAllSurveysForGraduate(graduateId);
 
     List<GraduateSurveyListResponse> completedSurveys =
-      surveys.stream().filter(GraduateSurveyListResponse::isCompleted).toList();
+        surveys.stream().filter(GraduateSurveyListResponse::isCompleted).toList();
     List<GraduateSurveyListResponse> pendingSurveys =
-      surveys.stream().filter(survey -> !survey.isCompleted()).toList();
+        surveys.stream().filter(survey -> !survey.isCompleted()).toList();
 
     GraduateDashboardResponse.SurveyStats surveyStats =
         new GraduateDashboardResponse.SurveyStats(
@@ -57,7 +58,8 @@ public class GraduateDashboardUseCaseHandler implements GraduateDashboardUseCase
         new GraduateDashboardResponse.JobStats(
             safeLongToInt(jobPage.getTotalElements()), calculateActiveJobs(jobs));
 
-    List<JobOffersResponse> jobOffers = jobOffersRepositoryPort.getRecentActiveOffers(JOB_OFFER_LIMIT);
+    List<JobOffersResponse> jobOffers =
+        jobOffersRepositoryPort.getRecentActiveOffers(JOB_OFFER_LIMIT);
 
     GraduateResponse graduate = graduateReadUseCase.getDomain(graduateId);
     boolean profileComplete =
@@ -95,5 +97,3 @@ public class GraduateDashboardUseCaseHandler implements GraduateDashboardUseCase
     return value > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) value;
   }
 }
-
-

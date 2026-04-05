@@ -30,8 +30,10 @@ public class GraduateSurveyResponseUseCaseHandler implements GraduateSurveyRespo
   @Override
   public void save(GraduateSurveyResponseRequest request, Long graduateId) {
     // 1. Load survey and verify ACTIVE status
-    SurveyEntity survey = surveyRepository.findById(request.getSurveyId())
-        .orElseThrow(() -> new SurveyResponseValidationException("Encuesta no encontrada"));
+    SurveyEntity survey =
+        surveyRepository
+            .findById(request.getSurveyId())
+            .orElseThrow(() -> new SurveyResponseValidationException("Encuesta no encontrada"));
     if (survey.getStatus() != SurveyStatus.ACTIVE) {
       throw new SurveyResponseValidationException("La encuesta no esta activa");
     }
@@ -43,15 +45,17 @@ public class GraduateSurveyResponseUseCaseHandler implements GraduateSurveyRespo
     }
 
     // 3. Validate required questions have responses
-    Set<Long> answeredQuestionIds = request.getResponses().stream()
-        .map(GraduateQuestionResponseRequest::getQuestionId)
-        .collect(Collectors.toSet());
+    Set<Long> answeredQuestionIds =
+        request.getResponses().stream()
+            .map(GraduateQuestionResponseRequest::getQuestionId)
+            .collect(Collectors.toSet());
 
-    List<String> missingRequired = survey.getQuestions().stream()
-        .filter(QuestionEntity::isRequired)
-        .filter(q -> !answeredQuestionIds.contains(q.getId()))
-        .map(q -> "Pregunta requerida sin respuesta: " + q.getQuestionText())
-        .toList();
+    List<String> missingRequired =
+        survey.getQuestions().stream()
+            .filter(QuestionEntity::isRequired)
+            .filter(q -> !answeredQuestionIds.contains(q.getId()))
+            .map(q -> "Pregunta requerida sin respuesta: " + q.getQuestionText())
+            .toList();
 
     if (!missingRequired.isEmpty()) {
       throw new SurveyResponseValidationException(
@@ -65,8 +69,10 @@ public class GraduateSurveyResponseUseCaseHandler implements GraduateSurveyRespo
   @Override
   public void saveDraft(GraduateSurveyResponseRequest request, Long graduateId) {
     // Only validate survey exists and is ACTIVE
-    SurveyEntity survey = surveyRepository.findById(request.getSurveyId())
-        .orElseThrow(() -> new SurveyResponseValidationException("Encuesta no encontrada"));
+    SurveyEntity survey =
+        surveyRepository
+            .findById(request.getSurveyId())
+            .orElseThrow(() -> new SurveyResponseValidationException("Encuesta no encontrada"));
     if (survey.getStatus() != SurveyStatus.ACTIVE) {
       throw new SurveyResponseValidationException("La encuesta no esta activa");
     }

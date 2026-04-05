@@ -34,5 +34,3 @@ public interface JobOffersRepositoryPort {
 
   List<JobOffersResponse> getRecentActiveOffers(int limit);
 }
-
-

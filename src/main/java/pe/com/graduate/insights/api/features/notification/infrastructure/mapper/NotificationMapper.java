@@ -20,9 +20,7 @@ public class NotificationMapper {
         .tipo(entity.getTipo())
         .leido(entity.isLeido())
         .fechaCreacion(
-            entity.getCreatedDate() != null
-                ? entity.getCreatedDate().format(FORMATTER)
-                : null)
+            entity.getCreatedDate() != null ? entity.getCreatedDate().format(FORMATTER) : null)
         .build();
   }
 }

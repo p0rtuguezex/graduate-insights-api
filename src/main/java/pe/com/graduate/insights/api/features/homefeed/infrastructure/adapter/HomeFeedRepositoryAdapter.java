@@ -9,14 +9,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
+import pe.com.graduate.insights.api.features.event.infrastructure.entity.EventEntity;
+import pe.com.graduate.insights.api.features.event.infrastructure.jpa.EventRepository;
 import pe.com.graduate.insights.api.features.homefeed.application.dto.HomeFeedResponse;
 import pe.com.graduate.insights.api.features.homefeed.application.ports.output.HomeFeedRepositoryPort;
-import pe.com.graduate.insights.api.features.event.infrastructure.entity.EventEntity;
-import pe.com.graduate.insights.api.features.joboffers.infrastructure.entity.JobOffersEntity;
-import pe.com.graduate.insights.api.features.event.infrastructure.jpa.EventRepository;
-import pe.com.graduate.insights.api.features.joboffers.infrastructure.jpa.JobOffersRepository;
 import pe.com.graduate.insights.api.features.homefeed.infrastructure.mapper.HomeFeedMapper;
+import pe.com.graduate.insights.api.features.joboffers.infrastructure.entity.JobOffersEntity;
+import pe.com.graduate.insights.api.features.joboffers.infrastructure.jpa.JobOffersRepository;
+import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -75,9 +75,3 @@ public class HomeFeedRepositoryAdapter implements HomeFeedRepositoryPort {
     homeFeedList.addAll(jobOffers.stream().map(homeFeedMapper::jobOfferToHomeFeed).toList());
   }
 }
-
-
-
-
-
-

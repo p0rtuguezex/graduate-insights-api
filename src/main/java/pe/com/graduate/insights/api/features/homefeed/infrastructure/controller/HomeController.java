@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 import pe.com.graduate.insights.api.features.homefeed.application.dto.HomeFeedResponse;
 import pe.com.graduate.insights.api.features.homefeed.application.ports.input.HomeFeedUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
 @RestController
 @RequestMapping("/home")
@@ -93,6 +93,3 @@ public class HomeController {
     return ResponseUtils.successResponse(recentFeed);
   }
 }
-
-
-

@@ -21,10 +21,10 @@ import pe.com.graduate.insights.api.features.survey.application.dto.QuestionResp
 import pe.com.graduate.insights.api.features.survey.application.dto.SurveyRequest;
 import pe.com.graduate.insights.api.features.survey.application.dto.SurveyResponse;
 import pe.com.graduate.insights.api.features.survey.domain.model.QuestionType;
-import pe.com.graduate.insights.api.features.surveytype.infrastructure.mapper.SurveyTypeMapper;
 import pe.com.graduate.insights.api.features.survey.infrastructure.entity.QuestionEntity;
 import pe.com.graduate.insights.api.features.survey.infrastructure.entity.QuestionOptionEntity;
 import pe.com.graduate.insights.api.features.survey.infrastructure.entity.SurveyEntity;
+import pe.com.graduate.insights.api.features.surveytype.infrastructure.mapper.SurveyTypeMapper;
 
 @Mapper(
     componentModel = "spring",
@@ -205,6 +205,3 @@ public interface SurveyMapper {
     }
   }
 }
-
-
-

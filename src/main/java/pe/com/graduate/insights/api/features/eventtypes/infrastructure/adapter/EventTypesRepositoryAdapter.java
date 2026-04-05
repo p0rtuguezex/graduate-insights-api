@@ -12,10 +12,10 @@ import pe.com.graduate.insights.api.features.eventtypes.application.dto.EventTyp
 import pe.com.graduate.insights.api.features.eventtypes.application.dto.EventTypesResponse;
 import pe.com.graduate.insights.api.features.eventtypes.application.ports.output.EventTypesRepositoryPort;
 import pe.com.graduate.insights.api.features.eventtypes.domain.exception.EventTypesException;
-import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.features.eventtypes.infrastructure.entity.EventTypesEntity;
 import pe.com.graduate.insights.api.features.eventtypes.infrastructure.jpa.EventTypesRepository;
 import pe.com.graduate.insights.api.features.eventtypes.infrastructure.mapper.EventTypesMapper;
+import pe.com.graduate.insights.api.shared.exception.NotFoundException;
 import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.shared.utils.ConstantsUtils;
 
@@ -105,5 +105,3 @@ public class EventTypesRepositoryAdapter implements EventTypesRepositoryPort {
                 new NotFoundException(String.format(ConstantsUtils.EVENT_TYPES_NOT_FOUND_ID, id)));
   }
 }
-
-

@@ -8,8 +8,8 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pe.com.graduate.insights.api.features.event.application.dto.EventRequest;
 import pe.com.graduate.insights.api.features.event.application.dto.EventResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.event.infrastructure.entity.EventEntity;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Mapper(componentModel = "spring")
 public interface EventMapper {
@@ -45,8 +45,3 @@ public interface EventMapper {
   @Mapping(target = "eventType", ignore = true)
   void updateEventEntity(EventRequest eventRequest, @MappingTarget EventEntity eventEntity);
 }
-
-
-
-
-

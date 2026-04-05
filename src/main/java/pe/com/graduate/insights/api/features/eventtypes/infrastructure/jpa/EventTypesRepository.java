@@ -34,6 +34,3 @@ public interface EventTypesRepository extends JpaRepository<EventTypesEntity, Lo
   @Query("UPDATE EventTypesEntity e SET e.estado = '0' WHERE e.id = :eventTypeId")
   void deactivateEventType(@Param("eventTypeId") Long eventTypeId);
 }
-
-
-

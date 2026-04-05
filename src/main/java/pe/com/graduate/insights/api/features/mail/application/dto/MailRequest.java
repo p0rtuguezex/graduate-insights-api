@@ -25,4 +25,3 @@ public class MailRequest {
     this.type = RESET_PASSWORD;
   }
 }
-

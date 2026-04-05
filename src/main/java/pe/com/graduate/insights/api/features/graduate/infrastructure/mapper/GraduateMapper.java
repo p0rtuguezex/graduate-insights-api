@@ -9,20 +9,20 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateAcademicDegreeResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateComplementaryTrainingResponse;
+import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateLanguageResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateRequest;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateResponse;
-import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateLanguageResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateTitulationResponse;
 import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateWorkTrajectoryResponse;
-import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateComplementaryTrainingEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateDegreeEntity;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateLanguageEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateTitulationEntity;
 import pe.com.graduate.insights.api.features.graduate.infrastructure.entity.GraduateWorkTrajectoryEntity;
+import pe.com.graduate.insights.api.features.user.application.dto.UserRequest;
 import pe.com.graduate.insights.api.features.user.infrastructure.entity.UserEntity;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Mapper(componentModel = "spring")
 public interface GraduateMapper {
@@ -40,66 +40,66 @@ public interface GraduateMapper {
   @Mapping(source = "user.estado", target = "estado")
   @Mapping(source = "user.dni", target = "dni")
   @Mapping(source = "user.celular", target = "celular")
-    @Mapping(source = "codigoUniversitario", target = "codigoUniversitario")
-    @Mapping(source = "estadoCivil", target = "estadoCivil")
-    @Mapping(source = "nacionalidad", target = "nacionalidad")
-    @Mapping(source = "correoInstitucional", target = "correoInstitucional")
-    @Mapping(source = "direccionActual", target = "direccionActual")
-    @Mapping(source = "ciudad", target = "ciudad")
-    @Mapping(source = "departamento", target = "departamento")
-    @Mapping(source = "provincia", target = "provincia")
-    @Mapping(source = "distrito", target = "distrito")
-    @Mapping(source = "paisResidencia", target = "paisResidencia")
-    @Mapping(source = "viveEnPeru", target = "viveEnPeru")
-    @Mapping(source = "linkedin", target = "linkedin")
-    @Mapping(source = "portafolio", target = "portafolio")
-    @Mapping(source = "escuelaProfesionalId", target = "escuelaProfesionalId")
-    @Mapping(source = "anioIngreso", target = "anioIngreso")
-    @Mapping(source = "anioEgreso", target = "anioEgreso")
-    @Mapping(source = "grados", target = "grados")
-    @Mapping(source = "idiomas", target = "idiomas")
-    @Mapping(source = "formacionesComplementarias", target = "formacionesComplementarias")
-    @Mapping(source = "trayectoriasLaborales", target = "trayectoriasLaborales")
+  @Mapping(source = "codigoUniversitario", target = "codigoUniversitario")
+  @Mapping(source = "estadoCivil", target = "estadoCivil")
+  @Mapping(source = "nacionalidad", target = "nacionalidad")
+  @Mapping(source = "correoInstitucional", target = "correoInstitucional")
+  @Mapping(source = "direccionActual", target = "direccionActual")
+  @Mapping(source = "ciudad", target = "ciudad")
+  @Mapping(source = "departamento", target = "departamento")
+  @Mapping(source = "provincia", target = "provincia")
+  @Mapping(source = "distrito", target = "distrito")
+  @Mapping(source = "paisResidencia", target = "paisResidencia")
+  @Mapping(source = "viveEnPeru", target = "viveEnPeru")
+  @Mapping(source = "linkedin", target = "linkedin")
+  @Mapping(source = "portafolio", target = "portafolio")
+  @Mapping(source = "escuelaProfesionalId", target = "escuelaProfesionalId")
+  @Mapping(source = "anioIngreso", target = "anioIngreso")
+  @Mapping(source = "anioEgreso", target = "anioEgreso")
+  @Mapping(source = "grados", target = "grados")
+  @Mapping(source = "idiomas", target = "idiomas")
+  @Mapping(source = "formacionesComplementarias", target = "formacionesComplementarias")
+  @Mapping(source = "trayectoriasLaborales", target = "trayectoriasLaborales")
   @Mapping(source = "fotoPath", target = "fotoPath")
   @Mapping(source = "validated", target = "validated")
   GraduateResponse toDomain(GraduateEntity graduateEntity);
 
-    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-    @Mapping(source = "tipoGradoId", target = "tipoGradoId")
-    @Mapping(source = "universidadId", target = "universidadId")
-    @Mapping(source = "fechaGrado", target = "fechaGrado", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "otroGradoNombre", target = "otroGradoNombre")
-    @Mapping(source = "titulation", target = "titulacion")
-    GraduateAcademicDegreeResponse toDegreeResponse(GraduateDegreeEntity entity);
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "tipoGradoId", target = "tipoGradoId")
+  @Mapping(source = "universidadId", target = "universidadId")
+  @Mapping(source = "fechaGrado", target = "fechaGrado", dateFormat = "yyyy-MM-dd")
+  @Mapping(source = "otroGradoNombre", target = "otroGradoNombre")
+  @Mapping(source = "titulation", target = "titulacion")
+  GraduateAcademicDegreeResponse toDegreeResponse(GraduateDegreeEntity entity);
 
-    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-    @Mapping(source = "modalidadTitulacionId", target = "modalidadTitulacionId")
-    @Mapping(source = "modalidadOtro", target = "modalidadOtro")
-    GraduateTitulationResponse toTitulationResponse(GraduateTitulationEntity entity);
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "modalidadTitulacionId", target = "modalidadTitulacionId")
+  @Mapping(source = "modalidadOtro", target = "modalidadOtro")
+  GraduateTitulationResponse toTitulationResponse(GraduateTitulationEntity entity);
 
-    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-    @Mapping(source = "idiomaId", target = "idiomaId")
-    @Mapping(source = "nivel", target = "nivel")
-    @Mapping(source = "fechaInicio", target = "fechaInicio", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "fechaFin", target = "fechaFin", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "aprendizaje", target = "aprendizaje")
-    GraduateLanguageResponse toLanguageResponse(GraduateLanguageEntity entity);
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "idiomaId", target = "idiomaId")
+  @Mapping(source = "nivel", target = "nivel")
+  @Mapping(source = "fechaInicio", target = "fechaInicio", dateFormat = "yyyy-MM-dd")
+  @Mapping(source = "fechaFin", target = "fechaFin", dateFormat = "yyyy-MM-dd")
+  @Mapping(source = "aprendizaje", target = "aprendizaje")
+  GraduateLanguageResponse toLanguageResponse(GraduateLanguageEntity entity);
 
-    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-    @Mapping(source = "nombreCurso", target = "nombreCurso")
-    @Mapping(source = "institucion", target = "institucion")
-    @Mapping(source = "fechaInicio", target = "fechaInicio", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "fechaFin", target = "fechaFin", dateFormat = "yyyy-MM-dd")
-    GraduateComplementaryTrainingResponse toComplementaryTrainingResponse(
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "nombreCurso", target = "nombreCurso")
+  @Mapping(source = "institucion", target = "institucion")
+  @Mapping(source = "fechaInicio", target = "fechaInicio", dateFormat = "yyyy-MM-dd")
+  @Mapping(source = "fechaFin", target = "fechaFin", dateFormat = "yyyy-MM-dd")
+  GraduateComplementaryTrainingResponse toComplementaryTrainingResponse(
       GraduateComplementaryTrainingEntity entity);
 
-    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-    @Mapping(source = "empresa", target = "empresa")
-    @Mapping(source = "cargo", target = "cargo")
-    @Mapping(source = "modalidad", target = "modalidad")
-    @Mapping(source = "fechaInicio", target = "fechaInicio", dateFormat = "yyyy-MM-dd")
-    @Mapping(source = "fechaFin", target = "fechaFin", dateFormat = "yyyy-MM-dd")
-    GraduateWorkTrajectoryResponse toWorkTrajectoryResponse(GraduateWorkTrajectoryEntity entity);
+  @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+  @Mapping(source = "empresa", target = "empresa")
+  @Mapping(source = "cargo", target = "cargo")
+  @Mapping(source = "modalidad", target = "modalidad")
+  @Mapping(source = "fechaInicio", target = "fechaInicio", dateFormat = "yyyy-MM-dd")
+  @Mapping(source = "fechaFin", target = "fechaFin", dateFormat = "yyyy-MM-dd")
+  GraduateWorkTrajectoryResponse toWorkTrajectoryResponse(GraduateWorkTrajectoryEntity entity);
 
   @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
   @Mapping(source = "id", target = "key")

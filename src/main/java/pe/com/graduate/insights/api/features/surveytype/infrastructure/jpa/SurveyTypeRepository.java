@@ -25,6 +25,3 @@ public interface SurveyTypeRepository extends JpaRepository<SurveyTypeEntity, Lo
 
   boolean existsByNameIgnoreCase(String name);
 }
-
-
-

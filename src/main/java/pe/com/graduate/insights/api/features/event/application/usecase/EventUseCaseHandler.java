@@ -7,9 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pe.com.graduate.insights.api.features.event.application.dto.EventRequest;
 import pe.com.graduate.insights.api.features.event.application.dto.EventResponse;
-import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.features.event.application.ports.input.EventUseCase;
 import pe.com.graduate.insights.api.features.event.application.ports.output.EventRepositoryPort;
+import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +47,3 @@ public class EventUseCaseHandler implements EventUseCase {
     eventRepositoryPort.update(request, id);
   }
 }
-
-
