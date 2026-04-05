@@ -1,0 +1,7 @@
+include:
+  - project: "software-factory/templates/devops-templates"
+    ref: main
+    file: "/ci/springboot/docker-build-dockerhub.gitlab-ci.yml"
+
+variables:
+  CI_SKIP_SONARQUBE: "1"
