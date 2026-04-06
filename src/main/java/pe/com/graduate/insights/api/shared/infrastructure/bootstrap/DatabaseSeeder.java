@@ -69,6 +69,15 @@ public class DatabaseSeeder implements CommandLineRunner {
   @Value("${app.seed.admin-password}")
   private String adminPassword;
 
+  @Value("${app.seed.resend-api-key:}")
+  private String resendApiKey;
+
+  @Value("${app.seed.resend-sender-email:noreply@egresadosunu.com}")
+  private String resendSenderEmail;
+
+  @Value("${app.seed.resend-sender-name:EgreSys}")
+  private String resendSenderName;
+
   @Override
   public void run(String... args) {
     seedCatalogDataIfNeeded();
@@ -81,6 +90,31 @@ public class DatabaseSeeder implements CommandLineRunner {
     seedJobsIfNeeded();
     seedJobOffersIfNeeded();
     seedSurveyQuestionsIfNeeded();
+    ensureEmailConfig();
+  }
+
+  private void ensureEmailConfig() {
+    if (resendApiKey == null || resendApiKey.isBlank()) {
+      log.info("No RESEND_API_KEY configured. Skipping email config seed.");
+      return;
+    }
+
+    try {
+      Long count = jdbcTemplate.queryForObject(
+          "SELECT COUNT(*) FROM configuracion_email WHERE activo = true", Long.class);
+      if (count != null && count > 0) {
+        log.info("Email config already present. Skipping seed.");
+        return;
+      }
+
+      jdbcTemplate.update(
+          "INSERT INTO configuracion_email (proveedor, api_key, email_remitente, nombre_remitente, activo, fecha_creacion, fecha_modificacion) "
+              + "VALUES ('resend', ?, ?, ?, true, NOW(), NOW())",
+          resendApiKey, resendSenderEmail, resendSenderName);
+      log.info("Default email config seeded with Resend API key for {}", resendSenderEmail);
+    } catch (Exception e) {
+      log.warn("Could not seed email config: {}", e.getMessage());
+    }
   }
 
   private void seedCatalogDataIfNeeded() {
