@@ -1,5 +1,5 @@
 include:
-  - project: "software-factory/templates/devops-templates"
+  - project: "software-factory4665115/templates/devops-templates"
     ref: main
     file: "/ci/springboot/docker-build-dockerhub.gitlab-ci.yml"
 
