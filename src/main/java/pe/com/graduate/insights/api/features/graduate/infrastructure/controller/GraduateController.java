@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,6 +35,7 @@ import pe.com.graduate.insights.api.features.graduate.application.dto.GraduateRe
 import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateReadUseCase;
 import pe.com.graduate.insights.api.features.graduate.application.ports.input.GraduateWriteUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.shared.infrastructure.validation.OnCreate;
 import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
@@ -83,7 +86,9 @@ public class GraduateController {
   public ResponseEntity<
           pe.com.graduate.insights.api.shared.models.response.ApiResponse<GraduateCreatedResponse>>
       saveGraduate(
-          @Parameter(description = "Datos del graduado", required = true) @Valid @RequestBody
+          @Parameter(description = "Datos del graduado", required = true)
+              @Validated({Default.class, OnCreate.class})
+              @RequestBody
               GraduateRequest graduateRequest) {
     Long graduateId = graduateWriteUseCase.save(graduateRequest);
     GraduateCreatedResponse response =

@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ import pe.com.graduate.insights.api.features.director.application.dto.DirectorRe
 import pe.com.graduate.insights.api.features.director.application.dto.DirectorResponse;
 import pe.com.graduate.insights.api.features.director.application.ports.input.DirectorUseCase;
 import pe.com.graduate.insights.api.shared.infrastructure.repository.mapper.PaginateMapper;
+import pe.com.graduate.insights.api.shared.infrastructure.validation.OnCreate;
 import pe.com.graduate.insights.api.shared.models.response.KeyValueResponse;
 import pe.com.graduate.insights.api.shared.utils.ResponseUtils;
 
@@ -78,7 +80,9 @@ public class DirectorController {
   @PostMapping
   public ResponseEntity<pe.com.graduate.insights.api.shared.models.response.ApiResponse<Void>>
       saveGraduate(
-          @Parameter(description = "Datos del director", required = true) @Valid @RequestBody
+          @Parameter(description = "Datos del director", required = true)
+              @Validated({Default.class, OnCreate.class})
+              @RequestBody
               DirectorRequest directorRequest) {
     directorUseCase.save(directorRequest);
     return ResponseUtils.sucessCreateResponse();

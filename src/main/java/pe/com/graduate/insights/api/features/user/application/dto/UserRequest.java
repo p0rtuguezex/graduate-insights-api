@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
+import pe.com.graduate.insights.api.shared.infrastructure.validation.OnCreate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -53,7 +54,7 @@ public class UserRequest implements Serializable {
       message = "El numero de celular debe tener 9 digitos y comenzar con 9")
   private String celular;
 
-  @NotBlank(message = "La contrasena no puede estar en blanco")
+  @NotBlank(message = "La contrasena no puede estar en blanco", groups = OnCreate.class)
   @Size(min = 6, message = "La contrasena debe tener al menos 6 caracteres")
   private String contrasena;
 }
