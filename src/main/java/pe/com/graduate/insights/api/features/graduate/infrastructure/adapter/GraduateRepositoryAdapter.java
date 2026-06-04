@@ -6,6 +6,7 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +59,9 @@ public class GraduateRepositoryAdapter
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
   private final MailRepositoryPort mailRepositoryPort;
+
+  @Value("${app.frontend-url:https://egresadosunu.com}")
+  private String frontendUrl;
 
   @Transactional
   @Override
@@ -201,13 +205,36 @@ public class GraduateRepositoryAdapter
         .findByIdAndUserEstado(graduateId, ConstantsUtils.STATUS_ACTIVE)
         .ifPresentOrElse(
             graduate -> {
-              graduate.setValidated(Boolean.TRUE.equals(validated));
+              boolean wasValidated = Boolean.TRUE.equals(graduate.getValidated());
+              boolean nowValidated = Boolean.TRUE.equals(validated);
+              graduate.setValidated(nowValidated);
               graduateRepository.save(graduate);
+              if (!wasValidated && nowValidated) {
+                sendAccountActivatedEmail(graduate);
+              }
             },
             () -> {
               throw new NotFoundException(
                   String.format(ConstantsUtils.GRADUATE_NOT_FOUND, graduateId));
             });
+  }
+
+  private void sendAccountActivatedEmail(GraduateEntity graduate) {
+    String userName = graduate.getUser().getNombres();
+    String htmlBody =
+        ConstantsUtils.TEMPLATE_EMAIL_ACCOUNT_ACTIVATED
+            .replace("{{user}}", userName != null ? userName : "Egresado")
+            .replace("{{appUrl}}", frontendUrl);
+    try {
+      mailRepositoryPort.sendGenericEmail(
+          graduate.getUser().getCorreo(), ConstantsUtils.SUBJECT_ACCOUNT_ACTIVATED, htmlBody);
+    } catch (RuntimeException ex) {
+      log.warn(
+          "No se pudo enviar el correo de activacion al graduado {}: {}",
+          graduate.getId(),
+          ex.getMessage(),
+          ex);
+    }
   }
 
   @Override

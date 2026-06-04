@@ -105,4 +105,25 @@ public class ConstantsUtils {
           + "<p>Si no puedes acceder al enlace, copia y pega la siguiente URL en tu navegador: {{appUrl}}/my-surveys</p> "
           + "</div> <div class=\"footer\"> <p>Atentamente,</p> <p>SISEG 2025</p> <p>garlee016@gmail.com | 954886187</p> </div> "
           + "</div> </body> </html> ";
+
+  public static final String SUBJECT_ACCOUNT_ACTIVATED = "Tu cuenta ha sido activada";
+
+  public static final String TEMPLATE_EMAIL_ACCOUNT_ACTIVATED =
+      "<!DOCTYPE html> <html lang=\"es\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, "
+          + "initial-scale=1.0\"> <title>Cuenta activada</title> <style> body { font-family: Arial, sans-serif; "
+          + "background-color: #f7f7f7; margin: 0; padding: 0; color: #333; } .container { max-width: 600px; margin: 20px auto; "
+          + "background-color: #ffffff; padding: 20px; border: 1px solid #dddddd; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); } "
+          + ".header { text-align: center; padding-bottom: 20px; } .header h1 { color: #22a127; } .content { font-size: 16px; line-height: 1.5; text-align: justify; } "
+          + ".cta-button { display: block; width: fit-content; margin: 25px auto; padding: 12px 30px; background-color: #22a127; color: #ffffff; "
+          + "text-decoration: none; font-weight: bold; border-radius: 5px; font-size: 16px; text-align: center; } "
+          + ".footer { margin-top: 20px; font-size: 14px; text-align: center; color: #888888; } </style> </head> <body> <div class=\"container\"> "
+          + "<div class=\"header\"> <h1>Bienvenido al SISEG</h1> </div> "
+          + "<div class=\"content\"> <p>Hola {{user}},</p> "
+          + "<p>Nos complace informarte que tu cuenta ha sido revisada y <strong>activada</strong> por el director. "
+          + "Ya puedes ingresar a la plataforma para completar tu perfil de egresado, responder encuestas y acceder a las oportunidades disponibles.</p> "
+          + "<a href=\"{{appUrl}}/login\" class=\"cta-button\">Iniciar sesion</a> "
+          + "<p>Si no puedes acceder al enlace, copia y pega la siguiente URL en tu navegador: {{appUrl}}/login</p> "
+          + "<p>Gracias por ser parte de nuestra comunidad de egresados.</p> </div> "
+          + "<div class=\"footer\"> <p>Atentamente,</p> <p>SISEG 2025</p> <p>garlee016@gmail.com | 954886187</p> </div> "
+          + "</div> </body> </html> ";
 }

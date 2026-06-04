@@ -42,6 +42,7 @@ springdoc:
     enabled: true
 
 app:
+  frontend-url: ${APP_FRONTEND_URL:https://egresadosunu.com}
   file:
     upload-dir: ${APP_FILE_UPLOAD_DIR:./uploads}
   seed:

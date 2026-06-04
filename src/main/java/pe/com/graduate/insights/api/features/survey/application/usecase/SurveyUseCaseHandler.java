@@ -3,6 +3,7 @@ package pe.com.graduate.insights.api.features.survey.application.usecase;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class SurveyUseCaseHandler implements SurveyUseCase {
   private final GraduateRepository graduateRepository;
   private final NotificationRepository notificationRepository;
   private final MailUseCase mailUseCase;
+
+  @Value("${app.frontend-url:https://egresadosunu.com}")
+  private String frontendUrl;
 
   @Override
   public void save(SurveyRequest request) {
@@ -60,16 +64,17 @@ public class SurveyUseCaseHandler implements SurveyUseCase {
     surveyRepositoryPort.updateStatus(id, surveyStatus);
 
     if (surveyStatus == SurveyStatus.ACTIVE) {
-      sendSurveyPublishedNotifications(id);
+      SurveyResponse survey = surveyRepositoryPort.getDomain(id);
+      List<GraduateEntity> activeGraduates =
+          graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE);
+      createSurveyPublishedNotifications(survey, activeGraduates);
+      sendSurveyEmailsToActiveGraduates(survey, activeGraduates);
     }
   }
 
-  private void sendSurveyPublishedNotifications(Long surveyId) {
-    SurveyResponse survey = surveyRepositoryPort.getDomain(surveyId);
+  private void createSurveyPublishedNotifications(
+      SurveyResponse survey, List<GraduateEntity> activeGraduates) {
     String mensaje = String.format("Se ha publicado una nueva encuesta: %s", survey.getTitle());
-
-    List<GraduateEntity> activeGraduates =
-        graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE);
 
     activeGraduates.forEach(
         graduate -> {
@@ -117,7 +122,11 @@ public class SurveyUseCaseHandler implements SurveyUseCase {
 
     List<GraduateEntity> activeGraduates =
         graduateRepository.findAllByUserEstado(ConstantsUtils.STATUS_ACTIVE);
+    sendSurveyEmailsToActiveGraduates(survey, activeGraduates);
+  }
 
+  private void sendSurveyEmailsToActiveGraduates(
+      SurveyResponse survey, List<GraduateEntity> activeGraduates) {
     log.info(
         "Enviando notificacion de encuesta '{}' a {} graduados activos",
         survey.getTitle(),
@@ -147,7 +156,7 @@ public class SurveyUseCaseHandler implements SurveyUseCase {
             .replace(
                 "{{surveyDescription}}",
                 surveyDescription != null ? surveyDescription : "Sin descripcion")
-            .replace("{{appUrl}}", "https://graduate.local");
+            .replace("{{appUrl}}", frontendUrl);
 
     mailUseCase.sendGenericEmail(toEmail, ConstantsUtils.SUBJECT_SURVEY_NOTIFICATION, htmlBody);
   }
